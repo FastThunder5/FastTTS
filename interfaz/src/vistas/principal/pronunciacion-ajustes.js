@@ -39,6 +39,11 @@ export function iniciarAjustesPronunciacion() {
     }
     guardar({ ttsUserVoices: voces }, 'toast.userVoicesSaved');
   });
+  document.getElementById('ttsUserCooldownInput')?.addEventListener('change', (e) => {
+    const seg = Math.min(600, Math.max(0, Math.round(Number(e.target.value) || 0)));
+    e.target.value = String(seg);
+    guardar({ ttsUserCooldownSec: seg }, 'toast.userCooldownSaved');
+  });
 }
 
 export function toggleRandomVoicePerUser(checkbox) {

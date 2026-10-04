@@ -43,6 +43,8 @@ const DEFAULT_CONFIG = {
   // true = cada espectador sin voz fija recibe una voz Edge estable al azar.
   ttsUserVoices: {},
   ttsRandomVoicePerUser: false,
+  // Segundos que espera un espectador entre mensajes leidos (0 = sin espera).
+  ttsUserCooldownSec: 0,
   // Plantillas propias de avisos ({usuario}, {regalo}, ...) por evento; vacio = texto estandar.
   announceTemplates: {},
   // true = el TTS lee a todo el mundo (comportamiento historico).

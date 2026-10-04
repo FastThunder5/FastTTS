@@ -21,6 +21,7 @@ import { syncTtsVoiceLang, getAvailableVoices } from '../../vistas/principal/voc
 import { aLineas, nombreParaTts } from '../tts/pronunciacion.js';
 import { idiomaDeVoz } from '../tts/idioma-de-voz.js';
 import { vozParaUsuario } from '../tts/voz-por-usuario.js';
+import { crearEsperaPorUsuario } from '../tts/espera-por-usuario.js';
 
 export let CHAT_TTS_MAX_LEN = 200;
 export let MAX_QUEUE_SIZE = 15;
@@ -37,6 +38,14 @@ let ttsNickAliases = {};
 let ttsCleanNicks = true;
 let ttsUserVoices = {};
 let ttsRandomVoicePerUser = false;
+let ttsUserCooldownSec = 0;
+const esperaPorUsuario = crearEsperaPorUsuario();
+
+/** false = este espectador ya fue leido hace menos de ttsUserCooldownSec (el admin no espera). */
+export function puedeHablarUsuario(nick, esAdmin = false) {
+  if (esAdmin) return true;
+  return esperaPorUsuario.puedeHablar(nick, ttsUserCooldownSec);
+}
 
 /** Voz con la que se lee el chat de este nick (null = la voz principal). */
 export function vozDeUsuario(nick) {
@@ -66,6 +75,9 @@ export function applyPronunciacionConfig(cfg) {
   rellenarLista('ttsPronunciationsInput', ttsPronunciations);
   if (cfg.ttsUserVoices && typeof cfg.ttsUserVoices === 'object') ttsUserVoices = cfg.ttsUserVoices;
   if (typeof cfg.ttsRandomVoicePerUser === 'boolean') ttsRandomVoicePerUser = cfg.ttsRandomVoicePerUser;
+  if (Number.isInteger(cfg.ttsUserCooldownSec)) ttsUserCooldownSec = cfg.ttsUserCooldownSec;
+  const esperaEl = document.getElementById('ttsUserCooldownInput');
+  if (esperaEl && document.activeElement !== esperaEl) esperaEl.value = String(ttsUserCooldownSec);
   rellenarLista('ttsNickAliasesInput', ttsNickAliases);
   rellenarLista('ttsUserVoicesInput', ttsUserVoices);
   const rnd = document.getElementById('ttsRandomVoiceToggle');

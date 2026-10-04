@@ -878,6 +878,11 @@
             <div class="setting-hint" data-i18n="settings.userVoicesFixedDesc">Un usuario por línea: nombre en el chat = nombre de la voz del selector (Dalia, Jorge, Elena...).</div>
             <textarea id="ttsUserVoicesInput" rows="4" spellcheck="false" data-i18n-placeholder="settings.userVoicesFixedPlaceholder" placeholder="xX_Pedro_Xx = Jorge"></textarea>
           </div>
+          <div class="setting-group" id="userCooldownGroup">
+            <label for="ttsUserCooldownInput"><img class="icon-inline" src="icons/hourglass_empty.svg" alt=""> <span data-i18n="settings.userCooldownTitle">Espera por usuario</span></label>
+            <div class="setting-hint" data-i18n="settings.userCooldownDesc">Segundos que pasan antes de volver a leer a la misma persona. Sus mensajes se siguen viendo en el chat. 0 = sin espera.</div>
+            <input type="number" id="ttsUserCooldownInput" min="0" max="600" step="1" value="0" style="width:110px;" />
+          </div>
         </div>
       </div>
 

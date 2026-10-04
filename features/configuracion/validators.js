@@ -61,6 +61,7 @@ const CONFIG_VALIDATORS = {
   ttsCleanNicks: (v) => typeof v === 'boolean',
   ttsUserVoices: isWordMap,
   ttsRandomVoicePerUser: (v) => typeof v === 'boolean',
+  ttsUserCooldownSec: (v) => Number.isInteger(v) && v >= 0 && v <= 600,
   ttsReadNonFollowers: (v) => typeof v === 'boolean',
   mcpEnabled: (v) => typeof v === 'boolean',
   mcpDestructiveToolsEnabled: (v) => typeof v === 'boolean',
