@@ -68,9 +68,6 @@ async function loadLanguage(lang) {
 }
 
 export function setLanguage(lang) {
-  // Analytics: solo el cambio explícito del usuario (el restore al arrancar usa
-  // loadLanguage directo). Best-effort, nunca bloquea.
-  try { window.electronAPI?.trackEvent?.('ui:language-set', lang); } catch (_) { /* noop */ }
   return setIdioma(lang).then(() => loadLanguage(lang));
 }
 

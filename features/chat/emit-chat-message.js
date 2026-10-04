@@ -8,18 +8,6 @@ const { isAdminIdentity } = require('./is-admin-identity');
 const { normalizeAggressive } = require('./normalize-aggressive');
 const moderacionPolicyContract = require('../../core/contracts/moderacion-policy');
 
-// Global (no por plataforma): si el creador transmite simultaneo en 4
-// plataformas y escribe en todas, el aviso debe sonar una sola vez, no una
-// por cada plataforma donde se detecto su identidad admin. Se resetea cuando
-// se cae el ultimo canal conectado (ver chat/index.js#register, listener de
-// canal:estado) para que una desconexion total + reconexion cuente como
-// sesion nueva y vuelva a anunciar.
-let adminAnnounced = false;
-
-function resetAdminAnnounce() {
-  adminAnnounced = false;
-}
-
 // Dedup del broadcast: cuando un conector reconecta, la libreria reentrega su
 // buffer de mensajes recientes como 'chat' nuevos (hasta decenas por segundo).
 // Sin esto, el TTS repite el chat de los ultimos minutos.
@@ -200,7 +188,7 @@ function extractYoutubeMessage(item) {
     userId: (item.author && item.author.channelId) || null,
     // Identidad admin: best-effort. `youtube-chat` no expone ningun handle
     // human-readable estable en el mensaje de chat — channelId (userId) es
-    // estable pero no coincide con el formato 'br0k3ny' de adminIdentities,
+    // estable pero no coincide con el formato de nick de adminIdentities,
     // y el nombre del canal (unico dato con ese formato) NO esta garantizado
     // unico por YouTube y es tan mutable/spoofeable como el nickname de
     // TikTok. No es un fix completo para esta plataforma, es la mejor
@@ -372,10 +360,7 @@ function emitChatMessage(deps) {
       'debug', 'chat', 'chat/emit-chat-message.js#emitChatMessage', 'chat.mensaje.emitido',
       `Mensaje emitido de ${user} (${platform})`, { platform, userId, nick: user, msgId }
     );
-
-    // Aviso 'el creador ingreso' desactivado en este fork.
-    if (isAdmin && !adminAnnounced) adminAnnounced = true;
   };
 }
 
-module.exports = { emitChatMessage, resetAdminAnnounce, resetDedup };
+module.exports = { emitChatMessage, resetDedup };

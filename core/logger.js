@@ -91,8 +91,7 @@ function createLogger({ logsDir, cap = DEFAULT_CAP } = {}) {
       pushToBuffer(failEntry);
       console.error(JSON.stringify(failEntry));
       // Se arma a mano (no pasa por log()), asi que hay que espejar al bus
-      // explicitamente para que llegue a /electron-shell/glitchtip.js y a
-      // /reporte-bug — si no, el unico error que nunca te enteras es el del
+      // explicitamente para que llegue a /reporte-bug — si no, el unico error que nunca te enteras es el del
       // propio logger.
       if (bus) {
         bus.emit('log:entry', failEntry);
@@ -135,9 +134,8 @@ function createLogger({ logsDir, cap = DEFAULT_CAP } = {}) {
       });
     }
 
-    // Espejo de TODO log al bus, no solo errores — /telemetria (Fase 12) lo
-    // usa para instrumentar eventos de alta frecuencia (TTS, musica,
-    // moderacion) sin que cada dominio anterior tenga que conocer telemetria.
+    // Espejo de TODO log al bus, no solo errores: cualquier dominio puede
+    // escuchar log:entry sin que los demas lo conozcan.
     if (bus) bus.emit('log:entry', entry);
 
     // Fallback de ultima instancia: solo si el archivo de sesion no esta disponible.

@@ -17,7 +17,7 @@ const DEFAULT_MIN_SIZE = [900, 600];
 // RESUELTO (fase 6, re-verificado en vivo): el titulo de la BrowserWindow ya
 // no se pisa con el <title> de la pagina de terceros al navegar una pestaña —
 // se probo navegando a tiktok.com/Twitch/IANA con el panel abierto y el
-// titulo de la ventana ("TikLiveTTS") se mantuvo estable en todos los
+// titulo de la ventana ("FastTTS") se mantuvo estable en todos los
 // casos. El problema documentado en fases 1-2 ya no se reproduce (ningun
 // codigo de este archivo llama setTitle() ni escucha page-title-updated del
 // webContents principal — solo tab-pool.js escucha el evento en el
@@ -164,7 +164,7 @@ function createPortalViewController({ mainWindow, logger, accountId = 'anonymous
     restoreTabsIfNeeded();
 
     // Ventana dinamica: el panel necesita LEFT_MIN_PX + MIN_PANEL_WIDTH_PX de
-    // ancho combinado — mas que el minWidth:900 pensado para TikLiveTTS solo.
+    // ancho combinado — mas que el minWidth:900 pensado para FastTTS solo.
     // Nunca fuerza a agrandar si ya es mas ancha que el piso.
     mainWindow.setMinimumSize(COMBINED_MIN_WIDTH_PX, DEFAULT_MIN_SIZE[1]);
     const [curWidth, curHeight] = mainWindow.getSize();

@@ -6,9 +6,6 @@ const { registerUiohookShortcut, unregisterUiohookShortcut, isUiohookActive } = 
 const FORBIDDEN_SHORTCUTS = new Set(['Alt+F4', 'Ctrl+C', 'Cmd+C', 'Ctrl+V', 'Cmd+V', 'Ctrl+Alt+Del', 'Ctrl+Shift+Esc', 'Cmd+Shift+Esc']);
 const SPECIAL_PAUSE_SHORTCUTS = new Set(['MediaPlayPause', 'F8', 'F9', 'F10', 'F11', 'F12']);
 const TTS_SHORTCUT_ACTIONS = new Set(['pause', 'skip', 'clear', 'musicPause', 'musicSkip']);
-// Lista blanca por seguridad: el renderer no puede mandar cualquier nombre
-// de evento al bus.
-const RENDERER_TELEMETRY_EVENTS = new Set(['tts:skipped', 'tts:queue-overflow', 'ui:language-set']);
 
 function normalizeShortcut(shortcut) {
   if (!shortcut || typeof shortcut !== 'string') return '';
@@ -43,19 +40,13 @@ function isValidShortcut(shortcut) {
 
 /**
  * Conecta de punta a punta los contratos de IPC dejados pendientes en las
- * Fases 9 (soundpad) y 11 (clips), mas los atajos de TTS y el puente de
- * telemetria del renderer.
+ * Fases 9 (soundpad) y 11 (clips), mas los atajos de TTS.
  */
 function attachIpcBridge({ app, bus, logger, getMainWindow, globalShortcut }) {
   ipcMain.handle('get-app-version', () => app.getVersion());
 
   ipcMain.on('install-update', () => {
     require('./updater').installUpdate();
-  });
-
-  ipcMain.on('telemetry:track', (_event, name, payload) => {
-    if (!RENDERER_TELEMETRY_EVENTS.has(name)) return;
-    bus.emit(name, typeof payload === 'string' ? payload.slice(0, 12) : undefined);
   });
 
   // ── TTS shortcuts (pause / skip / clear) ────────────────────────────────

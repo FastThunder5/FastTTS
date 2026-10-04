@@ -53,9 +53,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Sin telemetría, webhooks ni analytics: los *-config.generated.json del
-      # repo van con todo en null y quedan así en el instalador.
-
       # electron-builder sube .exe/.blockmap/latest.yml en paralelo y, si el
       # release no existe, cada subida puede crear el suyo (v1.10.3 salio
       # duplicado y latest.yml quedo inaccesible). Se crea antes como draft:

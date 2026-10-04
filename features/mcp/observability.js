@@ -1,13 +1,12 @@
 'use strict';
 
 // Decora mcpRegistry.callTool para que toda llamada emita un evento de log.
-// Vía core/logger.js#133 esos eventos se espejan al bus como log:entry y los
-// recogen GlitchTip (errores), Aptabase (mcp_tool_used) y telemetria — sin que
-// el registro ni los dominios conozcan ninguno de esos sistemas.
+// Vía core/logger.js esos eventos van al log local y se espejan al bus como
+// log:entry, sin que el registro ni los dominios lo sepan.
 //
 //   info  mcp.tool.llamada    — ok
 //   warn  mcp.tool.fallo      — fallo esperado (unknown_tool / invalid_args / {ok:false} deliberado)
-//   error mcp.tool.excepcion  — el handler lanzó (bug) → GlitchTip lo fingerprintea (Fase 5)
+//   error mcp.tool.excepcion  — el handler lanzó (bug)
 
 function wrapWithObservability(registry, { logger }) {
   const orig = registry.callTool;
