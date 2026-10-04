@@ -4,6 +4,28 @@ Todas las novedades relevantes de este proyecto se documentan aquí.
 
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y el proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.11.0] — 2026-10-04
+
+### Nuevo
+- **Voces naturales de Microsoft Edge**: 38 voces neuronales, 14 en español
+  (México, España, Argentina, Colombia, Chile, Perú, EE. UU.). Google queda
+  de respaldo si Edge falla.
+- **Voz por usuario**: voces fijas por nick o una voz distinta al azar para
+  cada espectador (siempre del mismo idioma que tu voz principal).
+- **Comandos de chat del bot musical**: `!cancion`, `!cola`, `!skip` (votación
+  configurable), `!quitar`.
+- **Respaldo de la configuración**: exportar e importar ajustes, playlist,
+  palabras bloqueadas, moderación y soundpad en un solo archivo.
+- **Espera por usuario del TTS**: segundos antes de volver a leer a la misma
+  persona (0 = apagado).
+
+### Cambiado
+- El nombre visible ahora es **FastTTS** (ventana, bandeja, accesos directos).
+  Tus datos y ajustes se conservan.
+- Se quitó toda la telemetría, el reporte de errores externo, la analítica y
+  la autopromoción del autor original: nada sale de tu PC.
+- Código sin avisos de lint; CI falla ante avisos nuevos.
+
 ## [1.9.3] — 2026-09-14 (prerelease)
 
 ### Cambiado

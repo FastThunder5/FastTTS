@@ -1,6 +1,6 @@
 {
   "name": "tiktok-live-tts",
-  "version": "1.10.5",
+  "version": "1.11.0",
   "description": "FastTTS: lector de chat en vivo con voz (TikTok, Twitch, YouTube, Kick)",
   "author": "FastThunder5",
   "main": "main.js",
