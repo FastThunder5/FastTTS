@@ -1025,6 +1025,20 @@
         </div>
       </div>
 
+      <div class="settings-section" id="settingsSectionBackup">
+        <div class="settings-section-title" data-i18n="settings.backupTitle">Respaldo</div>
+        <div class="settings-panel" style="grid-template-columns:1fr;">
+          <div class="setting-group">
+            <div class="setting-hint" data-i18n="settings.backupDesc">Guarda en un archivo tus ajustes, voces, palabras bloqueadas, castigos de moderación, playlist y pad de sonidos, para pasarlos a otra PC o recuperarlos.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="cfg-btn" id="btnExportBackup" onclick="exportarRespaldo()"><img class="icon-inline" src="icons/download.svg" alt=""> <span data-i18n="settings.backupExport">Exportar configuración</span></button>
+              <button class="cfg-btn" id="btnImportBackup" onclick="elegirArchivoRespaldo()"><img class="icon-inline" src="icons/upload.svg" alt=""> <span data-i18n="settings.backupImport">Importar configuración</span></button>
+              <input type="file" id="backupFileInput" accept=".json,application/json" style="display:none" onchange="importarRespaldo(this)" />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="settings-section">
         <div class="settings-section-title" data-i18n="settings.advanced">Configuración avanzada</div>
         <a href="/advanced.html?popup=1" target="_blank" rel="noopener" class="btn-nav" data-i18n="btn.openAdvanced"><img class="icon-inline" src="icons/build.svg" alt=""> Abrir panel avanzado (filtros, rate limit, logs) →</a>
