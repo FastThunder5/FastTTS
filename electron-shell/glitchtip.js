@@ -31,7 +31,9 @@ try {
   Sentry = null;
 }
 
-const DSN_DEFECTO = 'https://4e97e8317d6f424881240d743d6287ea@glitchtip.tiklivetts.es/1';
+// Sin DSN por defecto: el de upstream apuntaba al GlitchTip del autor original.
+// Solo se activa si se define SENTRY_DSN / GLITCHTIP_DSN o glitchtip.json.
+const DSN_DEFECTO = null;
 
 const estado = {
   enabled: false,
