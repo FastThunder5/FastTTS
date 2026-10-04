@@ -1,0 +1,8 @@
+﻿node_modules/
+interfaz/node_modules/
+release-output/
+dist/
+.env
+*.log
+cuentas-config.json
+config-defaults.json

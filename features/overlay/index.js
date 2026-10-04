@@ -1,0 +1,176 @@
+'use strict';
+
+const path = require('path');
+const express = require('express');
+const { RESOURCE_BASE } = require('../../core/paths');
+const { createOverlayState } = require('./state/overlay-state');
+const { resetOverlayState } = require('./state/reset');
+const { addDonor, addFollower, addSharer } = require('./state/credits');
+const { setFollowerBaseForChannel } = require('./state/set-follower-base');
+const { recomputeFollowerBase } = require('./state/recompute-follower-base');
+const { extractFollowerCount } = require('./state/extract-follower-count');
+const { startFollowerRefresh, stopFollowerRefresh } = require('./state/follower-refresh-timer');
+const { computeGiftUsd } = require('./compute-gift-usd');
+const { purgeTopLikersIfNeeded } = require('./state/bounded-push');
+const { cleanNick } = require('./clean-nick');
+const mcpRegistry = require('../../core/contracts/mcp-registry');
+const { getConfigSnapshot } = require('../../core/config-snapshot');
+const entitlements = require('../../core/contracts/entitlements');
+
+const { overlayStats } = require('./routes/overlay-stats');
+const { giftsList } = require('./routes/gifts-list');
+const { uploadBg } = require('./routes/upload-bg');
+const { deleteBg } = require('./routes/delete-bg');
+const { testGift } = require('./routes/test-gift');
+const { testFollow } = require('./routes/test-follow');
+const { testShare } = require('./routes/test-share');
+const { testLikes } = require('./routes/test-likes');
+
+const LIKE_DEBOUNCE_FALLBACK_MS = 1500;
+
+module.exports = {
+  name: 'overlay',
+
+  register({ app, bus, logger }) {
+    const state = createOverlayState();
+    state.likePendingTimers = new Map();
+    const deps = { state, bus, logger };
+
+    app.use('/gifts', express.static(path.join(RESOURCE_BASE, 'gifts')));
+    app.use('/uploads', (req, res, next) => express.static(require('./routes/upload-bg').uploadsDir())(req, res, next));
+
+    // ── Consumo puro de eventos de /canales y /chat ──────────────────────────
+    bus.on('canal:gift', (payload) => {
+      if (payload.platform !== 'tiktok') return; // valorizacion en USD solo aplica a TikTok
+      const data = payload.raw || {};
+      const user = cleanNick(data.nickname, data.uniqueId);
+      // tiktok-live-client manda groupCount (conteo acumulado del combo, ya
+      // deduplicado por connect-tiktok-channel.js#GIFT_COMBO_DEBOUNCE_MS) —
+      // reemplaza al repeatCount de tiktok-live-connector.
+      const repeatCount = data.groupCount || 1;
+      const { usdValue } = computeGiftUsd(logger, { giftName: data.giftName, repeatCount, diamondCount: data.diamondCount || 0 });
+      addDonor(state.credits, { platform: payload.platform, userId: data.uniqueId, user, giftName: data.giftName, count: repeatCount });
+      bus.emit('ws:broadcast', {
+        type: 'gift', user, giftName: data.giftName, giftId: data.giftId,
+        giftPictureUrl: data.giftPictureUrl || null, repeatCount, usdValue, timestamp: Date.now(),
+      });
+    }, 'overlay');
+
+    bus.on('canal:follow', (payload) => {
+      const user = cleanNick(payload.nick, payload.userId);
+      addFollower(state.credits, { platform: payload.platform, userId: payload.userId, user });
+      bus.emit('ws:broadcast', { type: 'follow', platform: payload.platform, user, userId: payload.userId || null, timestamp: Date.now() });
+      if (payload.platform === 'tiktok') state.followCount += 1;
+    }, 'overlay');
+
+    bus.on('canal:like', (payload) => {
+      const user = cleanNick(payload.nick, payload.userId);
+      const config = getConfigSnapshot(bus);
+      const debounceMs = config.LIKE_DEBOUNCE_MS || LIKE_DEBOUNCE_FALLBACK_MS;
+
+      if (state.likePendingTimers.has(user)) {
+        clearTimeout(state.likePendingTimers.get(user).timer);
+      } else {
+        state.likePendingTimers.set(user, { timer: null, count: 0 });
+      }
+      const pending = state.likePendingTimers.get(user);
+      pending.count += (payload.likeCount || 1);
+      pending.timer = setTimeout(() => {
+        const likeCount = pending.count;
+        state.likePendingTimers.delete(user);
+        bus.emit('ws:broadcast', { type: 'like', user, likeCount, timestamp: Date.now() });
+        const existing = state.topLikers.get(user) || { user, totalLikes: 0 };
+        existing.totalLikes += likeCount;
+        state.topLikers.set(user, existing);
+        purgeTopLikersIfNeeded(state.topLikers);
+      }, debounceMs);
+    }, 'overlay');
+
+    bus.on('canal:evento-especial', (payload) => {
+      const { platform, channel, kind, raw, userId, nick } = payload;
+      if (kind === 'share') {
+        const user = cleanNick(nick, userId);
+        addSharer(state.credits, { platform, userId, user });
+        bus.emit('ws:broadcast', { type: 'share', platform, user, timestamp: Date.now() });
+      } else if (kind === 'join') {
+        bus.emit('ws:broadcast', { type: 'join', platform, user: cleanNick(nick, userId), userId: userId || null, timestamp: Date.now() });
+      } else if (kind === 'superchat') {
+        const authorName = raw.author && raw.author.name;
+        bus.emit('ws:broadcast', {
+          type: 'superchat', platform, user: cleanNick(authorName, null),
+          amount: raw.amount || '', color: raw.color || '', sticker: (raw.sticker && raw.sticker.url) || null,
+          channel, timestamp: Date.now(),
+        });
+      }
+    }, 'overlay');
+
+    // ── Base de followers (multi-canal TikTok) ───────────────────────────────
+    bus.on('canal:estado', (payload) => {
+      if (payload.platform !== 'tiktok') return;
+
+      if (payload.state === 'conectando' && state.activeTiktokChannels.size === 0) {
+        resetOverlayState(state);
+      }
+
+      if (payload.state === 'conectado' || payload.state === 'followers-refrescado') {
+        if (payload.channel) state.activeTiktokChannels.add(payload.channel);
+        const count = extractFollowerCount(payload.roomInfo);
+        if (count > 0) setFollowerBaseForChannel(deps, payload.channel, count);
+        if (payload.state === 'conectado') startFollowerRefresh(deps);
+      }
+
+      if (payload.state === 'desconectado' || payload.state === 'sin-canales') {
+        if (payload.channel) state.activeTiktokChannels.delete(payload.channel);
+        recomputeFollowerBase(deps);
+        if (state.activeTiktokChannels.size === 0) {
+          stopFollowerRefresh(deps);
+          // Migracion de clearLikePendingTimers (backend-viejo/server.js:599) —
+          // sin esto, timers de debounce de likes pendientes de un canal ya
+          // desconectado podian disparar un broadcast de likes fantasma.
+          for (const pending of state.likePendingTimers.values()) {
+            if (pending && pending.timer) clearTimeout(pending.timer);
+          }
+          state.likePendingTimers.clear();
+        }
+      }
+    }, 'overlay');
+
+    // ── Rutas ─────────────────────────────────────────────────────────────
+    const gateOverlayBg = entitlements.guard('overlay-decoraciones');
+    app.get('/api/overlay-stats', overlayStats(state));
+    app.get('/api/gifts-list', giftsList(logger));
+    app.post('/api/upload-bg', gateOverlayBg, uploadBg(logger));
+    app.delete('/api/upload-bg', gateOverlayBg, deleteBg(logger));
+    app.post('/api/test/gift', testGift(deps));
+    app.post('/api/test/follow', testFollow(deps));
+    app.post('/api/test/share', testShare(deps));
+    app.post('/api/test/likes', testLikes(deps));
+
+    // ── MCP ──────────────────────────────────────────────────────────────
+    const slice = () => {
+      const topLikers = [...state.topLikers.values()].sort((a, b) => b.totalLikes - a.totalLikes).slice(0, 10);
+      return {
+        overlay: {
+          followCount: state.followCount,
+          baseFollowerCount: state.baseFollowerCount,
+          topLikers,
+          recentSharers: [...state.credits.sharers.values()].slice(-10).map((s) => s.user),
+          recentDonors: [...state.credits.donors.values()].slice(-10),
+        },
+      };
+    };
+    mcpRegistry.registerStateProvider(slice, 'overlay');
+    // Idiom alternativo (demo): responder al pull por bus mcp:state.
+    bus.on('mcp:state', (respond) => { if (typeof respond === 'function') respond(slice()); }, 'overlay');
+
+    mcpRegistry.registerTool({
+      name: 'overlay_stats', domain: 'overlay', readOnly: true,
+      title: 'Overlay stats',
+      description: 'Follower count, top likers, recent sharers, gift/donor credits (session).',
+      inputSchema: { type: 'object', properties: {} },
+      handler: () => slice().overlay,
+    });
+
+    return { rutas: 9, listeners: 6 };
+  },
+};

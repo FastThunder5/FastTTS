@@ -1,0 +1,134 @@
+{
+  "name": "tiktok-live-tts",
+  "version": "1.10.1",
+  "description": "TikLiveTTS Live Chat Text-to-Speech Reader",
+  "author": "iKhunsa",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "lint": "eslint .",
+    "test": "node --test test/*.test.js",
+    "electron": "electron .",
+    "make-icon": "electron scripts/make-app-icon.js && python scripts/make-app-icon.py",
+    "dev:front": "vite --config interfaz/vite.config.js",
+    "dev:build-watch": "vite build --config interfaz/vite.config.js --watch",
+    "dev:all": "concurrently \"npm run dev:build-watch\" \"npm run dev\"",
+    "build:front": "vite build --config interfaz/vite.config.js",
+    "postbuild:front": "node scripts/verify-front-build.js",
+    "serve": "npm run build:front && node server.js",
+    "serve:watch": "npm run build:front && node --watch server.js",
+    "prebuild:electron": "node scripts/ensure-configs.js && npm run build:front",
+    "build:electron": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.tiktok-tts.app",
+    "productName": "TikTok TTS",
+    "artifactName": "TikTok-TTS-Setup-${version}.${ext}",
+    "publish": {
+      "provider": "github",
+      "owner": "FastThunder5",
+      "repo": "FastTTS",
+      "releaseType": "release"
+    },
+    "directories": {
+      "output": "release-output"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "tray-icon.ico",
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "shortcutName": "TikLiveTTS",
+      "uninstallDisplayName": "TikLiveTTS",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "extraResources": [
+      {
+        "from": "interfaz/dist/",
+        "to": "public"
+      },
+      {
+        "from": "gifts/",
+        "to": "gifts",
+        "filter": [
+          "**/*.png"
+        ]
+      },
+      {
+        "from": "asset/icons/",
+        "to": "asset/icons",
+        "filter": [
+          "**/*.svg"
+        ]
+      },
+      {
+        "from": "lang-words/",
+        "to": "lang-words"
+      },
+      {
+        "from": "blocked-words.md",
+        "to": "blocked-words.md"
+      },
+      {
+        "from": "tray-icon.ico",
+        "to": "tray-icon.ico"
+      },
+      {
+        "from": "webhook-config.generated.json",
+        "to": "webhook-config.json"
+      },
+      {
+        "from": "telemetry-config.generated.json",
+        "to": "telemetry-config.json"
+      },
+      {
+        "from": "aptabase-config.generated.json",
+        "to": "aptabase-config.json"
+      }
+    ],
+    "npmRebuild": false,
+    "files": [
+      "main.js",
+      "preload.js",
+      "server.js",
+      "core/**/*",
+      "features/**/*",
+      "electron-shell/**/*",
+      "node_modules/**/*",
+      "!node_modules/.cache",
+      "!node_modules/**/test{s,}/**",
+      "!node_modules/**/*.md",
+      "!node_modules/bufferutil/build/Release/*.pdb",
+      "!node_modules/utf-8-validate/build/Release/*.pdb"
+    ]
+  },
+  "dependencies": {
+    "@aptabase/electron": "^0.3.1",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@sentry/electron": "^7.17.0",
+    "electron-updater": "^6.8.9",
+    "express": "^4.22.2",
+    "google-tts-api": "^2.0.2",
+    "multer": "^2.3.0",
+    "qrcode": "^1.5.4",
+    "tiktok-live-connector": "^2.1.0",
+    "tmi.js": "^1.8.5",
+    "uiohook-napi": "^1.5.5",
+    "undici": "^8.0.2",
+    "ws": "^8.21.3",
+    "youtube-chat": "^2.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5",
+    "electron": "^41.10.7",
+    "electron-builder": "^26.15.3",
+    "eslint": "^9.39.5",
+    "vite": "^5.4.21"
+  }
+}

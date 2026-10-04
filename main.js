@@ -1,0 +1,271 @@
+'use strict';
+
+const { app, globalShortcut } = require('electron');
+const path = require('path');
+
+app.setName('TikLiveTTS');
+// Conserva los datos y sesiones de instalaciones previas tras cambiar productName.
+app.setPath('userData', path.join(app.getPath('appData'), 'tiktok-live-tts'));
+
+// Debe ocurrir antes de importar cualquier modulo local: portal-view/store.js
+// carga core/paths.js durante el require y este cachea ambos paths.
+if (app.isPackaged) {
+  process.env.TIKTOK_RESOURCES_PATH = process.resourcesPath;
+}
+process.env.TIKTOK_USER_DATA_PATH = app.getPath('userData');
+
+const { ensureSingleInstance } = require('./electron-shell/single-instance');
+const { createWindow, showMainWindow, waitForServer, PORT } = require('./electron-shell/window');
+const { createTray, buildTrayMenu, showStartupError } = require('./electron-shell/tray');
+const { setupAutoUpdater, installUpdate } = require('./electron-shell/updater');
+const { attachIpcBridge } = require('./electron-shell/ipc-bridge');
+const { createPortalViewController } = require('./electron-shell/portal-view/controller');
+const { attachPortalViewIpc } = require('./electron-shell/portal-view/ipc');
+const { startUiohook, stopUiohook, isUiohookActive, registerUiohookShortcut } = require('./electron-shell/uiohook');
+const { GLOBAL_SHORTCUT } = require('./features/clips/global-shortcut');
+const telemetryRuntime = require('./features/telemetria/runtime');
+const glitchtip = require('./electron-shell/glitchtip');
+const aptabase = require('./electron-shell/aptabase');
+const { resolveConfigValue } = require('./electron-shell/resolve-config-value');
+const { getActiveAccount, accountDataDir } = require('./core/account-data-path');
+
+// GlitchTip (error tracking) — se inicia lo antes posible, antes de cargar
+// server.js, para captar hasta un fallo de arranque de los dominios. El
+// enganche al bus (attach) viene después, cuando ya existe el logger.
+glitchtip.init({
+  appVersion: app.getVersion(),
+  isDebug: !app.isPackaged,
+  userDataDir: app.getPath('userData'),
+  logger: null,
+});
+
+let mainWindow = null;
+let tray = null;
+let isQuitting = false;
+let pendingUpdateVersion = null;
+let quitTasksDone = false;
+let cierresListos = false;
+let ipcHandles = null;
+let portalView = null;
+let portalViewIpcHandles = null;
+
+ensureSingleInstance(app, () => showMainWindow(mainWindow));
+
+// Aptabase (analytics de eventos de producto) — init temprano (antes de
+// app.isReady(), requisito del SDK) pero DESPUÉS del lock de instancia única:
+// así una 2ª instancia ya hizo process.exit(0) y no dispara installacion /
+// app_started por duplicado. attach al bus más abajo cuando ya hay logger.
+aptabase.init({
+  appVersion: app.getVersion(),
+  isPackaged: app.isPackaged,
+  isDebug: !app.isPackaged,
+  userDataDir: app.getPath('userData'),
+  logger: null,
+});
+
+// Arranca /core + los 16 dominios de negocio (server.js ya no tiene logica
+// propia desde la Fase 1). Envuelto para mostrar un dialogo recuperable en
+// vez de una excepcion sin manejar que bloquee al auto-updater.
+let serverLoadError = null;
+let serverModule = null;
+try {
+  serverModule = require('./server');
+} catch (error) {
+  serverLoadError = error;
+  if (!app.isPackaged) throw error;
+}
+
+const bus = serverModule && serverModule.bus;
+const logger = serverModule && serverModule.logger;
+
+if (bus) glitchtip.attach(bus, logger);
+if (bus) aptabase.attach(bus, logger);
+// uncaughtException / unhandledRejection: los registra server.js (siempre, para
+// `node server.js` y para Electron) y ademas @sentry/electron los captura.
+
+const ICON_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'tray-icon.ico')
+  : path.join(__dirname, 'tray-icon.ico');
+
+function getMainWindow() { return mainWindow; }
+function getTray() { return tray; }
+
+// La URL/token de telemetria salen de TELEMETRY_URL+TELEMETRY_TOKEN (override
+// de dev), de telemetry.json en userData (override manual), o de
+// telemetry-config.json bakeado en el build. Archivo aparte a proposito:
+// config.json lo gestiona /configuracion, que descarta claves desconocidas y
+// borraria esta en el primer guardado.
+function resolveTelemetryUrl() {
+  return resolveConfigValue({
+    envVars: ['TELEMETRY_URL'],
+    userFile: path.join(app.getPath('userData'), 'telemetry.json'),
+    bundledFile: path.join(process.env.TIKTOK_RESOURCES_PATH || __dirname, 'telemetry-config.json'),
+    field: 'url',
+    validate: (v) => /^https?:\/\//i.test(v),
+  });
+}
+
+function resolveIngestToken() {
+  return resolveConfigValue({
+    envVars: ['TELEMETRY_TOKEN'],
+    userFile: path.join(app.getPath('userData'), 'telemetry.json'),
+    bundledFile: path.join(process.env.TIKTOK_RESOURCES_PATH || __dirname, 'telemetry-config.json'),
+    field: 'token',
+  });
+}
+
+function trayCallbacks() {
+  return {
+    onOpen: () => showMainWindow(mainWindow),
+    onInstallUpdate: installUpdate,
+    onQuit: () => app.quit(),
+  };
+}
+
+app.whenReady().then(() => {
+  if (serverLoadError) {
+    // Intenta actualizar primero — si hay un fix disponible, se descarga e
+    // instala automaticamente sin que el usuario tenga que reinstalar a mano.
+    if (app.isPackaged) {
+      try {
+        const { autoUpdater } = require('electron-updater');
+        autoUpdater.autoDownload = true;
+        autoUpdater.autoInstallOnAppQuit = false;
+        autoUpdater.on('update-downloaded', () => autoUpdater.quitAndInstall(false, true));
+        autoUpdater.checkForUpdates().catch(() => { /* best-effort */ });
+      } catch (_) { /* best-effort */ }
+    }
+    showStartupError(serverLoadError);
+    return;
+  }
+
+  waitForServer(() => {
+    mainWindow = createWindow({
+      iconPath: ICON_PATH,
+      bus,
+      onClose: () => {
+        if (isQuitting) return;
+        isQuitting = true;
+        app.quit();
+      },
+    });
+
+    portalView = createPortalViewController({ mainWindow, logger, accountId: getActiveAccount() });
+    portalViewIpcHandles = attachPortalViewIpc({ controller: portalView });
+    bus.on('account:changing', () => {
+      if (!portalView) return;
+      portalView.destroyAll();
+      portalViewIpcHandles?.dispose();
+      portalView = null;
+    }, 'electron-shell');
+    bus.on('account:changed', ({ current }) => {
+      portalView = createPortalViewController({ mainWindow, logger, accountId: current });
+      portalViewIpcHandles = attachPortalViewIpc({ controller: portalView });
+    }, 'electron-shell');
+
+    tray = createTray({ iconPath: ICON_PATH, logger, ...trayCallbacks() });
+
+    if (app.isPackaged) {
+      setupAutoUpdater({
+        app,
+        bus,
+        logger,
+        getMainWindow,
+        getTray,
+        buildTrayMenu: (version) => buildTrayMenu(trayCallbacks(), version),
+        onPendingVersion: (version) => { pendingUpdateVersion = version; },
+      });
+    }
+
+    telemetryRuntime.init({
+      url: resolveTelemetryUrl(),
+      token: resolveIngestToken(),
+      appVersion: app.getVersion(),
+      dataDir: app.getPath('userData'),
+      creatorDataDir: accountDataDir(),
+      bus,
+      logger,
+    });
+
+    startUiohook(logger);
+
+    ipcHandles = attachIpcBridge({ app, bus, logger, getMainWindow, globalShortcut });
+
+    // Atajo de clip (Ctrl+Shift+M): manda IPC al renderer, que hace su
+    // propio bookmark local (elapsed/toast) y llama POST /api/obs/save-replay
+    // (front sin cambios). /clips (Fase 11) sirve al comando movil markClip,
+    // que no tiene renderer del que colgar un bookmark local — ese camino
+    // pasa por bus.emit('clips:marcar') en vez de IPC.
+    const clipCallback = () => {
+      if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('mark-clip');
+    };
+    const clipShortcutOk = isUiohookActive()
+      ? registerUiohookShortcut('clip', GLOBAL_SHORTCUT, clipCallback)
+      : globalShortcut.register(GLOBAL_SHORTCUT, clipCallback);
+    if (!clipShortcutOk && logger) {
+      logger.log(
+        'warn', 'electron-shell', 'main.js#registerClipShortcut', 'electron_shell.atajo_clip_fallido',
+        `No se pudo registrar el atajo de clip ${GLOBAL_SHORTCUT} (¿otra app lo tiene tomado?)`,
+        { atajo: GLOBAL_SHORTCUT, via: isUiohookActive() ? 'uiohook' : 'globalShortcut' }
+      );
+    }
+  }, () => {
+    showStartupError(new Error(`El servidor local no respondio en http://127.0.0.1:${PORT}`));
+  });
+});
+
+app.on('before-quit', (event) => {
+  isQuitting = true;
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.removeAllListeners('close');
+  }
+
+  // Los cierres ya terminaron -> este before-quit (el disparado por el
+  // app.quit() del .finally) deja salir de verdad.
+  if (cierresListos) return;
+
+  // Hasta que los cierres terminen, NUNCA dejar quitar. El cierre por X
+  // (path principal) destruye la ventana sin cancelar 'close', luego
+  // 'window-all-closed' dispara otro app.quit() re-entrante — sin este
+  // preventDefault incondicional, ese segundo quit abandona el
+  // Promise.allSettled todavia pendiente y el shutdown ordenado no corre.
+  event.preventDefault();
+
+  if (quitTasksDone) return;
+  quitTasksDone = true;
+
+  // Shutdown ordenado de los dominios (moderation.json flush, matar children
+  // de yt-dlp, cerrar WS de canales) + telemetria/GlitchTip/Aptabase.
+  // shutdownAll es async y process.on('exit') no puede esperar microtasks.
+  const HARD_QUIT_MS = 8000;
+  const cierres = [require('./core/shutdown').shutdownAll(logger)];
+  if (telemetryRuntime.enabled) cierres.push(telemetryRuntime.shutdown({ timeoutMs: 1500 }));
+  if (glitchtip.enabled) cierres.push(glitchtip.shutdown());
+  if (aptabase.enabled) cierres.push(aptabase.shutdown());
+  Promise.race([
+    Promise.allSettled(cierres),
+    new Promise((r) => setTimeout(r, HARD_QUIT_MS)),
+  ]).finally(() => { cierresListos = true; app.quit(); });
+});
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll();
+  if (ipcHandles) {
+    ipcHandles.clearSoundpadShortcuts();
+    ipcHandles.unregisterAllTtsShortcuts();
+  }
+  if (portalViewIpcHandles) portalViewIpcHandles.dispose();
+  if (portalView) portalView.destroyAll();
+  stopUiohook();
+});
+
+// Mantiene la app viva en la tray solo cuando la tray realmente existe y no
+// se esta cerrando; si no, deja que Electron cierre normal para no dejar un
+// proceso huerfano corriendo sin ventana visible.
+app.on('window-all-closed', (e) => {
+  // Shutdown ordenado en vuelo -> no dejar que el default de Electron corte
+  // el proceso; el app.quit() del .finally lo cierra cuando termina.
+  if (quitTasksDone && !cierresListos) { e.preventDefault(); return; }
+  if (tray && !isQuitting) { e.preventDefault(); return; }
+  app.quit();
+});

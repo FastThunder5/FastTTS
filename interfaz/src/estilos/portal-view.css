@@ -1,0 +1,565 @@
+/* PortalView — navegador embebido en split-view. El contenido web en si no
+   es HTML: es un WebContentsView nativo de Electron posicionado por el main
+   process para calzar exacto debajo de .portal-view-tab-bar + .portal-view-toolbar
+   (ver electron-shell/portal-view/bounds.js, CONTENT_TOP_OFFSET_PX). */
+
+#app-shell {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+#app-shell>.app-layout {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+/* .app-layout trae max-width:1020px + margin:0 auto de index-legacy.css,
+   pensado para cuando es hijo directo de <body> (bloque normal, se centra en
+   pantallas anchas). Como flex item de #app-shell, ese margin:auto absorbe
+   el espacio libre para "centrar" ANTES de que flex-grow pueda estirarlo —
+   sin este override, con el panel abierto .app-layout se queda angosto y
+   deja un hueco vacio entre el contenido comprimido y el panel. Solo se
+   neutraliza mientras el panel esta visible; cerrado, el centrado original
+   sigue intacto. */
+/* Sin este bloque, #app-shell (y body, ambos min-height:100vh — no height
+   fijo) crecen tanto como .main-area lo necesite y el DOCUMENTO ENTERO
+   scrollea (sin barra visible, ver `* { scrollbar-width: none }` en
+   index-legacy.css — el scroll ocurre igual, solo no se ve la barra). Como
+   .portal-view-panel es hermano flex de .app-layout dentro de #app-shell, se
+   estira a esa altura extendida y scrollea junto con todo el documento — el
+   WebContentsView nativo NO se mueve (sus bounds son coordenadas fijas de
+   ventana, ajenas al scroll del DOM), asi que la toolbar HTML se desalinea
+   visualmente de el. Fix: #app-shell pasa a altura fija (nunca crece mas
+   alla del viewport) y .main-area es la UNICA que scrollea, dentro de si
+   misma — mismo patron que .sidebar ya usa (height:100vh + overflow-y:auto)
+   pero aplicado a su hermano. Condicional al panel abierto por la misma
+   razon que el override de arriba: cerrado, el scroll de documento original
+   (con .sidebar en position:sticky persiguiendolo) sigue intacto. */
+#app-shell.portal-view-open {
+  height: 100vh;
+  overflow: hidden;
+}
+#app-shell.portal-view-open>.app-layout {
+  max-width: none;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+#app-shell.portal-view-open .main-area {
+  height: 100%;
+  overflow-y: auto;
+}
+.portal-view-panel {
+  flex: 0 0 50%;
+  min-width: 420px;
+  max-width: 75vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface-0);
+  animation: portalViewEnter var(--dur-3) var(--ease-out);
+}
+
+/* Divisor vertical arrastrable — hermano flex entre .app-layout y el panel,
+   ancho fijo, nunca se comprime. La linea sutil de separacion vive aca (no
+   como border del panel) para que quede debajo del cursor col-resize. */
+.divisor-arrastrable {
+  flex: 0 0 5px;
+  position: relative;
+  cursor: col-resize;
+  touch-action: none;
+}
+.divisor-arrastrable::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 0 2px;
+  width: 1px;
+  background: var(--border-subtle);
+  transition: background-color 120ms ease-out;
+}
+.divisor-arrastrable:hover::after,
+.divisor-arrastrable.is-dragging::after {
+  background: var(--brand);
+}
+
+body.divisor-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+@keyframes portalViewEnter {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.portal-view-tab-bar {
+  height: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px var(--space-1-5);
+  overflow-x: auto;
+  background: var(--surface-1);
+}
+.portal-view-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  max-width: 160px;
+  min-width: 80px;
+  height: 24px;
+  padding: 0 var(--space-1-5);
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+.portal-view-tab:hover {
+  background: var(--hover-1);
+}
+.portal-view-tab.active {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.portal-view-tab-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+.portal-view-tab-close,.portal-view-tab-new {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  cursor: pointer;
+}
+.portal-view-tab-close {
+  width: 16px;
+  height: 16px;
+}
+.portal-view-tab-new {
+  width: 24px;
+  height: 24px;
+}
+.portal-view-tab-close:hover,.portal-view-tab-new:hover {
+  background: var(--hover-1);
+}
+.portal-view-tab-close .icon-inline {
+  width: 10px;
+  height: 10px;
+}
+.portal-view-tab-new .icon-inline {
+  width: 14px;
+  height: 14px;
+}
+.portal-view-toolbar {
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding: 0 var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-1);
+}
+.portal-view-toolbar .icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  cursor: pointer;
+}
+.portal-view-toolbar .icon-btn:hover:not(:disabled) {
+  background: var(--hover-1);
+}
+.portal-view-toolbar .portal-view-favorite-toggle:active:not(:disabled) {
+  transform: scale(.97);
+}
+.portal-view-toolbar .portal-view-favorite-toggle:focus-visible {
+  outline: 1px solid var(--brand);
+  outline-offset: 1px;
+}
+.portal-view-toolbar .portal-view-favorite-toggle {
+  transition: background-color var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out);
+}
+.portal-view-toolbar-icon {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background-color: var(--text-bright);
+  mask: center / contain no-repeat;
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+.portal-view-close-session-icon { mask-image: url('/icons/power_settings_new.svg'); }
+.portal-view-favorite-icon { mask-image: url('/icons/star_border.svg'); }
+.portal-view-favorite-toggle:hover:not(:disabled) .portal-view-favorite-icon,
+.portal-view-favorite-toggle.is-favorite .portal-view-favorite-icon {
+  background-color: var(--warn);
+}
+.portal-view-favorite-toggle.is-favorite .portal-view-favorite-icon { mask-image: url('/icons/star.svg'); }
+@media (prefers-reduced-motion: reduce) {
+  .portal-view-toolbar .portal-view-favorite-toggle,
+  .portal-view-toolbar-icon { transition: none; }
+}
+body.reduce-motion .portal-view-toolbar .portal-view-favorite-toggle,
+body.reduce-motion .portal-view-toolbar-icon { transition: none; }
+.portal-view-toolbar .icon-btn:disabled {
+  opacity: .35;
+}
+.portal-view-toolbar .icon-inline {
+  width: 14px;
+  height: 14px;
+}
+.portal-view-url {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: var(--text-sm);
+  outline: 0;
+}
+.portal-view-url:focus {
+  border-color: var(--border-strong);
+}
+.portal-view-panel button:focus-visible,.portal-view-panel input:focus-visible {
+  outline: 1px solid var(--brand);
+  outline-offset: 1px;
+}
+.portal-view-content {
+  flex: 1;
+  position: relative;
+}
+.portal-view-nueva-pestana {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* "safe" evita que una lista larga quede recortada arriba al centrar+scrollear
+     (soportado por el Chromium que trae Electron 41). */
+  justify-content: safe center;
+  padding: var(--space-4) var(--space-3);
+  background: var(--surface-0);
+}
+.portal-view-shortcuts-sections {
+  width: min(100%,360px);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.portal-view-shortcut {
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+  border-radius: var(--radius-sm);
+  background: var(--hover-1);
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+.portal-view-shortcut:hover,.portal-view-shortcut:focus-within {
+  background: var(--hover-2);
+}
+.portal-view-shortcut--ejemplo {
+  border: 1px dashed var(--border);
+  opacity: .72;
+}
+.portal-view-shortcut-main {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: var(--space-2);
+  min-height: 38px;
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  font-size: var(--text-sm);
+  text-align: left;
+  cursor: pointer;
+}
+.portal-view-shortcut-main:active,.portal-view-fav-trigger:active,.portal-view-shortcut-more:active,.portal-view-modal-actions button:active {
+  transform: scale(.97);
+}
+.portal-view-shortcut-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  /* Los SVG de asset/icons vienen en negro/currentColor — mismo patrón que
+     .sp-card-icon/.sp-icon-tile img en index-legacy.css para verlos blancos. */
+  filter: brightness(0) invert(1);
+}
+.portal-view-shortcut-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.portal-view-shortcut-actions {
+  position: relative;
+  margin-right: var(--space-1);
+}
+.portal-view-shortcut-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0;
+}
+.portal-view-shortcut:hover .portal-view-shortcut-more,.portal-view-shortcut:focus-within .portal-view-shortcut-more {
+  opacity: 1;
+}
+.portal-view-shortcut-more:hover {
+  background: var(--hover-2);
+}
+.portal-view-more-dots,.portal-view-more-dots:before,.portal-view-more-dots:after {
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+  content: '';
+}
+.portal-view-more-dots {
+  position: relative;
+}
+.portal-view-more-dots:before {
+  position: absolute;
+  top: -5px;
+}
+.portal-view-more-dots:after {
+  position: absolute;
+  top: 5px;
+}
+.portal-view-favorite-menu {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + var(--space-1));
+  right: 0;
+  min-width: 112px;
+  padding: var(--space-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-2);
+  transform-origin: top right;
+  animation: portalViewMenuIn var(--dur-2) var(--ease-out);
+}
+.portal-view-favorite-menu button {
+  display: block;
+  width: 100%;
+  padding: var(--space-1-5) var(--space-2);
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text);
+  font-size: var(--text-xs);
+  text-align: left;
+  cursor: pointer;
+}
+.portal-view-favorite-menu button:hover {
+  background: var(--hover-2);
+}
+.portal-view-favorite-menu button:last-child:hover {
+  color: var(--danger-soft);
+}
+@keyframes portalViewMenuIn {
+  from {
+    opacity: 0;
+    transform: scale(.97) translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.portal-view-fav-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin: var(--space-3) auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  cursor: pointer;
+}
+.portal-view-fav-trigger:hover {
+  background: var(--hover-1);
+}
+.portal-view-fav-trigger .icon-inline {
+  width: 14px;
+  height: 14px;
+}
+.portal-view-favorite-modal {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: var(--scrim-soft);
+}
+.portal-view-favorite-modal[hidden],.portal-view-icon-picker-popover[hidden] {
+  display: none;
+}
+.portal-view-favorite-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(100%,320px);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-1);
+  box-shadow: var(--shadow-3);
+  animation: portalViewDialogIn var(--dur-3) var(--ease-out);
+}
+.portal-view-favorite-dialog input {
+  width: 100%;
+  height: 30px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: var(--text-sm);
+  outline: 0;
+}
+.portal-view-favorite-dialog input:focus {
+  border-color: var(--border-strong);
+}
+@keyframes portalViewDialogIn {
+  from {
+    opacity: 0;
+    transform: scale(.97) translateY(var(--space-2));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.portal-view-icon-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin: var(--space-1) auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  cursor: pointer;
+}
+.portal-view-icon-preview {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+}
+.portal-view-icon-picker-popover {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 190px;
+  padding: var(--space-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--surface-0);
+}
+.portal-view-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(6,1fr);
+  gap: var(--space-1);
+  overflow-y: auto;
+}
+.portal-view-icon-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  cursor: pointer;
+}
+.portal-view-icon-tile:hover {
+  background: var(--hover-2);
+}
+.portal-view-icon-tile.selected {
+  border-color: var(--brand);
+  background: var(--brand-a10);
+}
+.portal-view-icon-tile img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+.portal-view-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+.portal-view-modal-actions button {
+  min-height: 28px;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-xs);
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+.portal-view-modal-cancel {
+  background: transparent;
+  color: var(--text-secondary);
+}
+.portal-view-modal-cancel:hover {
+  background: var(--hover-1);
+  color: var(--text);
+}
+.portal-view-modal-save {
+  background: var(--brand);
+  color: var(--text-bright);
+}
+.portal-view-modal-save:hover {
+  background: var(--brand-hover);
+}
+@media (prefers-reduced-motion:reduce) {
+  .portal-view-panel,.portal-view-favorite-menu,.portal-view-favorite-dialog {
+    animation: none !important;
+  }
+}
+body.reduce-motion .portal-view-panel,body.reduce-motion .portal-view-favorite-menu,body.reduce-motion .portal-view-favorite-dialog {
+  animation: none !important;
+}
