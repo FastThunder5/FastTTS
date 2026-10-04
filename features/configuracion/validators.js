@@ -58,6 +58,8 @@ const CONFIG_VALIDATORS = {
   ttsPronunciations: isWordMap,
   ttsNickAliases: isWordMap,
   ttsCleanNicks: (v) => typeof v === 'boolean',
+  ttsUserVoices: isWordMap,
+  ttsRandomVoicePerUser: (v) => typeof v === 'boolean',
   ttsReadNonFollowers: (v) => typeof v === 'boolean',
   mcpEnabled: (v) => typeof v === 'boolean',
   mcpDestructiveToolsEnabled: (v) => typeof v === 'boolean',

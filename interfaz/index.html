@@ -859,6 +859,17 @@
             <div class="setting-hint" data-i18n="settings.nickAliasesDesc">Un usuario por línea: nombre en el chat = cómo quieres que lo lea.</div>
             <textarea id="ttsNickAliasesInput" rows="4" spellcheck="false" data-i18n-placeholder="settings.nickAliasesPlaceholder" placeholder="xX_Pedro_Xx = Pedrito"></textarea>
           </div>
+          <div class="setting-group" id="voiceUserGroup">
+            <label><img class="icon-inline" src="icons/record_voice_over.svg" alt=""> <span data-i18n="settings.userVoicesTitle">Voz por usuario</span></label>
+            <label class="toggle-chip" style="width:max-content;">
+              <input type="checkbox" id="ttsRandomVoiceToggle" onchange="toggleRandomVoicePerUser(this)" />
+              <span data-i18n="toggle.randomVoicePerUser">Una voz distinta para cada espectador</span>
+            </label>
+            <div class="setting-hint" data-i18n="toggle.randomVoicePerUserHint">Cada espectador recibe siempre la misma voz natural de tu idioma, elegida al azar. Los avisos (regalos, follows) siguen con tu voz principal.</div>
+            <label for="ttsUserVoicesInput" class="setting-sublabel" data-i18n="settings.userVoicesFixedTitle">Voces fijas</label>
+            <div class="setting-hint" data-i18n="settings.userVoicesFixedDesc">Un usuario por línea: nombre en el chat = nombre de la voz del selector (Dalia, Jorge, Elena...).</div>
+            <textarea id="ttsUserVoicesInput" rows="4" spellcheck="false" data-i18n-placeholder="settings.userVoicesFixedPlaceholder" placeholder="xX_Pedro_Xx = Jorge"></textarea>
+          </div>
         </div>
       </div>
 

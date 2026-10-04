@@ -83,6 +83,8 @@
     "dictFilterHint": "Liest nur Nachrichten in der Sprache der aktiven Stimme oder in den zusätzlich erlaubten Sprachen. Unbekannte Wörter (Namen, Tippfehler) blockieren nicht.",
     "cleanNicks": "Nutzernamen bereinigen",
     "cleanNicksHint": "Entfernt Zahlen, Unterstriche und Verzierungen: „xX_Pedro_1234_Xx\" wird als „Pedro\" gelesen.",
+    "randomVoicePerUser": "Eine andere Stimme für jeden Zuschauer",
+    "randomVoicePerUserHint": "Jeder Zuschauer bekommt immer dieselbe natürliche Stimme deiner Sprache, zufällig gewählt. Hinweise (Geschenke, Follows) behalten deine Hauptstimme.",
     "linkFilter": "Nachrichten mit Links ignorieren",
     "linkFilterHint": "Liest und zeigt keine Nachrichten mit Link (http, www oder etwas.com). Stoppt Bots, die Follower oder Zuschauer bewerben.",
     "readNonFollowers": "Nicht-Follower vorlesen"
@@ -191,6 +193,10 @@
     "nickAliasesTitle": "Feste Spitznamen",
     "nickAliasesDesc": "Ein Nutzer pro Zeile: Name im Chat = wie er gelesen werden soll.",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = Peter",
+    "userVoicesTitle": "Stimme pro Nutzer",
+    "userVoicesFixedTitle": "Feste Stimmen",
+    "userVoicesFixedDesc": "Ein Nutzer pro Zeile: Name im Chat = Name der Stimme aus der Auswahl (Katja, Conrad...).",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = Conrad",
     "announceTplGift": "Nach einem Geschenk",
     "announceTplExGift": "hat alles gegeben",
     "announceTplJoin": "Nachdem jemand beitritt",
@@ -623,6 +629,8 @@
   },
   "toast": {
     "pronunciationSaved": "Aussprache gespeichert",
+    "unknownVoices": "Diese Stimmen wurden nicht gefunden: {voices}. Nutze den Namen aus der Auswahl.",
+    "userVoicesSaved": "Stimmen pro Nutzer gespeichert",
     "portalTabLimit": "Maximal 6 Tabs im Browser",
     "portalFavoriteInvalid": "Ungültiger Name oder ungültige URL",
     "portalDownloadDone": "Download abgeschlossen: {filename}",

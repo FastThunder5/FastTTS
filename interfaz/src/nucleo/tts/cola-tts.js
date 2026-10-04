@@ -248,7 +248,8 @@ export function updateVol(v) {
   saveSettings();
 }
 
-export function speak(rawText, msgId, timestamp) {
+/** `voz` opcional: id de voz para este mensaje (voz por usuario); sin ella, la del selector. */
+export function speak(rawText, msgId, timestamp, voz = null) {
   if (!ttsGlobalEnabled) return;
   const text = aplicarDiccionario(rawText, ttsPronunciations);
   if (!text || !String(text).trim()) return;
@@ -262,7 +263,7 @@ export function speak(rawText, msgId, timestamp) {
   // latencia variable a los mensajes de chat, mientras que joins/gifts/
   // alertas no pasan por ese filtro y pueden llegar antes aunque hayan
   // ocurrido despues.
-  speechQueue.push({ text, msgId, timestamp: timestamp || Date.now() });
+  speechQueue.push({ text, msgId, timestamp: timestamp || Date.now(), voz });
   speechQueue.sort((a, b) => a.timestamp - b.timestamp);
   updateQueueBadge();
   if (!isSpeaking) processQueue();
@@ -301,7 +302,7 @@ async function _processQueueOnce() {
 
   isSpeaking = true;
   const queueItem = speechQueue.shift();
-  const { text, msgId } = queueItem;
+  const { text, msgId, voz } = queueItem;
   updateQueueBadge();
 
   if (currentMsgId) {
@@ -317,8 +318,7 @@ async function _processQueueOnce() {
   const glow = document.getElementById('appGlow');
   if (glow) glow.classList.add('active');
 
-  const voiceId = document.getElementById('voiceSelect')?.value || 'es';
-  const voice = voiceId;
+  const voice = voz || document.getElementById('voiceSelect')?.value || 'es';
 
   ttsAbortController = new AbortController();
   const myController = ttsAbortController;
