@@ -26,7 +26,7 @@ import { spPlaySound } from '../../vistas/principal/soundpad.js';
 import { updateConnectorChipState } from '../../vistas/principal/voces.js';
 import {
   musicPending, musicDropPending, musicRenderQueue, setMusicQueue, musicOnNowPlaying,
-  musicStop, musicOnIdle, musicOnStateSync, setMusicVol, getMusicAudio, musicOnPlaylistUpdate,
+  musicStop, musicOnIdle, musicOnPauseState, musicOnStateSync, setMusicVol, getMusicAudio, musicOnPlaylistUpdate,
   musicOnEngineStatus,
 } from '../../vistas/principal/bot-musica.js';
 import { modOnViewerUpdated } from '../../vistas/principal/moderacion.js';
@@ -322,6 +322,9 @@ function handleMessage(data) {
       break;
     case 'music-idle':
       musicOnIdle();
+      break;
+    case 'music-pause':
+      musicOnPauseState(data.paused);
       break;
     case 'music-state':
       musicOnStateSync(data);

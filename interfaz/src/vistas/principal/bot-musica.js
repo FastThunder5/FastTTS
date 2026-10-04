@@ -16,6 +16,9 @@ let musicEngineErrorTimer = null;
 // true = el audio real lo reproduce /overlay-musica.html (fuente aparte para
 // OBS); el panel solo pinta info (portada, progreso) pero no crea Audio.
 let musicOverlayAudio = false;
+// Pausa del audio que reproduce el overlay (modo musicOverlayAudio): el estado
+// lo lleva el server y llega por WS como music-pause.
+let musicOverlayPaused = false;
 let musicQueueMutationInFlight = false;
 
 /** ws-cliente.js necesita reasignar musicQueue en varios casos del
@@ -324,9 +327,19 @@ function syncMusicChip(id, checked) {
 }
 
 export function musicTogglePause() {
+  if (musicOverlayAudio) {
+    fetch('/api/music/pause', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paused: !musicOverlayPaused }) }).catch(() => {});
+    return;
+  }
   if (!musicAudio) return;
   if (musicAudio.paused) musicAudio.play().catch(() => {});
   else musicAudio.pause();
+  updateMusicPauseBtn();
+}
+
+/** Llamado por el dispatcher WS al recibir music-pause. */
+export function musicOnPauseState(paused) {
+  musicOverlayPaused = !!paused;
   updateMusicPauseBtn();
 }
 
@@ -335,7 +348,7 @@ function updateMusicPauseBtn() {
   const icon = document.getElementById('musicPauseIcon');
   const label = document.getElementById('musicPauseLabel');
   if (!btn) return;
-  const paused = !musicAudio || musicAudio.paused;
+  const paused = musicOverlayAudio ? musicOverlayPaused : (!musicAudio || musicAudio.paused);
   if (icon) icon.src = paused ? 'icons/play_arrow.svg' : 'icons/pause.svg';
   if (label) label.textContent = paused ? t('bot.resumeSong') : t('bot.pauseSong');
 }

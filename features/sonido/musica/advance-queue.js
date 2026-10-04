@@ -11,6 +11,11 @@ function advanceMusicQueue(deps) {
   musicState.playbackGen = (musicState.playbackGen || 0) + 1;
   const myGen = musicState.playbackGen;
   const config = getConfigSnapshot(bus);
+  // Tema nuevo (o idle) arranca siempre sin pausa.
+  if (musicState.paused) {
+    musicState.paused = false;
+    bus.emit('ws:broadcast', { type: 'music-pause', paused: false });
+  }
 
   if (musicState.queue.length > 0) {
     musicState.playlistActive = false;
