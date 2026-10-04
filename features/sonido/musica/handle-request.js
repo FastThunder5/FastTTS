@@ -145,7 +145,7 @@ function handleMusicRequest(deps) {
       }
       if (items.length) {
         const libres = Math.max(0, config.musicMaxQueue - musicState.queue.length);
-        const tracks = items.slice(0, libres).map((item) => ({ ...item, requestedBy: user, platform }));
+        const tracks = items.slice(0, libres).map((item) => ({ ...item, requestedBy: user, requesterId: userId || null, platform }));
         if (!tracks.length) {
           failRequest('full');
           return;
@@ -197,6 +197,7 @@ function handleMusicRequest(deps) {
     );
 
     track.requestedBy = user;
+    track.requesterId = userId || null; // para !quitar / !skip de la propia cancion
     track.platform = platform;
 
     const wasEmpty = musicState.queue.length === 0 && !musicState.currentTrack;

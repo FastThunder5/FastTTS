@@ -337,6 +337,8 @@
     "botSettingsSubtitle": "Music bot limits: cooldown between requests and maximum queue size.",
     "cooldown": "Cooldown per user (sec)",
     "maxQueue": "Max songs in queue",
+    "skipVotes": "!skip votes to skip",
+    "chatCommandsHint": "Chat commands: !p song, !song (now playing), !queue (up next), !remove (deletes your last request), !skip (vote to skip; whoever requested the song skips it instantly). With 0 votes, only the requester can skip it.",
     "bannedUsers": "Banned from !p",
     "banPlaceholder": "@user or ID",
     "ban": "Ban",
@@ -1222,5 +1224,15 @@
     "channelTitle": "Enter the channel", "channelDesc": "Enter its username or link. For YouTube, you can also use @channel or Channel ID.",
     "saveTitle": "Save", "saveDesc": "Save it so it is ready. Saving does not start a connection.",
     "connectTitle": "Connect all", "connectDesc": "From Chat, this button connects saved channels when they are live."
+  },
+  "botReply": {
+    "nothingPlaying": "No song is playing.",
+    "nowPlaying": "Now playing {title}, requested by {user}.",
+    "nowPlayingPlaylist": "Now playing {title}.",
+    "queueEmpty": "The song queue is empty.",
+    "queue": "{count} in queue. Up next: {list}.",
+    "removed": "{user} removed {title} from the queue.",
+    "skipped": "Skipped {title}.",
+    "skipVote": "Skip vote: {count} of {needed}."
   }
 }

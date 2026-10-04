@@ -5,7 +5,7 @@ const { advanceMusicQueue } = require('../advance-queue');
 const { musicBroadcastState } = require('../broadcast-state');
 
 const ALLOWED_KEYS = [
-  'musicEnabled', 'musicUserCooldownMs', 'musicMaxQueue', 'musicBannedUsers',
+  'musicEnabled', 'musicUserCooldownMs', 'musicMaxQueue', 'musicSkipVotes', 'musicBannedUsers',
   'musicVolume', 'musicOverlayAudio', 'playlistEnabled', 'playlistShuffle',
 ];
 

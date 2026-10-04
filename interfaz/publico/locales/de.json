@@ -335,6 +335,8 @@
     "botSettingsSubtitle": "Grenzwerte des Musik-Bots: Abklingzeit zwischen Anfragen und maximale Warteschlangengröße.",
     "cooldown": "Abklingzeit pro Nutzer (Sek)",
     "maxQueue": "Max. Songs in Warteschlange",
+    "skipVotes": "!skip-Stimmen zum Überspringen",
+    "chatCommandsHint": "Chat-Befehle: !p Song, !song (läuft gerade), !queue (als Nächstes), !remove (löscht deinen letzten Wunsch), !skip (Abstimmung zum Überspringen; wer den Song gewünscht hat, überspringt ihn sofort). Bei 0 Stimmen kann nur der Wünschende ihn überspringen.",
     "bannedUsers": "Von !p gesperrte Nutzer",
     "banPlaceholder": "@Nutzer oder ID",
     "ban": "Sperren",
@@ -1220,5 +1222,15 @@
     "channelTitle": "Kanal eingeben", "channelDesc": "Gib Benutzername oder Link ein. Für YouTube gehen auch @Kanal oder Channel ID.",
     "saveTitle": "Speichern", "saveDesc": "Speichere ihn, damit er bereit ist. Das startet keine Verbindung.",
     "connectTitle": "Alle verbinden", "connectDesc": "In Chat verbindet dieser Button gespeicherte Kanäle, wenn sie live sind."
+  },
+  "botReply": {
+    "nothingPlaying": "Es läuft gerade kein Song.",
+    "nowPlaying": "Es läuft {title}, gewünscht von {user}.",
+    "nowPlayingPlaylist": "Es läuft {title}.",
+    "queueEmpty": "Die Song-Warteschlange ist leer.",
+    "queue": "{count} in der Warteschlange. Als Nächstes: {list}.",
+    "removed": "{user} hat {title} aus der Warteschlange entfernt.",
+    "skipped": "{title} übersprungen.",
+    "skipVote": "Stimme zum Überspringen: {count} von {needed}."
   }
 }

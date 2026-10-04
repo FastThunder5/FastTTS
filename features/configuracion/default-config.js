@@ -12,6 +12,8 @@ const DEFAULT_CONFIG = {
   musicMaxQueue: 10,
   musicBannedUsers: [],
   musicVolume: 0.5,
+  // Votos de !skip necesarios para saltar la cancion actual (0 = solo quien la pidio).
+  musicSkipVotes: 3,
   // true = el audio de musica se reproduce SOLO en /overlay-musica.html
   // (fuente aparte para OBS), no en el panel principal. Default false para
   // no romper a nadie que ya use la app tal cual (el panel sigue sonando).

@@ -335,6 +335,8 @@
     "botSettingsSubtitle": "Limites du bot musical : délai entre les demandes et taille maximale de la file.",
     "cooldown": "Délai par utilisateur (sec)",
     "maxQueue": "Chansons max en file",
+    "skipVotes": "Votes !skip pour passer",
+    "chatCommandsHint": "Commandes du chat : !p chanson, !song (en cours), !queue (à suivre), !remove (supprime votre dernière demande), !skip (vote pour passer ; celui qui a demandé la chanson la passe aussitôt). Avec 0 vote, seul le demandeur peut la passer.",
     "bannedUsers": "Bannis du !p",
     "banPlaceholder": "@utilisateur ou ID",
     "ban": "Bannir",
@@ -1220,5 +1222,15 @@
     "channelTitle": "Saisissez la chaîne", "channelDesc": "Saisissez le nom d'utilisateur ou le lien. Pour YouTube, utilisez aussi @chaîne ou Channel ID.",
     "saveTitle": "Enregistrer", "saveDesc": "Enregistrez-la pour la préparer. Cela ne lance pas de connexion.",
     "connectTitle": "Tout connecter", "connectDesc": "Depuis le Chat, ce bouton connecte les chaînes enregistrées lorsqu'elles sont en direct."
+  },
+  "botReply": {
+    "nothingPlaying": "Aucune chanson en cours.",
+    "nowPlaying": "En cours : {title}, demandée par {user}.",
+    "nowPlayingPlaylist": "En cours : {title}.",
+    "queueEmpty": "La file de chansons est vide.",
+    "queue": "{count} dans la file. À suivre : {list}.",
+    "removed": "{user} a retiré {title} de la file.",
+    "skipped": "{title} passée.",
+    "skipVote": "Vote pour passer : {count} sur {needed}."
   }
 }
