@@ -30,7 +30,6 @@ import {
   musicOnEngineStatus,
 } from '../../vistas/principal/bot-musica.js';
 import { modOnViewerUpdated } from '../../vistas/principal/moderacion.js';
-import { idiomaDeVoz } from '../tts/idioma-de-voz.js';
 
 export const LIKE_COOLDOWN_MS = 15 * 60 * 1000;
 export const likeCooldownMap = new Map();
@@ -105,15 +104,6 @@ function handleMessage(data) {
       break;
     }
 
-    case 'admin-announce': {
-      const adminMsgId = nuevoMsgId();
-      const voiceSelect = document.getElementById('voiceSelect');
-      const adminTxt = (data.texts && data.texts[idiomaDeVoz(voiceSelect?.value)]) || data.text;
-      addSystemMsg(adminTxt, 'admin', adminMsgId, { iconSrc: 'icons/check_circle.svg' });
-      speak(adminTxt, adminMsgId, data.timestamp);
-      break;
-    }
-
     // Respuesta del bot musical a !cancion / !cola / !quitar / !skip
     // (features/sonido/musica/handle-chat-command.js): se arma en el idioma de la UI.
     case 'bot-reply': {
@@ -122,15 +112,6 @@ function handleMessage(data) {
       if (botTxt === `botReply.${data.key}`) break;
       addSystemMsg(botTxt, 'admin', botMsgId, { iconSrc: 'icons/music_note.svg' });
       speak(botTxt, botMsgId, data.timestamp);
-      break;
-    }
-
-    case 'promo-announce': {
-      const promoMsgId = nuevoMsgId();
-      const voiceSelect = document.getElementById('voiceSelect');
-      const promoTxt = (data.texts && data.texts[idiomaDeVoz(voiceSelect?.value)]) || data.text;
-      addSystemMsg(promoTxt, 'promo', promoMsgId, { iconSrc: 'icons/flash_on.svg' });
-      speak(promoTxt, promoMsgId, data.timestamp);
       break;
     }
 

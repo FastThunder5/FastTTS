@@ -66,7 +66,7 @@ test('un handler que lanza se convierte en handler_error con stack', async () =>
   assert.equal(out.ok, false);
   assert.equal(out.error.code, 'handler_error');
   assert.match(out.error.message, /boom/);
-  assert.ok(out.error.stack, 'debe incluir stack para GlitchTip');
+  assert.ok(out.error.stack, 'debe incluir stack para el log');
 });
 
 test('nombre de tool duplicado lanza (aislado por register-domain)', () => {
@@ -82,8 +82,8 @@ test('GARANTÍA: todo dominio con rutas de escritura registra ≥1 tool', () => 
   // Dominios que montan POST/PATCH/DELETE y por tanto deben aparecer como
   // t.domain de alguna tool. Al agregar una feature con escritura, sumala acá
   // y registrale su tool — si no, este test falla (ese es el punto).
-  // reporte-bug y sugerencias son posts externos iniciados manualmente y
-  // estan exentos en scripts/check-mcp.js.
+  // sugerencias es un post externo iniciados manualmente y
+  // esta exento en scripts/check-mcp.js.
   const CON_ESCRITURA = ['moderacion', 'canales', 'sonido', 'configuracion', 'overlay', 'movil'];
   const dominiosConTool = new Set(registry.listTools().map((t) => t.domain));
   const faltan = CON_ESCRITURA.filter((d) => !dominiosConTool.has(d));

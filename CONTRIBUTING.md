@@ -1,4 +1,4 @@
-# Guía de contribución — TikLiveTTS
+# Guía de contribución — FastTTS
 
 ¡Gracias por querer aportar! Esta guía explica cómo levantar el proyecto y cómo enviar cambios.
 
@@ -31,8 +31,7 @@ npm install
 Con el servidor activo, la UI está en `http://localhost:3000`, los overlays en
 `http://localhost:3000/overlay-*.html` y el endpoint MCP en
 `http://localhost:3000/mcp`. Lo único que Electron aporta y el navegador no:
-atajos globales de teclado, tray, auto-update y el error tracking de GlitchTip/
-Aptabase (que viven en `electron-shell/`).
+atajos globales de teclado, tray y auto-update (que viven en `electron-shell/`).
 
 #### ¿Por qué los cambios de CSS no se actualizan en tiempo real?
 
@@ -98,8 +97,8 @@ chore(v1.5.7): tarea de mantenimiento
 1. Subir la versión en `package.json`.
 2. Actualizar `CHANGELOG.md`.
 3. `git tag vX.Y.Z && git push origin main --tags`
-4. GitHub Actions compila el instalador NSIS y lo sube como *draft* a Releases.
-5. Publicar con `gh release edit vX.Y.Z --draft=false`.
+4. GitHub Actions compila el instalador NSIS y publica el release; las copias
+   instaladas se actualizan solas.
 
 ## Reportar bugs o proponer ideas
 

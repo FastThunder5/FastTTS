@@ -46,8 +46,6 @@ mount('reporte-bug', './features/reporte-bug');
 mount('moderacion', './features/moderacion');
 mount('canales', './features/canales');
 mount('chat', './features/chat');
-// promo (autopromocion por voz) desactivada en este fork
-// mount('promo', './features/promo');
 mount('overlay', './features/overlay');
 mount('movil', './features/movil');
 mount('sonido', './features/sonido');
@@ -56,12 +54,11 @@ mount('clips', './features/clips');
 mount('avanzado', './features/avanzado');
 mount('donar', './features/donar');
 mount('portal-view', './features/portal-view');
-mount('telemetria', './features/telemetria');
 // mcp va ULTIMO: para cuando corre su register(), cada dominio ya llamo
 // mcpRegistry.registerTool() desde el suyo, asi que el set de tools esta completo.
 mount('mcp', './features/mcp');
 // Los 16 dominios de negocio (features/) ya estan registrados. /electron-shell
-// y /telemetria/runtime.js se conectan desde main.js (no son rutas Express).
+// se conecta desde main.js (no son rutas Express).
 
 // Va al final: si algun dominio ya registro GET /api/status, ese gana
 // (Express usa el primer handler que responde en la misma ruta).

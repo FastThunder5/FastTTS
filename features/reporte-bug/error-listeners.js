@@ -6,10 +6,7 @@ const MAX_ERRORS_PER_SESSION = 50;
  * Se suscribe a error:handled/error:uncaught (emitidos por core/logger.js y
  * core/error-boundary.js desde la Fase 1). Desde este punto en adelante,
  * cualquier fallo de las fases siguientes queda capturado y trazado hasta
- * aca. Reenvio a Discord/telemetria de errores individuales queda fuera de
- * alcance: no existe hoy config de severidad ni integracion de telemetria
- * (Fase 12) — solo el reporte de bug explicito (POST /api/report-bug) manda
- * a Discord.
+ * aca. Solo se cuentan y se escriben en el log local: nada sale de la PC.
  */
 function attachErrorListeners(bus, logger) {
   let errorCount = 0;

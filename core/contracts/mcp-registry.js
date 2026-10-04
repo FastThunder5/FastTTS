@@ -6,7 +6,7 @@
 // por el require cache. La diferencia es que en vez de un método sobreescribible
 // es un registro append-only — cada dominio agrega sus tools desde su propio
 // register(), colocadas con la feature. features/mcp/ lo lee último (ya está
-// registrado después de telemetria en server.js) y lo expone por el cable MCP.
+// es el último dominio en server.js) y lo expone por el cable MCP.
 //
 //   const mcp = require('../../core/contracts/mcp-registry');
 //   mcp.registerTool({ name: 'moderation_ban', domain: 'moderacion', destructive: true,
@@ -18,7 +18,7 @@
 
 const tools = new Map();          // name -> def completo (con handler)
 const stateProviders = [];        // [{ domain, fn }]
-let logger = null;                // inyectado por features/mcp para poder loguear a GlitchTip
+let logger = null;                // inyectado por features/mcp para poder loguear
 
 // Permite que features/mcp enganche el logger real. Opcional: sin él, los
 // errores de registro solo se lanzan (los captura core/register-domain.js).

@@ -13,12 +13,9 @@ const REGISTRA_TOOL = /mcpRegistry\.registerTool\s*\(|mcp\.registerTool\s*\(/;
 
 // Dominios exentos, con justificación:
 //  - chat: su lectura la sirve get_recent_chat (dominio mcp); no expone acciones.
-//  - reporte-bug: POST /api/report-bug hace un post externo a Discord "en nombre
-//    del usuario" — no es una acción que un agente deba disparar solo. El panel
-//    MCP tiene un botón manual para eso (Fase 5).
 // sugerencias tambien publica feedback externo por decision manual de la
 // persona usuaria; un agente MCP no debe enviarlo autonomamente.
-const EXENTOS = new Set(['chat', 'reporte-bug', 'sugerencias']);
+const EXENTOS = new Set(['chat', 'sugerencias']);
 
 function check() {
   const problemas = [];

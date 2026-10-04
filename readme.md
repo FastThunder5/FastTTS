@@ -1,20 +1,20 @@
-# TikLiveTTS
+# FastTTS
 
 [![Release](https://img.shields.io/github/v/release/FastThunder5/FastTTS?display_name=tag&sort=semver)](https://github.com/FastThunder5/FastTTS/releases/latest)
 [![Build & Release](https://github.com/FastThunder5/FastTTS/actions/workflows/release.yml/badge.svg)](https://github.com/FastThunder5/FastTTS/actions/workflows/release.yml)
 [![License](https://img.shields.io/github/license/FastThunder5/FastTTS)](LICENSE)
 [![Electron](https://img.shields.io/badge/Electron-41-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
 
-**TikLiveTTS** is a Windows desktop app that reads live chat aloud while you stream. Connect TikTok Live, Twitch, YouTube, or Kick, manage everything from one native app, and add browser-source overlays to OBS.
+**FastTTS** is a free Windows desktop app that reads live chat aloud while you stream. Connect TikTok Live, Twitch, YouTube, or Kick, manage everything from one native app, and add browser-source overlays to OBS.
 
 ## Highlights
 
-- Real-time Google TTS with a single, timestamp-ordered speech queue and 13 languages or regional variants.
+- Natural Microsoft Edge neural voices (14 Spanish accents and more) plus Google TTS, with a timestamp-ordered speech queue, a voice per viewer and a pronunciation dictionary.
 - Multi-platform chat for TikTok Live, Twitch, YouTube, and Kick, with a platform badge on every message.
 - Local moderation: spam and language filters, blocked words, viewer records, mute, and ban controls.
 - OBS-ready overlays for alerts, likes, followers, unified chat, social events, and credits.
-- Music requests, Soundpad effects, global shortcuts, and OBS clip markers.
-- A mobile control panel, built-in PortalView browser, automatic updates, and optional MCP tools for advanced agent control.
+- Music requests with chat commands (`!p`, `!cancion`, `!cola`, `!skip`, `!quitar`), Soundpad effects, global shortcuts, and OBS clip markers.
+- A mobile control panel, built-in PortalView browser, automatic updates, settings backup, and optional MCP tools for advanced agent control.
 
 ## Download
 
@@ -24,10 +24,10 @@ The installer is currently unsigned, so Windows may show a first-run SmartScreen
 
 ## Quick start
 
-1. Open TikLiveTTS and sign in, or use the Free plan.
+1. Open FastTTS. Everything is free: no account, no paid plan.
 2. Add your TikTok, Twitch, YouTube, or Kick channel and select **Connect**.
 3. Choose a language, voice, and filters in Settings.
-4. In OBS, add the overlay URL shown by the app as a **Browser Source**. Keep TikLiveTTS running while streaming.
+4. In OBS, add the overlay URL shown by the app as a **Browser Source**. Keep FastTTS running while streaming.
 
 > YouTube chat requires an active live stream.
 
@@ -39,7 +39,7 @@ The installer is currently unsigned, so Windows may show a first-run SmartScreen
 | App server | Express + WebSocket (`ws`) |
 | Frontend | Vanilla ESM + Vite |
 | Live chat | TikTok Live client, `tmi.js`, `youtube-chat`, Kick WebSocket |
-| Text-to-speech | Google Translate TTS |
+| Text-to-speech | Microsoft Edge neural voices + Google Translate TTS |
 | Packaging | electron-builder + NSIS |
 | Delivery | GitHub Actions + GitHub Releases |
 
@@ -77,7 +77,7 @@ test/             Node test suite
 
 ```bash
 git clone https://github.com/FastThunder5/FastTTS.git
-cd tiktok-tts
+cd FastTTS
 npm ci
 ```
 
@@ -117,11 +117,7 @@ git tag vX.Y.Z
 git push origin main --tags
 ```
 
-GitHub Actions runs linting and tests, builds the installer, and creates a draft GitHub Release. Publish it when ready:
-
-```bash
-gh release edit vX.Y.Z --draft=false
-```
+GitHub Actions builds the installer and publishes the GitHub Release. Installed copies update themselves from it.
 
 ## Contributing
 
@@ -129,4 +125,4 @@ Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md), create a foc
 
 ## License
 
-Released under the [MIT License](LICENSE).
+Released under the [MIT License](LICENSE). FastTTS started as a fork of [iKhunsa/tiktok-tts](https://github.com/iKhunsa/tiktok-tts) v1.10.0. It has no telemetry: nothing about your stream leaves your PC.

@@ -51,7 +51,7 @@ function createWindow({ iconPath, onClose, bus }) {
     minWidth: 900,
     minHeight: 600,
     icon: iconPath,
-    title: 'TikLiveTTS',
+    title: 'FastTTS',
     show: false,
     webPreferences: {
       nodeIntegration: false,

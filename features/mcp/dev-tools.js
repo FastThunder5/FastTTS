@@ -76,7 +76,7 @@ function registerDevTools({ bus, logger, wss }) {
   mcpRegistry.registerTool({
     name: 'dev_inject_event', domain: 'mcp', dev: true,
     title: '[dev] Inject stream event',
-    description: 'Fire a synthetic stream event: gift | follow | share | likes. Runs the real overlay/telemetry chain.',
+    description: 'Fire a synthetic stream event: gift | follow | share | likes. Runs the real overlay chain.',
     inputSchema: {
       type: 'object', required: ['kind'],
       properties: {

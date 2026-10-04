@@ -134,7 +134,7 @@ module.exports = {
 
     // ── chat:mensaje-permitido: expone el gancho de habla (el front decide
     // via el campo ttsBlocked que ya viaja en el WS de /chat — este evento
-    // es un gancho adicional para consumidores futuros, ej. telemetria) ──
+    // es un gancho adicional para consumidores futuros, ej. estadisticas) ──
     bus.on('chat:mensaje-permitido', (payload) => {
       if (!payload || payload.ttsBlocked) return;
       const text = payload.ttsComment || payload.comment;

@@ -1,4 +1,4 @@
-# TikLiveTTS — Contexto del Proyecto para IA
+# FastTTS — Contexto del Proyecto para IA
 
 ## Qué es
 
@@ -14,16 +14,14 @@ App de escritorio Electron que lee en voz alta el chat de TikTok Live, Twitch y 
 | Twitch connection | tmi.js (IRC anónimo o autenticado) |
 | YouTube connection | youtube-chat (scraping, requiere stream activo) |
 | Kick connection | API pública kick.com + Pusher WS (`ws`, sin auth) |
-| TTS | Google Translate TTS API (google-tts-api, online) |
+| TTS | Voces neuronales de Microsoft Edge (`features/sonido/tts/edge-tts.js`) + Google Translate TTS (google-tts-api) de respaldo |
 | Auto-update | electron-updater → GitHub Releases |
 | Build/CI | electron-builder + GitHub Actions (windows-latest) |
 | Distribución | NSIS installer via GitHub Releases, sin firma de código |
 
 ## Arquitectura
 
-Backend reconstruido por dominios (rebuild completo, ver `plan-fases/` para
-el historial de las 14 fases y `arquitectura-propuesta.md` para el
-documento de diseño vivo). Ya no es un monolito: `main.js`/`server.js` son
+Backend reconstruido por dominios. Ya no es un monolito: `main.js`/`server.js` son
 orquestadores delgados, toda la lógica de negocio vive repartida en
 carpetas por dominio bajo `features/` (los 16 dominios agrupados ahí a
 propósito, para no saturar la raíz del repo — `core/` y `electron-shell/`
@@ -36,7 +34,7 @@ main.js (Electron main process)
   ├── electron-shell/tray.js       ← ícono bandeja, menú open/exit
   ├── electron-shell/updater.js    ← autoUpdater, chequea GitHub Releases
   ├── electron-shell/uiohook.js    ← atajos globales (fullscreen-safe)
-  ├── electron-shell/ipc-bridge.js ← IPC con el renderer (atajos, soundpad, telemetría)
+  ├── electron-shell/ipc-bridge.js ← IPC con el renderer (atajos, soundpad)
   └── electron-shell/single-instance.js
 
 server.js (Express + WS en puerto 3000)
@@ -44,18 +42,16 @@ server.js (Express + WS en puerto 3000)
   └── features/
       ├── configuracion/             ← único dueño de config.json y platform-config.json
       ├── idioma/                    ← filtro de idioma/script de voz (puro)
-      ├── reporte-bug/                ← webhook de Discord, retención de logs
+      ├── reporte-bug/               ← conteo de errores y retención de logs locales
       ├── moderacion/                ← moderation.json, blocked-words.md, policy.evaluate()
       ├── canales/                   ← TikTok/Twitch/YouTube/Kick + OBS — único productor de eventos crudos
       ├── chat/                      ← orquesta: crudo → moderación → chat:mensaje-permitido
-      ├── promo/                     ← avisos promocionales periódicos (announce-texts)
       ├── overlay/                   ← estado visual (gifts, followers, likes) para OBS
       ├── movil/                     ← panel remoto (espejo de estado + comandos)
       ├── sonido/                    ← TTS (Google), bot musical (yt-dlp), soundpad
       ├── bot/                       ← detección de comandos de chat (!p)
       ├── clips/                     ← marca clip en OBS (atajo o comando móvil)
       ├── avanzado/ + donar/         ← no-op documentados: lugar para crecer (UI avanzada / donación real) sin acoplar
-      ├── telemetria/                ← uso agregado anónimo, self-hosted (ver sección propia)
       └── mcp/                       ← servidor MCP (tools para agentes), registrado ÚLTIMO
 ```
 
@@ -101,7 +97,7 @@ Señales de que te pasaste para el otro lado (borrar, no crear):
 **Umbral — dónde vive un helper (por alcance, no por conteo):**
 
 - **1 consumidor** → inline en el call site, o archivo local al dominio si ya
-  tiene su carpeta. No sube. (`telemetria/identity.js#sessionId` → 1, se queda.)
+  tiene su carpeta. No sube.
 - **2+ consumidores en el MISMO dominio** → archivo compartido dentro de esa
   carpeta de dominio.
 - **2+ consumidores que CRUZAN un límite de dominio** → `core/<nombre>.js`,
@@ -128,7 +124,7 @@ Si no compra ninguna de las tres, es solo mover una función detrás de una capa
 Excepciones documentadas (copias deliberadas, NO tocar): `normalize-aggressive.js`
 / `sanitize-for-tts.js` entre dominios (funciones puras, se eligió copiar
 antes que un contrato); los `toast.js` de `avanzada/` y `movil/` (cada vista
-legacy conserva el suyo hasta unificar la paleta CSS — ver `plan-fases/06`).
+legacy conserva el suyo hasta unificar la paleta CSS).
 
 Endpoints HTTP relevantes (repartidos por dominio, ver cada carpeta para
 el resto):
@@ -179,93 +175,6 @@ está migrado un archivo por función (`features/moderacion/store/*.js`) sobre u
 - UI: vista "Moderación" en el menú izquierdo, con pestañas Seguidores / No
   seguidores sobre la misma tabla.
 
-## Telemetría (`features/telemetria/`)
-
-Dominio aparte que reporta uso agregado y anónimo a un servicio propio
-(`telemetria-tts`, repo separado, self-hosted en Docker — no Vercel). Sin
-`TELEMETRY_URL` configurada, el módulo es un no-op: cero peticiones de red.
-
-- `features/telemetria/index.js` — dominio registrado normal (`register({bus, logger})`):
-  engancha los conectores al bus de inmediato, aunque `runtime.init()` todavía
-  no haya corrido (`track()` es no-op mientras no esté habilitada).
-- `features/telemetria/runtime.js` — el ciclo de vida real (`init`, `track`, `flush`,
-  `shutdown`). Separado de `index.js` porque `init()` necesita datos que solo
-  Electron tiene (`app.getVersion()`, `app.getPath('userData')`) — lo llama
-  `main.js` tras `waitForServer`.
-- `features/telemetria/transport.js` — envía batches por `fetch` nativo a
-  `TELEMETRY_URL` (o al `url` de `telemetry.json`), con cola en disco
-  (`features/telemetria/buffer.js`) y reintentos. 4xx ya no se trata como éxito
-  silencioso: todo fallo de red queda logueado (`telemetria.envio.*`).
-- `features/telemetria/connectors/*.js` — un conector por área (creators, platforms,
-  counters, obs, mobile, overlays, updates, errors, settings). Cada uno
-  escucha el bus de dominios (`canal:estado`, `movil:comando`, etc.) o el
-  espejo de logs (`core/logger.js` emite **todo** log como `log:entry` al
-  bus) en vez de que cada dominio de negocio tenga que conocer telemetría.
-  `counters.js` agrega eventos de alta frecuencia (TTS, música, moderación)
-  en un contador por latido de 5 min en vez de uno por mensaje.
-- La URL sale de `TELEMETRY_URL` (env, inyectada en build) o de
-  `%APPDATA%\tiktok-live-tts\telemetry.json` — archivo separado de
-  `config.json` a propósito, porque `features/configuracion/` descarta claves que no
-  reconoce y lo borraría en el primer guardado.
-- Casi todos los eventos se emiten directo desde los conectores. Solo
-  `tts:skipped`, `tts:queue-overflow` y `ui:language-set` nacen en el renderer
-  (`interfaz/src/nucleo/tts/cola-tts.js`, `interfaz/src/vistas/principal/i18n-app.js`)
-  y llegan al bus vía IPC:
-  `window.electronAPI.trackEvent(name[, payload])` → `preload.js` →
-  `ipcMain.on('telemetry:track', ...)` en `electron-shell/ipc-bridge.js`, con
-  lista blanca de esos tres nombres (`payload` solo se reenvía si es string corto).
-
-## Error tracking (`electron-shell/glitchtip.js`)
-
-GlitchTip (self-hosted, compatible con Sentry, `@sentry/electron`). **Los errores
-van acá, no a Aptabase.** Captura crashes del main + `error:handled`/`error:uncaught`
-del bus, con breadcrumbs (150) de la actividad previa, snapshot de `estado_app`
-(plataformas, OBS, minutos, config), tail del log de sesión metido en el issue,
-fingerprint en español (`error_conexion_tiktok`, …), `warn` promovidos a issue,
-detección de "sesión problemática", perf spans (`tracesSampleRate: 0.05`). El botón
-"Reportar bug" también llega acá. DSN de ingesta (no secreto) override por
-`SENTRY_DSN`/`GLITCHTIP_DSN` o `glitchtip.json` en userData.
-
-## Analytics de producto (`electron-shell/aptabase.js`)
-
-Aptabase (self-hosted propio, `@aptabase/electron`; sin `APTABASE_HOST` + `APTABASE_APP_KEY` queda desactivado).
-**Solo analítica de producto — conteo de eventos, funnels, DAU/MAU, retención.
-Los errores NO van acá.** Sin `APTABASE_APP_KEY` (env o `aptabase-config.json`
-bakeado) es un no-op total.
-
-- **Regla igual que GlitchTip/telemetría:** los dominios no conocen Aptabase.
-  Loguean su evento de negocio; `aptabase.js#attach` mapea `log:entry` +
-  algunos eventos directos del bus (`canal:estado`, `movil:comando`,
-  `reporte-bug:enviado`, `ui:language-set`) → `trackEvent()`.
-- `init()` corre en `main.js` **antes de `app.isReady()`** (requisito del SDK)
-  pero **después** del lock de instancia única (para no doble-disparar
-  `installacion`/`app_started`). Recibe `{appVersion, isPackaged, isDebug,
-  userDataDir, logger}` — patrón de inyección como `telemetria/runtime.js`.
-- **`installacion`** — evento que se dispara **exactamente una vez en la vida
-  del usuario**, vía marca persistida `%APPDATA%\tiktok-live-tts\aptabase-instalacion.json`
-  (helper compartido `electron-shell/install-marker.js`, también lo usa
-  glitchtip con su propio archivo). Conteo diario en el dashboard =
-  instalaciones únicas de por vida (Aptabase no tiene id de cliente). Sin
-  `machine_id` a propósito (máxima privacidad).
-- **Eventos:** ciclo de vida (`installacion`, `app_started`, `app_updated`,
-  `session_ended`), activación (`platform_connected`, `platform_connect_failed`,
-  `first_tts`), adopción (`overlay_opened`, `overlay_bg_uploaded`,
-  `mobile_paired`, `mobile_command`, `clip_marked`, `music_requested`,
-  `promo_fired`, `bug_report_sent`, `soundpad` en resumen), config
-  (`config_changed` **solo la clave, nunca el valor**, `voice_changed`,
-  `ui_language_set`), moderación (`moderation_action`, `moderation_action_failed`,
-  `mod_words_saved`).
-- **Resúmenes de sesión:** los de alta frecuencia (TTS, música, errores,
-  mensajes filtrados) se acumulan en memoria y salen como props bucketeadas de
-  `session_ended` (1 POST al cerrar), nunca 1 evento por ocurrencia. `bucket()`
-  vive en `electron-shell/bucket.js` (testeado en `test/aptabase-bucket.test.js`).
-- **Flush manual:** el SDK v0.3.1 **no batchea ni flushea al cerrar** — cada
-  `trackEvent` es su propio POST. `shutdown()` manda `session_ended` y espera
-  los POST en vuelo con race de 1500 ms, dentro del `Promise.allSettled` de
-  `main.js#before-quit`.
-- Toda prop pasa por `sanear()` (rutas de home fuera) + clip a 200 chars, tope
-  de 20 props/evento. Nunca nick/userId/ip/texto libre.
-
 ## MCP — servidor de herramientas para agentes (`features/mcp/`)
 
 Dominio que expone las capacidades de la app como **tools MCP** (Model Context
@@ -301,11 +210,7 @@ nuevos por request). `features/mcp/` se registra **último** en `server.js`.
 - **Auth remota (seam):** por defecto solo-localhost (`core/app.js#validateLocalMutation`).
   Env `MCP_TOKEN` seteada → acepta cualquier host con `Authorization: Bearer <token>`.
 - **Observabilidad:** `features/mcp/observability.js` decora `callTool` →
-  `mcp.tool.{llamada,fallo,excepcion}` al bus → GlitchTip + Aptabase
-  (`mcp_tool_used`) + telemetría, gratis. **Todo error del subsistema MCP**
-  (`mcp.*.excepcion`, `mcp.transport.error`, `mcp.registro.*`) se fingerprintea
-  en GlitchTip como `error_mcp_*`; los fallos esperados de tool (`mcp.tool.fallo`)
-  NO son issue.
+  `mcp.tool.{llamada,fallo,excepcion}` al log local. Nada sale de la PC.
 - **UI:** sección "Agente MCP" en la tienda de plugins (`interfaz/src/vistas/principal/mcp/`,
   nace oculta) — toggles, endpoint, snippets de config, tabla de tools por dominio.
   El `description`/`title` del schema (lo que ve el agente) queda en **inglés**;
@@ -331,10 +236,10 @@ cubierto ahora por `test/serve-ui.test.js`.
 ## Paths críticos en producción (packaged)
 
 ```
-%LOCALAPPDATA%\TikLiveTTS\
-  TikLiveTTS.exe
+<carpeta de instalación>\
+  TikTok TTS.exe
   resources\
-    app.asar              ← main.js + server.js + los 17 dominios + electron-shell/ + telemetria/ + node_modules (interfaz/ fuente NO viaja, solo su build)
+    app.asar              ← main.js + server.js + los 17 dominios + electron-shell/ + node_modules (interfaz/ fuente NO viaja, solo su build)
     gifts\                ← 810 PNGs de regalos TikTok (188 MB)
     public\               ← output de `vite build` (interfaz/dist/), vía extraResources — HTML/CSS/JS de la UI, overlays y estaticos (icons/flags/locales/vendor/plugin-store)
     asset\                ← flags SVG, iconos (fuente para asset/icons/, catalogo Material Icons)
@@ -357,8 +262,7 @@ npm run dev               # solo el servidor Node.js (sin Electron)
 git tag v1.0.3
 git push origin main --tags
 # → GitHub Actions (windows-latest) compila NSIS installer
-# → sube a GitHub Releases como draft
-# → publicar manualmente con: gh release edit v1.0.3 --draft=false
+# → lo sube a GitHub Releases y publica el release
 ```
 
 ## GitHub Actions (.github/workflows/release.yml)
@@ -416,8 +320,8 @@ directo en HTML/JS/backend.**
   los overlays (solo los ve el streamer armando OBS, nunca el espectador),
   contenido dinámico que viene del usuario (nombre de usuario, texto del
   chat).
-- `core/announce-texts.js` (avisos TTS de admin/promo) y `features/idioma/` (filtro de
-  idioma/script de voz) son sistemas **aparte**, ya cubren sus propios
+- `features/idioma/` (filtro de
+  idioma/script de voz) es un sistema **aparte**, ya cubre sus propios
   idiomas — no tocar ni confundir con el i18n de UI de arriba.
 - Antes de dar por terminada una función con texto nuevo: correr un
   script rápido que cuente claves hoja de los 10 JSON y confirme que
@@ -522,23 +426,9 @@ timeout, no ante 4xx); **backoff** de módulo (3 fallos seguidos → pausa
 5s→15s→60s, mientras falla rápido sin red; un éxito resetea). `generate.js`
 bufferea la respuesta (ya no `pipe`) y mapea el `code` de fallo a HTTP (`503` en
 backoff con `retryAfter`, `502` el resto). El warn `sonido.tts.respuesta_pequena`
-**ya no** se promueve a issue de GlitchTip (queda en la sección Logs) — era ruido
-en cada blip de rate-limit.
+queda solo en la sección Logs.
 
 **Por qué extraResources y no asar:** `gifts/` tiene 188 MB de PNGs. Meterlos en el asar los haría parte del bundle comprimido pero el asar tiene límites prácticos de tamaño y acceso. `extraResources` los deja en el sistema de archivos real, accesibles via `process.resourcesPath`.
-
-**Secrets embebidos en el instalador (webhook Discord, token telemetría) — riesgo aceptado:**
-`webhook-config.generated.json` / `telemetry-config.generated.json` se inyectan
-en build time (desde secrets de CI) y viajan dentro de `extraResources` —
-extraíbles por cualquiera que descompacte el instalador. Se evaluó moverlos
-detrás de un proxy/backend propio y se descartó: agrega infraestructura
-hosteada 24/7 solo para ocultar un webhook de baja severidad (spam de bug
-reports, no acceso a datos de usuarios). Mitigación real: rotación barata.
-Si se filtra el webhook — regenerar en Discord (Server Settings → Integrations
-→ Webhooks), actualizar el secret `DISCORD_BUG_REPORT_WEBHOOK` en GitHub
-Actions, cortar un nuevo release (`git tag vX.Y.Z && git push --tags`); el
-build viejo filtrado queda inútil apenas se rota. Igual para el token de
-telemetría vía `TELEMETRY_URL`/su secret correspondiente.
 
 **Kick — conexión directa desde Node (2026-08):** el bloqueo de Cloudflare que
 antes forzaba descartar Kick ya no aplica a `https://kick.com/api/v2/channels/{slug}`
@@ -615,41 +505,17 @@ interfaz/
 - GitHub: https://github.com/FastThunder5/FastTTS
 - Releases: https://github.com/FastThunder5/FastTTS/releases
 
-## Documentación del rebuild por dominios
-
-El backend actual es el resultado de un rebuild completo ejecutado en 14
-fases (Fase 0 a Fase 13). Documentos de diseño y ejecución, útiles como
-referencia histórica y para entender decisiones de arquitectura:
-
-- `plan-fases/00-EJECUCION-PROMPTS.md` — prompts usados para ejecutar cada fase.
-- `plan-fases/fase-NN-*.md` — spec de cada fase (alcance, contratos, criterios de aceptación).
-- `arquitectura-propuesta.md` — documento de diseño de la arquitectura por dominios.
-- `logging-errores-propuesta.md` — spec de logging (esquema de evento, eventos por dominio).
-- `mapa-funciones-actual.md` — inventario función-por-función del backend monolítico original (usado como checklist de paridad en la Fase 13 de cierre).
-
 ## Datos por cuenta
 
 Todo dato del streamer se guarda por `user.id`: renderer mediante
 `interfaz/src/nucleo/estado/datos-por-cuenta.js` y proceso principal mediante
 `core/account-data-path.js`. Sin sesión se usa `anonymous`; nunca reutilizar
 claves/rutas globales para datos de cuenta. Los datos de instalación (sesión,
-telemetría, logs y binarios) permanecen en `DATA_BASE`.
+logs y binarios) permanecen en `DATA_BASE`.
 
 La transición se anuncia como `account:changing` (flush y desconexión) y
 `account:changed` (contexto y recarga). Los dominios no importan auth: escuchan
-ese bus. `config.json`, `moderation.json`, uploads, soundpad, PortalView y la
-cache de identidad de telemetría son por cuenta; `installation-config.json`
+ese bus. `config.json`, `moderation.json`, uploads, soundpad y PortalView son por cuenta; `installation-config.json`
 conserva globales `subscriptionsEnabled` y los flags MCP. El renderer recarga
 la ventana tras un cambio efectivo de `user.id`, para no reutilizar caches,
 cola TTS ni estado visual de la cuenta anterior.
-
-## graphify
-
-
-This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
-
-Rules:
-- ALWAYS read graphify-out/GRAPH_REPORT.md before reading any source files, running grep/glob searches, or answering codebase questions. The graph is your primary map of the codebase.
-- IF graphify-out/wiki/index.md EXISTS, navigate it instead of reading raw files
-- For cross-module "how does X relate to Y" questions, prefer `graphify query "<question>"`, `graphify path "<A>" "<B>"`, or `graphify explain "<concept>"` over grep — these traverse the graph's EXTRACTED + INFERRED edges instead of scanning files
-- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).

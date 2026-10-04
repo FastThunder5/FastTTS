@@ -148,7 +148,6 @@ export function stopCurrentTTS({ clearQueue = false } = {}) {
 export function skipCurrentTTS() {
   const hadPending = activeAudio || ttsAbortController || isSpeaking;
   stopCurrentTTS({ clearQueue: false });
-  if (hadPending) window.electronAPI?.trackEvent('tts:skipped');
   showToast(hadPending ? t('toast.ttsSkipped') : t('toast.ttsNoActive'));
   if (!ttsPaused && ttsGlobalEnabled && speechQueue.length > 0) {
     if (skipPumpTimer) clearTimeout(skipPumpTimer);
@@ -255,7 +254,6 @@ export function speak(rawText, msgId, timestamp, voz = null) {
   if (!text || !String(text).trim()) return;
   if (speechQueue.length >= MAX_QUEUE_SIZE) {
     ttsDroppedCount++;
-    window.electronAPI?.trackEvent('tts:queue-overflow');
     updateQueueBadge();
     return;
   }
