@@ -4,9 +4,9 @@ const { autoUpdater } = require('electron-updater');
 const { dialog } = require('electron');
 
 function setupAutoUpdater({ app, bus, logger, getMainWindow, getTray, buildTrayMenu, onPendingVersion }) {
-  // Auto-actualizacion desactivada en este fork: bajaria la version oficial
-  // desde el GitHub del autor y pisaria estas modificaciones.
-  if (process.env.ENABLE_AUTO_UPDATE !== '1') return;
+  // Busca releases en FastThunder5/FastTTS (build.publish de package.json).
+  // DISABLE_AUTO_UPDATE=1 lo apaga, por ejemplo para probar un build local.
+  if (process.env.DISABLE_AUTO_UPDATE === '1') return;
   autoUpdater.autoDownload = true;
   autoUpdater.autoInstallOnAppQuit = true;
 
@@ -45,7 +45,7 @@ function setupAutoUpdater({ app, bus, logger, getMainWindow, getTray, buildTrayM
     // Fallback de dialogo nativo — garantizado sin importar el estado del preload/banner.
     dialog.showMessageBox({
       type: 'info',
-      title: 'TikLiveTTS — Actualización lista',
+      title: 'FastTTS — Actualización lista',
       message: `v${info.version} descargada y lista para instalar.`,
       detail: 'La app se reiniciará sola (no requiere reiniciar el PC).\n¿Instalar ahora?',
       buttons: ['Instalar ahora', 'Después'],
