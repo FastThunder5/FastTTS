@@ -1,6 +1,12 @@
 'use strict';
 
-const { WebcastPushConnection } = require('tiktok-live-connector');
+// tiktok-live-connector >=2.2 ya no exporta WebcastPushConnection desde la
+// raiz (quedo en el subpath /legacy) y el lockfile instala 2.5.0: sin este
+// fallback era undefined y TikTok fallaba siempre con "is not a constructor".
+const { WebcastPushConnection } = (() => {
+  const root = require('tiktok-live-connector');
+  return root.WebcastPushConnection ? root : require('tiktok-live-connector/legacy');
+})();
 const { MAX_RECONNECT_ATTEMPTS } = require('../state/channel-maps');
 const { cleanTiktokUsername } = require('./clean-username');
 const { cleanupAfterLastTikTokChannel } = require('./cleanup-after-last-channel');
