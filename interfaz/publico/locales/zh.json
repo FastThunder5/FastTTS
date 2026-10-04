@@ -365,6 +365,7 @@
     "shortcutCapturing": "点击此处并按键...",
     "noSavedChannels": "没有保存的频道。添加TikTok/Twitch/YouTube并使用全部连接。",
     "connectAllMsg": "全部连接：{parts}",
+    "connectAllFailed": "{platform} 未能连接：{error}",
     "onlyManualChannels": "只保存了手动频道",
     "connectionLost": "连接断开。请重新加载应用。",
     "twitchWaitingCode": "正在等待浏览器授权（代码 {code}）...",

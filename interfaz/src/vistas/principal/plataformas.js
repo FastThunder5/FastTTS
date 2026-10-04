@@ -199,6 +199,7 @@ async function connectSavedChannels() {
 
   let connected = 0;
   let failed = 0;
+  const failures = [];
   for (const { platform, entry } of targets) {
     try {
       const res = await fetch('/api/platforms/connect', {
@@ -213,9 +214,11 @@ async function connectSavedChannels() {
         connected++;
       } else {
         failed++;
+        failures.push({ platform, error: d.error || `HTTP ${res.status}` });
       }
     } catch (e) {
       failed++;
+      failures.push({ platform, error: e.message });
     }
   }
 
@@ -225,6 +228,10 @@ async function connectSavedChannels() {
   if (failed) parts.push(`${failed} fallidos`);
   if (manualCount) parts.push(`${manualCount} manual`);
   showToast(t('conn.connectAllMsg', { parts: parts.join(', ') }));
+  // Un toast por fallo con plataforma y motivo: antes solo se veia "1 fallidos".
+  for (const { platform, error } of failures) {
+    showToast(t('conn.connectAllFailed', { platform: PLATFORM_LABELS[platform] || platform, error }), 'error');
+  }
 }
 
 export async function toggleConnectAllChat() {

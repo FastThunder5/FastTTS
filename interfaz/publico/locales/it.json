@@ -365,6 +365,7 @@
     "shortcutCapturing": "Clicca qui e premi i tasti...",
     "noSavedChannels": "Nessun canale salvato. Aggiungi TikTok/Twitch/YouTube e usa Connetti tutto.",
     "connectAllMsg": "Connetti tutto: {parts}",
+    "connectAllFailed": "{platform} non si è connesso: {error}",
     "onlyManualChannels": "Solo canali manuali salvati",
     "connectionLost": "Connessione persa. Ricarica l'app.",
     "twitchWaitingCode": "In attesa di autorizzazione nel browser (codice {code})...",
