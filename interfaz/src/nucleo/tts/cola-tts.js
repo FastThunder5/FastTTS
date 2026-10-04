@@ -98,7 +98,7 @@ export function togglePauseTts() {
   if (btn) {
     btn.textContent = ttsPaused ? t('btn.resumeTTS') : t('btn.pauseTTS');
     btn.style.borderColor = ttsPaused ? '#3ecf8e' : 'var(--accent)';
-    btn.style.background = ttsPaused ? 'rgba(62,207,142,0.12)' : 'rgba(240,33,58,0.12)';
+    btn.style.background = ttsPaused ? 'rgba(62,207,142,0.12)' : 'rgba(47, 140, 255,0.12)';
     btn.style.color = ttsPaused ? '#3ecf8e' : 'var(--accent)';
   }
   if (ttsPaused) {
