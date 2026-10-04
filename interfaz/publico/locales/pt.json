@@ -89,7 +89,11 @@
   },
   "tts": {
     "on": "TTS Ligado",
-    "off": "TTS Desligado"
+    "off": "TTS Desligado",
+    "voiceGroupEdgeEs": "Microsoft Edge (natural) — Espanhol",
+    "voiceGroupEdgeOther": "Microsoft Edge (natural) — Outros idiomas",
+    "voiceGroupGoogleEs": "Google — Espanhol",
+    "voiceGroupGoogleOther": "Google — Outros idiomas"
   },
   "chatToggles": {
     "summaryPrefix": "Lê:",
@@ -870,7 +874,7 @@
     "introTitle": "Voz e áudio",
     "introDesc": "Aqui você configura a voz que lê o chat: idioma, velocidade, volume e quais mensagens são lidas de acordo com o idioma em que estão escritas.",
     "voiceTitle": "Seletor de voz",
-    "voiceDesc": "Escolha o idioma e sotaque da voz TTS. 13 opções (espanhol, inglês, português, francês, alemão, italiano, japonês, chinês, russo, coreano). Trocar a voz também afeta os filtros de idioma abaixo.",
+    "voiceDesc": "Escolha a voz TTS. As vozes do Microsoft Edge soam naturais e têm vários sotaques; as do Google são as clássicas. Se o Edge falhar, é usada a voz do Google do mesmo idioma. Trocar a voz também afeta os filtros de idioma abaixo.",
     "testTitle": "Testar voz",
     "testDesc": "Digite qualquer texto e clique em Testar para ouvir como soa a voz escolhida, sem precisar do chat conectado.",
     "rateTitle": "Velocidade",

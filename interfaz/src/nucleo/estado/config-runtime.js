@@ -19,6 +19,7 @@ import { t } from '../i18n/i18n.js';
 import { showToast } from '../../componentes/toast.js';
 import { syncTtsVoiceLang } from '../../vistas/principal/voces.js';
 import { aLineas, nombreParaTts } from '../tts/pronunciacion.js';
+import { idiomaDeVoz } from '../tts/idioma-de-voz.js';
 
 export let CHAT_TTS_MAX_LEN = 200;
 export let MAX_QUEUE_SIZE = 15;
@@ -100,7 +101,7 @@ export async function loadRuntimeConfig() {
     if (Number.isInteger(cfg.MAX_QUEUE_MSG) && cfg.MAX_QUEUE_MSG > 0) MAX_QUEUE_SIZE = cfg.MAX_QUEUE_MSG;
     // El cliente es la autoridad de su voz TTS: si el backend quedo con otro
     // ttsVoiceLang (patch viejo perdido, carrera de arranque), lo corrige.
-    if (appSettings.voice && cfg.ttsVoiceLang !== appSettings.voice) {
+    if (appSettings.voice && cfg.ttsVoiceLang !== idiomaDeVoz(appSettings.voice)) {
       syncTtsVoiceLang(appSettings.voice);
     }
     applyA11yConfig(cfg);

@@ -89,7 +89,11 @@
   },
   "tts": {
     "on": "TTS 开启",
-    "off": "TTS 关闭"
+    "off": "TTS 关闭",
+    "voiceGroupEdgeEs": "Microsoft Edge（自然语音）— 西班牙语",
+    "voiceGroupEdgeOther": "Microsoft Edge（自然语音）— 其他语言",
+    "voiceGroupGoogleEs": "Google — 西班牙语",
+    "voiceGroupGoogleOther": "Google — 其他语言"
   },
   "chatToggles": {
     "summaryPrefix": "朗读：",
@@ -870,7 +874,7 @@
     "introTitle": "语音与音频",
     "introDesc": "在这里设置朗读聊天的语音：语言、语速、音量，以及根据消息语言决定是否朗读。",
     "voiceTitle": "语音选择",
-    "voiceDesc": "选择 TTS 语音的语言和口音，共 13 种（西班牙语、英语、葡萄牙语、法语、德语、意大利语、日语、中文、俄语、韩语）。更改语音也会影响下方的语言过滤器。",
+    "voiceDesc": "选择 TTS 语音。Microsoft Edge 语音听起来自然，并有多种口音；Google 语音为经典语音。如果 Edge 不可用，将使用同一语言的 Google 语音。更改语音也会影响下方的语言过滤器。",
     "testTitle": "测试语音",
     "testDesc": "输入任意文字并点击“测试”即可听到所选语音的效果，无需连接聊天室。",
     "rateTitle": "语速",

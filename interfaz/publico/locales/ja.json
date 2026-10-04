@@ -89,7 +89,11 @@
   },
   "tts": {
     "on": "TTS オン",
-    "off": "TTS オフ"
+    "off": "TTS オフ",
+    "voiceGroupEdgeEs": "Microsoft Edge（自然な音声）— スペイン語",
+    "voiceGroupEdgeOther": "Microsoft Edge（自然な音声）— その他の言語",
+    "voiceGroupGoogleEs": "Google — スペイン語",
+    "voiceGroupGoogleOther": "Google — その他の言語"
   },
   "chatToggles": {
     "summaryPrefix": "読み上げ:",
@@ -870,7 +874,7 @@
     "introTitle": "音声とオーディオ",
     "introDesc": "チャットを読み上げる音声を設定します：言語、速度、音量、そしてどの言語のメッセージを読み上げるか。",
     "voiceTitle": "音声選択",
-    "voiceDesc": "TTS音声の言語とアクセントを選びます。13種類（スペイン語、英語、ポルトガル語、フランス語、ドイツ語、イタリア語、日本語、中国語、ロシア語、韓国語）。変更すると下の言語フィルターにも影響します。",
+    "voiceDesc": "TTS音声を選びます。Microsoft Edgeの音声は自然で、さまざまなアクセントがあります。Googleの音声は従来のものです。Edgeが使えない場合は同じ言語のGoogle音声が使われます。変更すると下の言語フィルターにも影響します。",
     "testTitle": "音声テスト",
     "testDesc": "好きなテキストを入力して「テスト」を押すと、チャットを接続しなくても選んだ音声を確認できます。",
     "rateTitle": "速度",

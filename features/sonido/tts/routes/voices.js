@@ -1,5 +1,7 @@
 'use strict';
 
+const { EDGE_VOICES } = require('../edge-voices');
+
 const GOOGLE_VOICES = [
   { id: 'es-MX', name: 'Español (México)', flag: 'MX' },
   { id: 'en', name: 'English (USA)', flag: 'US' },
@@ -16,7 +18,10 @@ const GOOGLE_VOICES = [
 ];
 
 function voices() {
-  return (_req, res) => res.json([...GOOGLE_VOICES]);
+  return (_req, res) => res.json([
+    ...GOOGLE_VOICES.map((v) => ({ ...v, lang: v.id, engine: 'google' })),
+    ...EDGE_VOICES,
+  ]);
 }
 
 module.exports = { voices };
