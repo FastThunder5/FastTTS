@@ -1,4 +1,5 @@
 'use strict';
+/* exported renderSidebar */
 
 // ── Sidebar: visibilidad + orden ─────────────────────────────────────────
 // No toca .view ni switchView() — solo style.display/style.order de los

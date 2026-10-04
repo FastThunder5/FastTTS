@@ -11,7 +11,7 @@ const MAX_ENTRIES = 100;
 function getLogs() {
   try {
     return JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
-  } catch (e) {
+  } catch {
     return [];
   }
 }
@@ -22,7 +22,7 @@ function addLog(level, source, message, data = null) {
     logs.push({ timestamp: new Date().toISOString(), level, source, message, data });
     if (logs.length > MAX_ENTRIES) logs.shift();
     localStorage.setItem(LOG_KEY, JSON.stringify(logs));
-  } catch (e) { /* localStorage no disponible; se pierde el log local, no es fatal */ }
+  } catch { /* localStorage no disponible; se pierde el log local, no es fatal */ }
 }
 
 export const logStorage = { addLog, getLogs };

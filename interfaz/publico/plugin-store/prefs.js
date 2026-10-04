@@ -1,4 +1,5 @@
 'use strict';
+/* exported loadSidebarPrefs */
 
 // ── localStorage: normalize/load/save de la preferencia de sidebar ──────
 // { order: [ids no-pinneados en orden], hidden: [ids no-pinneados ocultos] }
@@ -31,7 +32,7 @@ function loadSidebarPrefs() {
     const normalized = normalizeSidebarPrefs(raw);
     if (JSON.stringify(raw) !== JSON.stringify(normalized)) saveSidebarPrefs(normalized);
     return normalized;
-  } catch (e) {
+  } catch {
     return normalizeSidebarPrefs(null);
   }
 }

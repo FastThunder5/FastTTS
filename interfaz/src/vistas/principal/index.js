@@ -14,7 +14,6 @@
  * Ningun otro modulo deberia asignar cosas a window — todo pasa por aca.
  */
 import { paintRangeFill, iniciarPintadoDeRangos } from '../../componentes/campos-formulario.js';
-import { showToast } from '../../componentes/toast.js';
 import { iniciarCapturaErroresCliente } from '../../nucleo/log-storage.js';
 import { loadSettings, applySettings, appSettings } from '../../nucleo/estado/ajustes-app.js';
 import { loadRuntimeConfig } from '../../nucleo/estado/config-runtime.js';
@@ -30,7 +29,7 @@ import { switchView } from './vistas-router.js';
 import { copyToClipboard, showKnownIssuesNotice } from './utils-app.js';
 import { uploadBg, removeBg } from './subida-fondo.js';
 import {
-  buildOverlayUrl, updateOverlayUrl, onCfgChange, onChatPlatformChange, copyCfgUrl,
+  onCfgChange, onChatPlatformChange, copyCfgUrl,
   updateFollowerDisplay, testGiftAlert, testSocialAlert,
   updateSocialOverlayUrl, copySocialAlertUrl, testTopLikers,
 } from './configurador-overlays.js';
@@ -44,8 +43,8 @@ import {
 } from './atajos-teclado.js';
 import { setReadNonFollowers } from '../../nucleo/estado/config-runtime.js';
 import {
-  toggleVoiceDropdown, patchConfigSetting, syncTtsVoiceLang, toggleLangFilter,
-  toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector, updateConnectorChipState, selectVoice,
+  toggleVoiceDropdown, toggleLangFilter,
+  toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector, selectVoice,
   loadVoices, testVoice, iniciarCierreDropdownVoces,
 } from './voces.js';
 import { iniciarAjustesPronunciacion, toggleCleanNicks, toggleRandomVoicePerUser } from './pronunciacion-ajustes.js';

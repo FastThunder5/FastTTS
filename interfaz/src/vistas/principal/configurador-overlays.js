@@ -94,7 +94,7 @@ export async function testGiftAlert() {
     const data = await res.json();
     if (data.success) showToast(t('toast.testAlertSent').replace('{name}', data.giftName));
     else showToast(t('toast.testError'));
-  } catch (e) {
+  } catch {
     showToast(t('toast.testError'));
   }
 }
@@ -108,7 +108,7 @@ export async function testSocialAlert(eventType, platform) {
     const data = await res.json();
     if (data.success) showToast(t('toast.testSocialSent').replace('{type}', eventType).replace('{user}', data.user));
     else showToast(t('toast.testError'));
-  } catch (e) {
+  } catch {
     showToast(t('toast.testError'));
   }
 }
@@ -150,7 +150,7 @@ export async function testTopLikers() {
     const data = await res.json();
     if (data.success) showToast(t('toast.testLikesSent').replace('{count}', data.count));
     else showToast(t('toast.testError'));
-  } catch (e) {
+  } catch {
     showToast(t('toast.testError'));
   }
 }
