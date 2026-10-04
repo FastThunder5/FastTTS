@@ -49,6 +49,7 @@ import {
   loadVoices, testVoice, iniciarCierreDropdownVoces,
 } from './voces.js';
 import { iniciarAjustesPronunciacion, toggleCleanNicks, toggleRandomVoicePerUser } from './pronunciacion-ajustes.js';
+import { exportarRespaldo, elegirArchivoRespaldo, importarRespaldo } from './respaldo.js';
 import { escapeHtml, initChatScrollFollow, initSpeakingGoto, clearChatAndQueue } from './chat-ui.js';
 import {
   openDictLangModal, closeDictLangModal,
@@ -112,6 +113,7 @@ Object.assign(window, {
   // voces
   toggleVoiceDropdown, toggleLangFilter, toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector,
   toggleCleanNicks, toggleRandomVoicePerUser,
+  exportarRespaldo, elegirArchivoRespaldo, importarRespaldo,
   selectVoice, testVoice,
   // chat / tts
   clearChatAndQueue, skipCurrentTTS, togglePauseTts, toggleGlobalTTS,
