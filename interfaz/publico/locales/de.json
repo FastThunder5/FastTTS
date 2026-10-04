@@ -81,6 +81,8 @@
     "langFilterHint": "Ignoriert Chat-Nachrichten mit Zeichen, die nicht zur Sprache der aktiven Stimme passen (z. B. Chinesisch/Japanisch blockieren, wenn die Stimme Spanisch ist, und umgekehrt).",
     "dictFilter": "Nach Sprache filtern (Wörter)",
     "dictFilterHint": "Liest nur Nachrichten in der Sprache der aktiven Stimme oder in den zusätzlich erlaubten Sprachen. Unbekannte Wörter (Namen, Tippfehler) blockieren nicht.",
+    "cleanNicks": "Nutzernamen bereinigen",
+    "cleanNicksHint": "Entfernt Zahlen, Unterstriche und Verzierungen: „xX_Pedro_1234_Xx\" wird als „Pedro\" gelesen.",
     "readNonFollowers": "Nicht-Follower vorlesen"
   },
   "tts": {
@@ -176,6 +178,13 @@
     "clipsHistory": "Markierungsverlauf",
     "announceTplTitle": "Passe den Schluss der Ansagen an",
     "announceTplDesc": "Optional: Schreib, was nach dem Namen kommt. Die Ereignisdaten werden automatisch ergänzt; leer lassen für den Standardtext.",
+    "pronunciationTitle": "Aussprache-Wörterbuch",
+    "pronunciationDesc": "Ein Wort pro Zeile: Wort = wie es gelesen wird. Steht nur das Wort da, überspringt das TTS es.",
+    "pronunciationPlaceholder": "lol = laut gelacht",
+    "nickTitle": "Wie Namen gelesen werden",
+    "nickAliasesTitle": "Feste Spitznamen",
+    "nickAliasesDesc": "Ein Nutzer pro Zeile: Name im Chat = wie er gelesen werden soll.",
+    "nickAliasesPlaceholder": "xX_Pedro_Xx = Peter",
     "announceTplGift": "Nach einem Geschenk",
     "announceTplExGift": "hat alles gegeben",
     "announceTplJoin": "Nachdem jemand beitritt",
@@ -607,6 +616,7 @@
     "share": "{user} teilt den Live-Stream"
   },
   "toast": {
+    "pronunciationSaved": "Aussprache gespeichert",
     "portalTabLimit": "Maximal 6 Tabs im Browser",
     "portalFavoriteInvalid": "Ungültiger Name oder ungültige URL",
     "portalDownloadDone": "Download abgeschlossen: {filename}",

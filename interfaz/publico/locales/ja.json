@@ -81,6 +81,8 @@
     "langFilterHint": "現在の音声の言語に合わない文字を含むチャットメッセージを無視します（例：音声がスペイン語の場合、中国語・日本語はブロックされ、逆も同様です）。",
     "dictFilter": "言語で絞り込み（単語）",
     "dictFilterHint": "アクティブな音声の言語、または許可した追加言語で書かれたメッセージのみ読み上げます。未知の単語（名前、タイプミス）はブロックされません。",
+    "cleanNicks": "ユーザー名を整える",
+    "cleanNicksHint": "数字・アンダーバー・飾りを取り除きます：「xX_Pedro_1234_Xx」は「Pedro」と読みます。",
     "readNonFollowers": "非フォロワーも読む"
   },
   "tts": {
@@ -176,6 +178,13 @@
     "clipsHistory": "マーカー履歴",
     "announceTplTitle": "アナウンスの後半をカスタマイズ",
     "announceTplDesc": "任意：名前の後に読む言葉を入力してください。イベント情報は自動で追加され、空欄なら標準テキストが使われます。",
+    "pronunciationTitle": "読み方辞書",
+    "pronunciationDesc": "1行に1語：語 = 読み方。語だけを書くと TTS はその語を飛ばします。",
+    "pronunciationPlaceholder": "w = わら",
+    "nickTitle": "名前の読み方",
+    "nickAliasesTitle": "固定ニックネーム",
+    "nickAliasesDesc": "1行に1ユーザー：チャットでの名前 = 読ませたい名前。",
+    "nickAliasesPlaceholder": "xX_Pedro_Xx = ペドロ",
     "announceTplGift": "ギフトを受け取った後",
     "announceTplExGift": "奮発しました",
     "announceTplJoin": "誰かが入室した後",
@@ -607,6 +616,7 @@
     "share": "{user}さんが配信をシェアしています"
   },
   "toast": {
+    "pronunciationSaved": "読み方を保存しました",
     "portalTabLimit": "ブラウザは最大6タブまでです",
     "portalFavoriteInvalid": "名前またはURLが無効です",
     "portalDownloadDone": "ダウンロード完了: {filename}",

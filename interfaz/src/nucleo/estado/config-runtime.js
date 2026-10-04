@@ -18,6 +18,7 @@ import { appSettings, SETTINGS_KEY } from './ajustes-app.js';
 import { t } from '../i18n/i18n.js';
 import { showToast } from '../../componentes/toast.js';
 import { syncTtsVoiceLang } from '../../vistas/principal/voces.js';
+import { aLineas, nombreParaTts } from '../tts/pronunciacion.js';
 
 export let CHAT_TTS_MAX_LEN = 200;
 export let MAX_QUEUE_SIZE = 15;
@@ -26,6 +27,35 @@ export let langFilterEnabled = false;
 export let dictFilterEnabled = false;
 export let allowedExtraLangs = [];
 export let announceTemplates = {};
+
+// Diccionario de pronunciacion + nombres (config.json, por cuenta).
+export let ttsPronunciations = {};
+let ttsNickAliases = {};
+let ttsCleanNicks = true;
+
+/** Nombre de usuario tal como lo lee el TTS (apodo fijo o nick limpio). */
+export function nombreTts(nick) {
+  return nombreParaTts(nick, { alias: ttsNickAliases, limpiar: ttsCleanNicks });
+}
+
+function rellenarLista(id, mapa) {
+  const el = document.getElementById(id);
+  if (el && document.activeElement !== el) el.value = aLineas(mapa);
+}
+
+/** Hidrata estado + campos desde la config del servidor (arranque y cada config-updated). */
+export function applyPronunciacionConfig(cfg) {
+  if (cfg.ttsPronunciations && typeof cfg.ttsPronunciations === 'object') ttsPronunciations = cfg.ttsPronunciations;
+  if (cfg.ttsNickAliases && typeof cfg.ttsNickAliases === 'object') ttsNickAliases = cfg.ttsNickAliases;
+  if (typeof cfg.ttsCleanNicks === 'boolean') ttsCleanNicks = cfg.ttsCleanNicks;
+  rellenarLista('ttsPronunciationsInput', ttsPronunciations);
+  rellenarLista('ttsNickAliasesInput', ttsNickAliases);
+  const cb = document.getElementById('ttsCleanNicksToggle');
+  if (cb) {
+    cb.checked = ttsCleanNicks;
+    cb.closest('.toggle-chip')?.classList.toggle('active', ttsCleanNicks);
+  }
+}
 
 export function applyAnnounceTemplates(cfg) {
   announceTemplates = (cfg && cfg.announceTemplates && typeof cfg.announceTemplates === 'object') ? cfg.announceTemplates : {};
@@ -76,6 +106,7 @@ export async function loadRuntimeConfig() {
     applyReadNonFollowers(cfg);
     applyFiltroIdiomaConfig(cfg);
     applyAnnounceTemplates(cfg);
+    applyPronunciacionConfig(cfg);
   } catch (e) { /* config no disponible aun; se reintenta en el proximo ciclo */ }
 }
 

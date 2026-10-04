@@ -27,6 +27,15 @@ const DEFAULT_CONFIG = {
   a11yUiFontScale: 1,
   a11yHighContrast: false,
   ttsSlowSpeech: false,
+  // Diccionario de pronunciacion (palabra -> como se lee; '' = se omite) y
+  // apodos fijos por nick. Ver interfaz/src/nucleo/tts/pronunciacion.js.
+  ttsPronunciations: {
+    xd: 'equis de', q: 'que', k: 'que', xq: 'por qué', pq: 'porque', tqm: 'te quiero mucho',
+    tkm: 'te quiero mucho', ntp: 'no te preocupes', bn: 'bien', grax: 'gracias', pls: 'por favor', plis: 'por favor',
+  },
+  ttsNickAliases: {},
+  // true = "xX_Pedro_1234_Xx" se lee "Pedro" (sin numeros, guiones ni adornos).
+  ttsCleanNicks: true,
   // Plantillas propias de avisos ({usuario}, {regalo}, ...) por evento; vacio = texto estandar.
   announceTemplates: {},
   // true = el TTS lee a todo el mundo (comportamiento historico).

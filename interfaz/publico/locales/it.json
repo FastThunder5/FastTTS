@@ -81,6 +81,8 @@
     "langFilterHint": "Ignora i messaggi in chat con caratteri che non corrispondono alla lingua della voce attiva (es: blocca cinese/giapponese se la voce è in Spagnolo, e viceversa).",
     "dictFilter": "Filtra per lingua (parole)",
     "dictFilterHint": "Legge solo i messaggi scritti nella lingua della voce attiva o nelle lingue extra che consenti. Le parole sconosciute (nomi, errori di battitura) non bloccano.",
+    "cleanNicks": "Pulisci i nomi utente",
+    "cleanNicksHint": "Rimuove numeri, trattini e decorazioni: \"xX_Pedro_1234_Xx\" viene letto \"Pedro\".",
     "readNonFollowers": "Leggi i non follower"
   },
   "tts": {
@@ -176,6 +178,13 @@
     "clipsHistory": "Cronologia marcatori",
     "announceTplTitle": "Personalizza la parte finale degli annunci",
     "announceTplDesc": "Facoltativo: scrivi ciò che va dopo il nome. I dati dell'evento si aggiungono automaticamente; lascia vuoto per usare il testo standard.",
+    "pronunciationTitle": "Dizionario di pronuncia",
+    "pronunciationDesc": "Una parola per riga: parola = come si legge. Se lasci solo la parola, il TTS la salta.",
+    "pronunciationPlaceholder": "xd = ics di",
+    "nickTitle": "Come vengono letti i nomi",
+    "nickAliasesTitle": "Soprannomi fissi",
+    "nickAliasesDesc": "Un utente per riga: nome in chat = come vuoi che venga letto.",
+    "nickAliasesPlaceholder": "xX_Pedro_Xx = Pietro",
     "announceTplGift": "Dopo aver ricevuto un regalo",
     "announceTplExGift": "ha fatto il colpaccio",
     "announceTplJoin": "Dopo l'arrivo di qualcuno",
@@ -607,6 +616,7 @@
     "share": "{user} sta condividendo la diretta"
   },
   "toast": {
+    "pronunciationSaved": "Pronuncia salvata",
     "portalTabLimit": "Massimo 6 schede nel browser",
     "portalFavoriteInvalid": "Nome o URL non validi",
     "portalDownloadDone": "Download completato: {filename}",

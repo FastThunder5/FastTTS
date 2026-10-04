@@ -836,6 +836,22 @@
             <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;" data-i18n="settings.announceTplDesc">Opcional: escribe lo que va después del nombre. Los datos se añaden solos; si lo dejas vacío, se usa el texto estándar.</div>
             <div id="announceTplFields"></div>
           </div>
+          <div class="setting-group" id="voicePronunciationGroup">
+            <label for="ttsPronunciationsInput"><img class="icon-inline" src="icons/spellcheck.svg" alt=""> <span data-i18n="settings.pronunciationTitle">Diccionario de pronunciación</span></label>
+            <div class="setting-hint" data-i18n="settings.pronunciationDesc">Una palabra por línea: palabra = cómo se lee. Si dejas solo la palabra, el TTS la salta.</div>
+            <textarea id="ttsPronunciationsInput" rows="6" spellcheck="false" data-i18n-placeholder="settings.pronunciationPlaceholder" placeholder="xd = equis de"></textarea>
+          </div>
+          <div class="setting-group" id="voiceNickGroup">
+            <label><img class="icon-inline" src="icons/record_voice_over.svg" alt=""> <span data-i18n="settings.nickTitle">Cómo se leen los nombres</span></label>
+            <label class="toggle-chip" style="width:max-content;">
+              <input type="checkbox" id="ttsCleanNicksToggle" onchange="toggleCleanNicks(this)" />
+              <span data-i18n="toggle.cleanNicks">Limpiar nombres de usuario</span>
+            </label>
+            <div class="setting-hint" data-i18n="toggle.cleanNicksHint">Quita números, guiones y adornos: "xX_Pedro_1234_Xx" se lee "Pedro".</div>
+            <label for="ttsNickAliasesInput" class="setting-sublabel" data-i18n="settings.nickAliasesTitle">Apodos fijos</label>
+            <div class="setting-hint" data-i18n="settings.nickAliasesDesc">Un usuario por línea: nombre en el chat = cómo quieres que lo lea.</div>
+            <textarea id="ttsNickAliasesInput" rows="4" spellcheck="false" data-i18n-placeholder="settings.nickAliasesPlaceholder" placeholder="xX_Pedro_Xx = Pedrito"></textarea>
+          </div>
         </div>
       </div>
 
