@@ -46,6 +46,7 @@ const CONFIG_VALIDATORS = {
   playlistEnabled: (v) => typeof v === 'boolean',
   langFilterEnabled: (v) => typeof v === 'boolean',
   dictFilterEnabled: (v) => typeof v === 'boolean',
+  linkFilterEnabled: (v) => typeof v === 'boolean',
   allowedExtraLangs: (v) => Array.isArray(v) && v.length <= DICT_FILTER_LANGS.length
     && v.every((x) => DICT_FILTER_LANGS.includes(x)),
   ttsVoiceLang: (v) => GOOGLE_TTS_LANGS.has(v),

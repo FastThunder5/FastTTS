@@ -83,6 +83,8 @@
     "dictFilterHint": "Legge solo i messaggi scritti nella lingua della voce attiva o nelle lingue extra che consenti. Le parole sconosciute (nomi, errori di battitura) non bloccano.",
     "cleanNicks": "Pulisci i nomi utente",
     "cleanNicksHint": "Rimuove numeri, trattini e decorazioni: \"xX_Pedro_1234_Xx\" viene letto \"Pedro\".",
+    "linkFilter": "Ignora i messaggi con link",
+    "linkFilterHint": "Non legge né mostra i messaggi che contengono un link (http, www o qualcosa.com). Ferma i bot che promuovono follower o spettatori.",
     "readNonFollowers": "Leggi i non follower"
   },
   "tts": {

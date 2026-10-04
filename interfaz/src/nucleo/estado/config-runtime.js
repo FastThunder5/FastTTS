@@ -25,6 +25,7 @@ export let MAX_QUEUE_SIZE = 15;
 
 export let langFilterEnabled = false;
 export let dictFilterEnabled = false;
+export let linkFilterEnabled = true;
 export let allowedExtraLangs = [];
 export let announceTemplates = {};
 
@@ -117,6 +118,7 @@ export async function loadRuntimeConfig() {
 export function applyFiltroIdiomaConfig(cfg) {
   langFilterEnabled = !!cfg.langFilterEnabled;
   dictFilterEnabled = !!cfg.dictFilterEnabled;
+  linkFilterEnabled = cfg.linkFilterEnabled !== false;
   allowedExtraLangs = Array.isArray(cfg.allowedExtraLangs) ? cfg.allowedExtraLangs : [];
 
   const langFilterCb = document.getElementById('langFilterToggle');
@@ -128,6 +130,11 @@ export function applyFiltroIdiomaConfig(cfg) {
   if (dictFilterCb) {
     dictFilterCb.checked = dictFilterEnabled;
     dictFilterCb.closest('.toggle-chip')?.classList.toggle('active', dictFilterEnabled);
+  }
+  const linkFilterCb = document.getElementById('linkFilterToggle');
+  if (linkFilterCb) {
+    linkFilterCb.checked = linkFilterEnabled;
+    linkFilterCb.closest('.toggle-chip')?.classList.toggle('active', linkFilterEnabled);
   }
 }
 
@@ -145,6 +152,11 @@ export function setLangFilterEnabled(enabled) {
 export function setDictFilterEnabled(enabled) {
   dictFilterEnabled = !!enabled;
   patchFiltroIdioma({ dictFilterEnabled });
+}
+
+export function setLinkFilterEnabled(enabled) {
+  linkFilterEnabled = !!enabled;
+  patchFiltroIdioma({ linkFilterEnabled });
 }
 
 export function setAllowedExtraLang(lang, enabled) {

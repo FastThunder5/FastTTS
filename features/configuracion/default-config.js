@@ -21,6 +21,7 @@ const DEFAULT_CONFIG = {
   playlistEnabled: false,
   langFilterEnabled: false,
   dictFilterEnabled: false,
+  linkFilterEnabled: true,
   allowedExtraLangs: [],
   ttsVoiceLang: 'es-MX',
   a11yReduceMotion: false,

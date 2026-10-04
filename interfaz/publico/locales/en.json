@@ -85,6 +85,8 @@
     "dictFilterHint": "Only reads messages written in the active voice language or in the extra languages you allow. Unknown words (names, typos) never block.",
     "cleanNicks": "Clean up usernames",
     "cleanNicksHint": "Removes numbers, underscores and decorations: \"xX_Pedro_1234_Xx\" is read as \"Pedro\".",
+    "linkFilter": "Ignore messages with links",
+    "linkFilterHint": "Doesn't read or show messages that contain a link (http, www or something.com). Stops bots that promote followers or viewers.",
     "readNonFollowers": "Read non-followers"
   },
   "tts": {

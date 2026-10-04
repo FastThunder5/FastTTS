@@ -83,6 +83,8 @@
     "dictFilterHint": "アクティブな音声の言語、または許可した追加言語で書かれたメッセージのみ読み上げます。未知の単語（名前、タイプミス）はブロックされません。",
     "cleanNicks": "ユーザー名を整える",
     "cleanNicksHint": "数字・アンダーバー・飾りを取り除きます：「xX_Pedro_1234_Xx」は「Pedro」と読みます。",
+    "linkFilter": "リンクを含むメッセージを無視",
+    "linkFilterHint": "リンク（http、www、xxx.com）を含むメッセージを読み上げず表示もしません。フォロワーや視聴者を宣伝するボットを防ぎます。",
     "readNonFollowers": "非フォロワーも読む"
   },
   "tts": {

@@ -10,6 +10,7 @@ const STAGE_MOTIVO = {
   length: 'longitud',
   repeatedChar: 'char-repetido',
   blockedWord: 'palabra-bloqueada',
+  link: 'enlace',
   script: 'script',
   dict: 'dict',
 };

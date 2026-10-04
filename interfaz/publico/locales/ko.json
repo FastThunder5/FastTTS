@@ -83,6 +83,8 @@
     "dictFilterHint": "활성 음성 언어 또는 허용한 추가 언어로 작성된 메시지만 읽습니다. 알 수 없는 단어(이름, 오타)는 차단되지 않습니다.",
     "cleanNicks": "사용자 이름 정리",
     "cleanNicksHint": "숫자, 밑줄, 장식을 제거합니다: \"xX_Pedro_1234_Xx\"는 \"Pedro\"로 읽습니다.",
+    "linkFilter": "링크가 포함된 메시지 무시",
+    "linkFilterHint": "링크(http, www 또는 xxx.com)가 포함된 메시지는 읽거나 표시하지 않습니다. 팔로워나 시청자를 홍보하는 봇을 막습니다.",
     "readNonFollowers": "비팔로워도 읽기"
   },
   "tts": {

@@ -45,7 +45,7 @@ import {
 import { setReadNonFollowers } from '../../nucleo/estado/config-runtime.js';
 import {
   toggleVoiceDropdown, patchConfigSetting, syncTtsVoiceLang, toggleLangFilter,
-  toggleDictFilter, toggleSayUsernameConnector, updateConnectorChipState, selectVoice,
+  toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector, updateConnectorChipState, selectVoice,
   loadVoices, testVoice, iniciarCierreDropdownVoces,
 } from './voces.js';
 import { iniciarAjustesPronunciacion, toggleCleanNicks } from './pronunciacion-ajustes.js';
@@ -110,7 +110,7 @@ Object.assign(window, {
   // config runtime
   setReadNonFollowers,
   // voces
-  toggleVoiceDropdown, toggleLangFilter, toggleDictFilter, toggleSayUsernameConnector,
+  toggleVoiceDropdown, toggleLangFilter, toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector,
   toggleCleanNicks,
   selectVoice, testVoice,
   // chat / tts

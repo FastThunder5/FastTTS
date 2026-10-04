@@ -83,6 +83,8 @@
     "dictFilterHint": "Ne lit que les messages écrits dans la langue de la voix active ou dans les langues supplémentaires autorisées. Les mots inconnus (noms, fautes de frappe) ne bloquent pas.",
     "cleanNicks": "Nettoyer les noms d'utilisateur",
     "cleanNicksHint": "Retire chiffres, tirets et décorations : « xX_Pedro_1234_Xx » est lu « Pedro ».",
+    "linkFilter": "Ignorer les messages avec des liens",
+    "linkFilterHint": "Ne lit ni n'affiche les messages contenant un lien (http, www ou quelquechose.com). Bloque les bots qui vendent des abonnés ou des viewers.",
     "readNonFollowers": "Lire les non-abonnés"
   },
   "tts": {
