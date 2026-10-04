@@ -3,6 +3,7 @@ import { setLangFilterEnabled, setDictFilterEnabled, setLinkFilterEnabled } from
 import { t, tErr } from '../../nucleo/i18n/i18n.js';
 import { showToast } from '../../componentes/toast.js';
 import { playAudioBlob } from '../../nucleo/tts/cola-tts.js';
+import { idiomaDeVoz } from '../../nucleo/tts/idioma-de-voz.js';
 
 let availableVoices = [];
 let selectedVoice = null;
@@ -51,7 +52,7 @@ export function patchConfigSetting(patch) {
 }
 
 export function syncTtsVoiceLang(id) {
-  patchConfigSetting({ ttsVoiceLang: id });
+  patchConfigSetting({ ttsVoiceLang: idiomaDeVoz(id) });
 }
 
 // langFilterEnabled/dictFilterEnabled ya no pasan por appSettings/localStorage
@@ -110,11 +111,12 @@ export async function loadVoices() {
     availableVoices = data;
     voiceDropdownMenu.innerHTML = '';
 
-    const addGroup = (label, voices) => {
+    const addGroup = (labelKey, voices) => {
       if (!voices.length) return;
       const grpLabel = document.createElement('div');
       grpLabel.className = 'voice-group-label';
-      grpLabel.textContent = label;
+      grpLabel.dataset.i18n = labelKey; // se re-traduce cuando termina de cargar el idioma
+      grpLabel.textContent = t(labelKey);
       voiceDropdownMenu.appendChild(grpLabel);
       voices.forEach((v) => {
         const opt = document.createElement('div');
@@ -126,8 +128,12 @@ export async function loadVoices() {
       });
     };
 
-    addGroup('Google — Español', availableVoices.filter((v) => v.id.startsWith('es')));
-    addGroup('Google — Otros idiomas', availableVoices.filter((v) => !v.id.startsWith('es')));
+    const esEdge = (v) => v.engine === 'edge';
+    const esEspanol = (v) => idiomaDeVoz(v.id) === 'es-MX';
+    addGroup('tts.voiceGroupEdgeEs', availableVoices.filter((v) => esEdge(v) && esEspanol(v)));
+    addGroup('tts.voiceGroupEdgeOther', availableVoices.filter((v) => esEdge(v) && !esEspanol(v)));
+    addGroup('tts.voiceGroupGoogleEs', availableVoices.filter((v) => !esEdge(v) && esEspanol(v)));
+    addGroup('tts.voiceGroupGoogleOther', availableVoices.filter((v) => !esEdge(v) && !esEspanol(v)));
 
     const savedVoice = appSettings.voice;
     const found = savedVoice && availableVoices.find((v) => v.id === savedVoice);
@@ -135,7 +141,10 @@ export async function loadVoices() {
       updateVoiceDisplay(found);
       selectedVoice = savedVoice;
     } else {
-      const firstEs = availableVoices.find((v) => v.id.startsWith('es'));
+      // Sin voz guardada (instalacion nueva) arranca con la primera voz natural
+      // de Edge en español; si no hay, la de Google.
+      const firstEs = availableVoices.find((v) => v.engine === 'edge' && idiomaDeVoz(v.id) === 'es-MX')
+        || availableVoices.find((v) => v.id.startsWith('es'));
       if (firstEs) {
         updateVoiceDisplay(firstEs);
         selectedVoice = firstEs.id;

@@ -23,12 +23,15 @@ const zlib = require('zlib');
 const gTTS = require('google-tts-api');
 const { DATA_BASE } = require('../../../core/paths');
 const { GOOGLE_TTS_LANGS } = require('./langs');
+const { isEdgeVoice, edgeVoiceName, baseLangOfVoice } = require('./edge-voices');
+const edgeTts = require('./edge-tts'); // objeto (no destructuring) para poder stubearlo en tests
 
 const CACHE_DIR = path.join(DATA_BASE, 'tts-cache');
 const CACHE_MAX_FILES = 600;         // techo antes de podar
 const CACHE_PRUNE_TO = 450;          // a cuanto baja al podar
 const MIN_AUDIO_BYTES = 1024;        // menos que esto = respuesta vacia/basura
 const MAX_GOOGLE_CHARS = 200;        // limite real (no configurable) de google-tts-api#getAudioUrl; mas que esto tira RangeError
+const MAX_EDGE_CHARS = 1000;         // Edge acepta mucho mas; tope de seguridad
 const MAX_ATTEMPTS = 3;              // 1 intento + 2 reintentos
 const RETRY_DELAY_MS = 400;
 const HTTP_TIMEOUT_MS = 15000;
@@ -37,6 +40,11 @@ const HTTP_TIMEOUT_MS = 15000;
 const BACKOFF_STEPS_MS = [5000, 15000, 60000];
 const BACKOFF_AFTER_FAILS = 3;
 const backoff = { fallosSeguidos: 0, pausadoHasta: 0 };
+
+// Edge: si falla en serie se deja de intentar un rato y se usa Google directo.
+const EDGE_PAUSA_MS = 60000;
+const EDGE_FALLOS_PARA_PAUSA = 3;
+const edgeBackoff = { fallosSeguidos: 0, pausadoHasta: 0 };
 
 function esperar(ms) {
   return new Promise((r) => setTimeout(r, ms));
@@ -166,8 +174,8 @@ async function fetchTtsAudio({ text, voice = 'es', slow = false, logger = null, 
   // google-tts-api tira "text should be a string" si le llega no-string; algo
   // (mensaje mal normalizado, promo con var sin resolver, payload móvil/MCP)
   // manda undefined/null/numero/objeto de vez en cuando. Coerce + rechazo limpio.
-  const clean = (typeof text === 'string' ? text.trim() : '').slice(0, MAX_GOOGLE_CHARS);
-  if (!clean) {
+  const trimmed = typeof text === 'string' ? text.trim() : '';
+  if (!trimmed) {
     if (logger) {
       const tipo = text === null ? 'null' : typeof text;
       logger.log(
@@ -180,6 +188,14 @@ async function fetchTtsAudio({ text, voice = 'es', slow = false, logger = null, 
     throw { code: 'EMPTY_INPUT' };
   }
 
+  // Voz de Edge: si falla, cae a la voz de Google del mismo idioma.
+  if (isEdgeVoice(voice)) {
+    const edge = await fetchEdgeAudio({ text: trimmed.slice(0, MAX_EDGE_CHARS), voice, slow, logger, signal });
+    if (edge) return edge;
+    voice = baseLangOfVoice(voice);
+  }
+
+  const clean = trimmed.slice(0, MAX_GOOGLE_CHARS);
   const lang = GOOGLE_TTS_LANGS.has(voice) ? voice : 'es';
   const clave = claveCache(clean, lang, slow);
 
@@ -233,10 +249,40 @@ async function fetchTtsAudio({ text, voice = 'es', slow = false, logger = null, 
   throw ultimoError || { code: 'DESCONOCIDO' };
 }
 
+// Devuelve { buffer, cached } o null si Edge no esta disponible (el caller
+// usa Google). Solo un skip del cliente (ABORTED) se propaga como error.
+async function fetchEdgeAudio({ text, voice, slow, logger, signal }) {
+  const clave = claveCache(text, voice, slow);
+  const enCache = leerCache(clave);
+  if (enCache) return { buffer: enCache, cached: true };
+  if (Date.now() < edgeBackoff.pausadoHasta) return null;
+
+  try {
+    const buffer = await edgeTts.synthesizeEdge({ text, voiceName: edgeVoiceName(voice), slow, signal });
+    if (buffer.length < MIN_AUDIO_BYTES) throw { code: 'EMPTY', len: buffer.length };
+    edgeBackoff.fallosSeguidos = 0;
+    edgeBackoff.pausadoHasta = 0;
+    escribirCache(clave, buffer);
+    return { buffer, cached: false };
+  } catch (err) {
+    if (err && err.code === 'ABORTED') throw err;
+    edgeBackoff.fallosSeguidos++;
+    if (edgeBackoff.fallosSeguidos >= EDGE_FALLOS_PARA_PAUSA) edgeBackoff.pausadoHasta = Date.now() + EDGE_PAUSA_MS;
+    if (logger) logger.log(
+      'warn', 'sonido', 'sonido/tts/fetch-audio.js#fetchEdgeAudio', 'sonido.tts.edge_fallo',
+      `Voz de Edge no disponible (${(err && err.code) || 'DESCONOCIDO'}), se usa Google`,
+      { voice, code: err && err.code, status: err && err.status, fallosSeguidos: edgeBackoff.fallosSeguidos }
+    );
+    return null;
+  }
+}
+
 // Para tests / diagnostico.
 function _resetBackoff() {
   backoff.fallosSeguidos = 0;
   backoff.pausadoHasta = 0;
+  edgeBackoff.fallosSeguidos = 0;
+  edgeBackoff.pausadoHasta = 0;
 }
 
-module.exports = { fetchTtsAudio, claveCache, CACHE_DIR, _resetBackoff, _backoff: backoff };
+module.exports = { fetchTtsAudio, claveCache, CACHE_DIR, _resetBackoff, _backoff: backoff, _edgeBackoff: edgeBackoff };

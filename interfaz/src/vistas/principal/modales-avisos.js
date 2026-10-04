@@ -1,4 +1,5 @@
 import { appSettings } from '../../nucleo/estado/ajustes-app.js';
+import { idiomaDeVoz } from '../../nucleo/tts/idioma-de-voz.js';
 import { allowedExtraLangs, setAllowedExtraLang as setAllowedExtraLangRemoto } from '../../nucleo/estado/config-runtime.js';
 import { t } from '../../nucleo/i18n/i18n.js';
 import { switchView } from './vistas-router.js';
@@ -26,7 +27,7 @@ const DEFAULT_CONNECTOR_WORD = 'says:';
 
 export function getSayUsernameConnector() {
   if (!appSettings.sayUsernameConnector) return null;
-  return SAY_USERNAME_CONNECTOR_WORD[appSettings.voice] || DEFAULT_CONNECTOR_WORD;
+  return SAY_USERNAME_CONNECTOR_WORD[idiomaDeVoz(appSettings.voice)] || DEFAULT_CONNECTOR_WORD;
 }
 
 // Modal "Idiomas permitidos" (filtro por diccionario de palabras). Espejo
@@ -46,7 +47,7 @@ export function closeDictLangModal(e) {
 }
 
 function renderDictLangModal() {
-  const voiceLang = VOICE_TO_DICT_LANG_UI[appSettings.voice] || null;
+  const voiceLang = VOICE_TO_DICT_LANG_UI[idiomaDeVoz(appSettings.voice)] || null;
   const list = document.getElementById('dictLangList');
   const na = document.getElementById('dictLangNA');
   list.innerHTML = '';

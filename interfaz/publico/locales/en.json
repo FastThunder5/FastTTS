@@ -91,7 +91,11 @@
   },
   "tts": {
     "on": "TTS On",
-    "off": "TTS Off"
+    "off": "TTS Off",
+    "voiceGroupEdgeEs": "Microsoft Edge (natural) — Spanish",
+    "voiceGroupEdgeOther": "Microsoft Edge (natural) — Other languages",
+    "voiceGroupGoogleEs": "Google — Spanish",
+    "voiceGroupGoogleOther": "Google — Other languages"
   },
   "chatToggles": {
     "summaryPrefix": "Reading:",
@@ -901,7 +905,7 @@
     "introTitle": "Voice & Audio",
     "introDesc": "Set up the voice that reads chat: language, speed, volume, and which messages get read based on their language.",
     "voiceTitle": "Voice selector",
-    "voiceDesc": "Pick the language and accent for the TTS voice. 13 options (Spanish, English, Portuguese, French, German, Italian, Japanese, Chinese, Russian, Korean). Changing it also affects the language filters below.",
+    "voiceDesc": "Pick the TTS voice. Microsoft Edge voices sound natural and come in several accents; Google voices are the classic ones. If Edge fails, the Google voice of the same language is used. Changing it also affects the language filters below.",
     "testTitle": "Test voice",
     "testDesc": "Type any text and hit Test to hear how the selected voice sounds, no chat connection needed.",
     "rateTitle": "Speed",
