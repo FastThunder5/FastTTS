@@ -365,6 +365,7 @@
     "shortcutCapturing": "ここをクリックしてキーを押してください...",
     "noSavedChannels": "保存されたチャンネルがありません。TikTok/Twitch/YouTubeを追加して全て接続を使ってください。",
     "connectAllMsg": "全て接続: {parts}",
+    "connectAllFailed": "{platform} に接続できませんでした: {error}",
     "onlyManualChannels": "手動チャンネルのみ保存されています",
     "connectionLost": "接続が切断されました。アプリをリロードしてください。",
     "twitchWaitingCode": "ブラウザでの認証を待っています（コード {code}）...",

@@ -365,6 +365,7 @@
     "shortcutCapturing": "여기를 클릭하고 키를 누르세요...",
     "noSavedChannels": "저장된 채널이 없습니다. TikTok/Twitch/YouTube를 추가하고 모두 연결을 사용하세요.",
     "connectAllMsg": "모두 연결: {parts}",
+    "connectAllFailed": "{platform} 연결 실패: {error}",
     "onlyManualChannels": "수동 채널만 저장됨",
     "connectionLost": "연결이 끊겼습니다. 앱을 다시 로드하세요.",
     "twitchWaitingCode": "브라우저에서 인증을 기다리는 중 (코드 {code})...",

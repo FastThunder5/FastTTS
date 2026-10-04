@@ -365,6 +365,7 @@
     "shortcutCapturing": "Hier klicken und Tasten drücken...",
     "noSavedChannels": "Keine gespeicherten Kanäle. Füge TikTok/Twitch/YouTube hinzu und nutze Alles verbinden.",
     "connectAllMsg": "Alles verbinden: {parts}",
+    "connectAllFailed": "{platform} wurde nicht verbunden: {error}",
     "onlyManualChannels": "Nur manuelle Kanäle gespeichert",
     "connectionLost": "Verbindung verloren. App neu laden.",
     "twitchWaitingCode": "Warte auf Autorisierung im Browser (Code {code})...",

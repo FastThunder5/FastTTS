@@ -365,6 +365,7 @@
     "shortcutCapturing": "Нажмите здесь и нажмите клавиши...",
     "noSavedChannels": "Нет сохранённых каналов. Добавьте TikTok/Twitch/YouTube и используйте Подключить всё.",
     "connectAllMsg": "Подключить всё: {parts}",
+    "connectAllFailed": "{platform} не подключился: {error}",
     "onlyManualChannels": "Сохранены только ручные каналы",
     "connectionLost": "Соединение потеряно. Перезагрузите приложение.",
     "twitchWaitingCode": "Ожидание авторизации в браузере (код {code})...",
