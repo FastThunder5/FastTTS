@@ -114,6 +114,17 @@ function handleMessage(data) {
       break;
     }
 
+    // Respuesta del bot musical a !cancion / !cola / !quitar / !skip
+    // (features/sonido/musica/handle-chat-command.js): se arma en el idioma de la UI.
+    case 'bot-reply': {
+      const botMsgId = nuevoMsgId();
+      const botTxt = t(`botReply.${data.key}`, data.vars || {});
+      if (botTxt === `botReply.${data.key}`) break;
+      addSystemMsg(botTxt, 'admin', botMsgId, { iconSrc: 'icons/music_note.svg' });
+      speak(botTxt, botMsgId, data.timestamp);
+      break;
+    }
+
     case 'promo-announce': {
       const promoMsgId = nuevoMsgId();
       const voiceSelect = document.getElementById('voiceSelect');

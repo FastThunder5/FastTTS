@@ -20,7 +20,7 @@ const mcpRegistry = require('../../core/contracts/mcp-registry');
 const CONFIG_KEYS_PUBLICAS = [
   'ttsVoiceLang', 'ttsSlowSpeech', 'ttsPronunciations', 'ttsNickAliases', 'ttsCleanNicks', 'ttsUserVoices', 'ttsRandomVoicePerUser', 'ttsReadNonFollowers', 'langFilterEnabled', 'dictFilterEnabled', 'linkFilterEnabled',
   'allowedExtraLangs', 'rateLimitEnabled', 'TTS_RATE_LIMIT_MAX', 'TTS_RATE_WINDOW_MS', 'TTS_MAX_CHARS',
-  'MAX_QUEUE_MSG', 'LIKE_DEBOUNCE_MS', 'musicEnabled', 'musicVolume', 'musicMaxQueue', 'musicUserCooldownMs',
+  'MAX_QUEUE_MSG', 'LIKE_DEBOUNCE_MS', 'musicEnabled', 'musicVolume', 'musicMaxQueue', 'musicUserCooldownMs', 'musicSkipVotes',
   'playlistEnabled', 'playlistShuffle',
 ];
 

@@ -72,7 +72,7 @@ import {
 import { doInstallUpdate, iniciarEventosElectron } from './eventos-electron.js';
 import {
   musicRemoveFromQueue, musicSkip, musicTogglePause, musicSetEnabled, musicSetVolume,
-  musicSaveCooldown, musicSaveMaxQueue, musicClearQueue, musicBanUser, musicUnbanUser,
+  musicSaveCooldown, musicSaveMaxQueue, musicSaveSkipVotes, musicClearQueue, musicBanUser, musicUnbanUser,
   playlistSave, playlistSetEnabled, playlistSetShuffle, playlistPlay, musicInit,
   updatePlaylistInfo, musicSetOverlayAudio,
 } from './bot-musica.js';
@@ -133,7 +133,7 @@ Object.assign(window, {
   doInstallUpdate,
   // musica
   musicRemoveFromQueue, musicSkip, musicTogglePause, musicSetEnabled, musicSetVolume,
-  musicSaveCooldown, musicSaveMaxQueue, musicClearQueue, musicBanUser, musicUnbanUser,
+  musicSaveCooldown, musicSaveMaxQueue, musicSaveSkipVotes, musicClearQueue, musicBanUser, musicUnbanUser,
   playlistSave, playlistSetEnabled, playlistSetShuffle, playlistPlay, updatePlaylistInfo,
   musicSetOverlayAudio,
   // moderacion / bloqueo de palabras

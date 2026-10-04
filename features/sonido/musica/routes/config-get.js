@@ -9,6 +9,7 @@ function configGet(bus) {
       musicEnabled: config.musicEnabled,
       musicUserCooldownMs: config.musicUserCooldownMs,
       musicMaxQueue: config.musicMaxQueue,
+      musicSkipVotes: config.musicSkipVotes,
       musicBannedUsers: config.musicBannedUsers,
       musicVolume: config.musicVolume,
       musicOverlayAudio: config.musicOverlayAudio,

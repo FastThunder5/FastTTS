@@ -335,6 +335,8 @@
     "botSettingsSubtitle": "Limiti del bot musicale: tempo di attesa tra richieste e dimensione massima della coda.",
     "cooldown": "Cooldown per utente (sec)",
     "maxQueue": "Canzoni max in coda",
+    "skipVotes": "Voti !skip per saltare",
+    "chatCommandsHint": "Comandi chat: !p canzone, !song (in riproduzione), !queue (prossime), !remove (cancella la tua ultima richiesta), !skip (vota per saltare; chi ha chiesto la canzone la salta subito). Con 0 voti, solo chi l'ha chiesta può saltarla.",
     "bannedUsers": "Bannati dal !p",
     "banPlaceholder": "@utente o ID",
     "ban": "Banna",
@@ -1220,5 +1222,15 @@
     "channelTitle": "Inserisci il canale", "channelDesc": "Inserisci utente o link. Per YouTube puoi usare anche @canale o Channel ID.",
     "saveTitle": "Salva", "saveDesc": "Salvalo per averlo pronto. Salvare non avvia una connessione.",
     "connectTitle": "Connetti tutto", "connectDesc": "Da Chat, questo pulsante collega i canali salvati quando sono in diretta."
+  },
+  "botReply": {
+    "nothingPlaying": "Nessuna canzone in riproduzione.",
+    "nowPlaying": "In riproduzione {title}, richiesta da {user}.",
+    "nowPlayingPlaylist": "In riproduzione {title}.",
+    "queueEmpty": "La coda delle canzoni è vuota.",
+    "queue": "{count} in coda. Prossime: {list}.",
+    "removed": "{user} ha tolto {title} dalla coda.",
+    "skipped": "{title} saltata.",
+    "skipVote": "Voto per saltare: {count} su {needed}."
   }
 }

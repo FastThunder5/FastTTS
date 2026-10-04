@@ -335,6 +335,8 @@
     "botSettingsSubtitle": "音乐机器人限制：点歌冷却时间和队列最大长度。",
     "cooldown": "每用户冷却时间（秒）",
     "maxQueue": "队列最大曲数",
+    "skipVotes": "跳过所需的 !skip 票数",
+    "chatCommandsHint": "聊天指令：!p 歌名、!song（正在播放）、!queue（接下来）、!remove（删除你最后一次点歌）、!skip（投票跳过；点歌的人可直接跳过）。设为 0 票时，只有点歌的人能跳过。",
     "bannedUsers": "被封禁的 !p 用户",
     "banPlaceholder": "@用户 或 ID",
     "ban": "封禁",
@@ -1220,5 +1222,15 @@
     "channelTitle": "输入频道", "channelDesc": "输入用户名或链接。YouTube 也可使用 @频道或 Channel ID。",
     "saveTitle": "保存", "saveDesc": "保存后即可使用。保存不会开始连接。",
     "connectTitle": "全部连接", "connectDesc": "在聊天页，此按钮会在已保存频道直播时连接它们。"
+  },
+  "botReply": {
+    "nothingPlaying": "当前没有播放歌曲。",
+    "nowPlaying": "正在播放 {title}，由 {user} 点播。",
+    "nowPlayingPlaylist": "正在播放 {title}。",
+    "queueEmpty": "歌曲队列是空的。",
+    "queue": "队列中有 {count} 首。接下来：{list}。",
+    "removed": "{user} 将 {title} 移出了队列。",
+    "skipped": "已跳过 {title}。",
+    "skipVote": "跳过投票：{count}/{needed}。"
   }
 }

@@ -335,6 +335,8 @@
     "botSettingsSubtitle": "音楽Botの制限: リクエスト間のクールダウンとキューの最大数。",
     "cooldown": "ユーザーごとのクールダウン（秒）",
     "maxQueue": "キュー最大曲数",
+    "skipVotes": "スキップに必要な!skip票数",
+    "chatCommandsHint": "チャットコマンド：!p 曲名、!song（再生中）、!queue（次の曲）、!remove（自分の最後のリクエストを削除）、!skip（スキップ投票。リクエストした本人はすぐにスキップ）。0票にするとリクエストした本人だけがスキップできます。",
     "bannedUsers": "!pからBANされたユーザー",
     "banPlaceholder": "@ユーザー または ID",
     "ban": "BAN",
@@ -1220,5 +1222,15 @@
     "channelTitle": "チャンネルを入力", "channelDesc": "ユーザー名またはリンクを入力します。YouTube では @チャンネルや Channel ID も使えます。",
     "saveTitle": "保存", "saveDesc": "準備のために保存します。保存だけでは接続されません。",
     "connectTitle": "すべて接続", "connectDesc": "チャット画面で、このボタンは保存済みチャンネルが配信中に接続します。"
+  },
+  "botReply": {
+    "nothingPlaying": "再生中の曲はありません。",
+    "nowPlaying": "再生中：{title}（リクエスト：{user}）。",
+    "nowPlayingPlaylist": "再生中：{title}。",
+    "queueEmpty": "曲のキューは空です。",
+    "queue": "キューに{count}曲。次は：{list}。",
+    "removed": "{user}が{title}をキューから削除しました。",
+    "skipped": "{title}をスキップしました。",
+    "skipVote": "スキップ投票：{needed}票中{count}票。"
   }
 }

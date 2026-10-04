@@ -335,6 +335,8 @@
     "botSettingsSubtitle": "음악 봇 제한: 신청 간 대기시간과 대기열 최대 크기.",
     "cooldown": "사용자당 쿨다운 (초)",
     "maxQueue": "대기열 최대 곡 수",
+    "skipVotes": "건너뛰기에 필요한 !skip 투표 수",
+    "chatCommandsHint": "채팅 명령어: !p 노래, !song (재생 중), !queue (다음 곡), !remove (내 마지막 신청 삭제), !skip (건너뛰기 투표, 신청한 사람은 바로 건너뜀). 0표면 신청한 사람만 건너뛸 수 있습니다.",
     "bannedUsers": "!p 차단된 사용자",
     "banPlaceholder": "@사용자 또는 ID",
     "ban": "차단",
@@ -1220,5 +1222,15 @@
     "channelTitle": "채널 입력", "channelDesc": "사용자 이름 또는 링크를 입력하세요. YouTube는 @채널이나 Channel ID도 사용할 수 있습니다.",
     "saveTitle": "저장", "saveDesc": "준비되도록 저장합니다. 저장만으로 연결되지는 않습니다.",
     "connectTitle": "모두 연결", "connectDesc": "채팅에서 이 버튼은 저장된 채널이 라이브일 때 연결합니다."
+  },
+  "botReply": {
+    "nothingPlaying": "재생 중인 노래가 없습니다.",
+    "nowPlaying": "재생 중: {title}, 신청: {user}.",
+    "nowPlayingPlaylist": "재생 중: {title}.",
+    "queueEmpty": "노래 대기열이 비어 있습니다.",
+    "queue": "대기열 {count}곡. 다음: {list}.",
+    "removed": "{user}님이 {title}을(를) 대기열에서 뺐습니다.",
+    "skipped": "{title}을(를) 건너뛰었습니다.",
+    "skipVote": "건너뛰기 투표: {needed}표 중 {count}표."
   }
 }
