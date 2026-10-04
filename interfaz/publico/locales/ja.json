@@ -83,6 +83,8 @@
     "dictFilterHint": "アクティブな音声の言語、または許可した追加言語で書かれたメッセージのみ読み上げます。未知の単語（名前、タイプミス）はブロックされません。",
     "cleanNicks": "ユーザー名を整える",
     "cleanNicksHint": "数字・アンダーバー・飾りを取り除きます：「xX_Pedro_1234_Xx」は「Pedro」と読みます。",
+    "randomVoicePerUser": "視聴者ごとに別の音声",
+    "randomVoicePerUserHint": "各視聴者には、あなたの言語の自然な音声がランダムに割り当てられ、常に同じ音声になります。通知（ギフト、フォロー）はメイン音声のままです。",
     "linkFilter": "リンクを含むメッセージを無視",
     "linkFilterHint": "リンク（http、www、xxx.com）を含むメッセージを読み上げず表示もしません。フォロワーや視聴者を宣伝するボットを防ぎます。",
     "readNonFollowers": "非フォロワーも読む"
@@ -191,6 +193,10 @@
     "nickAliasesTitle": "固定ニックネーム",
     "nickAliasesDesc": "1行に1ユーザー：チャットでの名前 = 読ませたい名前。",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = ペドロ",
+    "userVoicesTitle": "ユーザーごとの音声",
+    "userVoicesFixedTitle": "固定音声",
+    "userVoicesFixedDesc": "1行に1ユーザー：チャットの名前 = 選択肢にある音声の名前（Nanami、Keita など）。",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = Keita",
     "announceTplGift": "ギフトを受け取った後",
     "announceTplExGift": "奮発しました",
     "announceTplJoin": "誰かが入室した後",
@@ -623,6 +629,8 @@
   },
   "toast": {
     "pronunciationSaved": "読み方を保存しました",
+    "unknownVoices": "次の音声が見つかりません：{voices}。選択肢に表示される名前を使ってください。",
+    "userVoicesSaved": "ユーザーごとの音声を保存しました",
     "portalTabLimit": "ブラウザは最大6タブまでです",
     "portalFavoriteInvalid": "名前またはURLが無効です",
     "portalDownloadDone": "ダウンロード完了: {filename}",

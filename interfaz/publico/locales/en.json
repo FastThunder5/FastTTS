@@ -85,6 +85,8 @@
     "dictFilterHint": "Only reads messages written in the active voice language or in the extra languages you allow. Unknown words (names, typos) never block.",
     "cleanNicks": "Clean up usernames",
     "cleanNicksHint": "Removes numbers, underscores and decorations: \"xX_Pedro_1234_Xx\" is read as \"Pedro\".",
+    "randomVoicePerUser": "A different voice for each viewer",
+    "randomVoicePerUserHint": "Each viewer always gets the same natural voice in your language, picked at random. Alerts (gifts, follows) keep your main voice.",
     "linkFilter": "Ignore messages with links",
     "linkFilterHint": "Doesn't read or show messages that contain a link (http, www or something.com). Stops bots that promote followers or viewers.",
     "readNonFollowers": "Read non-followers"
@@ -193,6 +195,10 @@
     "nickAliasesTitle": "Fixed nicknames",
     "nickAliasesDesc": "One user per line: name in chat = how you want it read.",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = Pete",
+    "userVoicesTitle": "Voice per user",
+    "userVoicesFixedTitle": "Fixed voices",
+    "userVoicesFixedDesc": "One user per line: chat name = voice name from the picker (Ava, Andrew, Jenny...).",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = Andrew",
     "announceTplGift": "After receiving a gift",
     "announceTplExGift": "went all in",
     "announceTplJoin": "After someone joins",
@@ -625,6 +631,8 @@
   },
   "toast": {
     "pronunciationSaved": "Pronunciation saved",
+    "unknownVoices": "These voices weren't found: {voices}. Use the name shown in the picker.",
+    "userVoicesSaved": "Per-user voices saved",
     "portalTabLimit": "Maximum 6 tabs in the browser",
     "portalFavoriteInvalid": "Invalid name or URL",
     "portalDownloadDone": "Download complete: {filename}",

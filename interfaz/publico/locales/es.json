@@ -128,6 +128,8 @@
     "dictFilterHint": "Solo lee mensajes escritos en el idioma de la voz activa o en los idiomas extra que permitas. Las palabras desconocidas (nombres, typos) no bloquean.",
     "cleanNicks": "Limpiar nombres de usuario",
     "cleanNicksHint": "Quita números, guiones y adornos: \"xX_Pedro_1234_Xx\" se lee \"Pedro\".",
+    "randomVoicePerUser": "Una voz distinta para cada espectador",
+    "randomVoicePerUserHint": "Cada espectador recibe siempre la misma voz natural de tu idioma, elegida al azar. Los avisos (regalos, follows) siguen con tu voz principal.",
     "linkFilter": "Ignorar mensajes con enlaces",
     "linkFilterHint": "No lee ni muestra mensajes que traen un enlace (http, www o algo.com). Frena a los bots que promocionan seguidores o viewers.",
     "readNonFollowers": "Leer a no seguidores"
@@ -236,6 +238,10 @@
     "nickAliasesTitle": "Apodos fijos",
     "nickAliasesDesc": "Un usuario por línea: nombre en el chat = cómo quieres que lo lea.",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = Pedrito",
+    "userVoicesTitle": "Voz por usuario",
+    "userVoicesFixedTitle": "Voces fijas",
+    "userVoicesFixedDesc": "Un usuario por línea: nombre en el chat = nombre de la voz del selector (Dalia, Jorge, Elena...).",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = Jorge",
     "announceTplGift": "Después de recibir un regalo",
     "announceTplExGift": "se la comió",
     "announceTplJoin": "Después de que alguien entre",
@@ -668,6 +674,8 @@
   },
   "toast": {
     "pronunciationSaved": "Pronunciación guardada",
+    "unknownVoices": "No encontré estas voces: {voices}. Usa el nombre que aparece en el selector.",
+    "userVoicesSaved": "Voces por usuario guardadas",
     "portalTabLimit": "Máximo 6 pestañas en el navegador",
     "portalFavoriteInvalid": "Nombre o URL inválidos",
     "portalDownloadDone": "Descarga completa: {filename}",

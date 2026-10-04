@@ -83,6 +83,8 @@
     "dictFilterHint": "仅朗读使用当前语音语言或你允许的额外语言书写的消息。未知单词（名字、拼写错误）不会被屏蔽。",
     "cleanNicks": "清理用户名",
     "cleanNicksHint": "去掉数字、下划线和装饰：“xX_Pedro_1234_Xx” 读作 “Pedro”。",
+    "randomVoicePerUser": "每位观众使用不同的语音",
+    "randomVoicePerUserHint": "每位观众会随机分配一个你所用语言的自然语音，并始终保持相同。通知（礼物、关注）仍使用主语音。",
     "linkFilter": "忽略包含链接的消息",
     "linkFilterHint": "不朗读也不显示包含链接（http、www 或 xxx.com）的消息。可拦截推销粉丝或观众的机器人。",
     "readNonFollowers": "朗读非关注者"
@@ -191,6 +193,10 @@
     "nickAliasesTitle": "固定昵称",
     "nickAliasesDesc": "每行一个用户：聊天中的名字 = 你想要的读法。",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = 小佩",
+    "userVoicesTitle": "按用户分配语音",
+    "userVoicesFixedTitle": "固定语音",
+    "userVoicesFixedDesc": "每行一个用户：聊天中的名字 = 选择器中的语音名称（Xiaoxiao、Yunxi 等）。",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = Yunxi",
     "announceTplGift": "收到礼物后",
     "announceTplExGift": "大手笔",
     "announceTplJoin": "有人进入后",
@@ -623,6 +629,8 @@
   },
   "toast": {
     "pronunciationSaved": "发音已保存",
+    "unknownVoices": "未找到这些语音：{voices}。请使用选择器中显示的名称。",
+    "userVoicesSaved": "已保存按用户分配的语音",
     "portalTabLimit": "浏览器最多支持6个标签页",
     "portalFavoriteInvalid": "名称或URL无效",
     "portalDownloadDone": "下载完成：{filename}",

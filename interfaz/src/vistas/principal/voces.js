@@ -6,6 +6,11 @@ import { playAudioBlob } from '../../nucleo/tts/cola-tts.js';
 import { idiomaDeVoz } from '../../nucleo/tts/idioma-de-voz.js';
 
 let availableVoices = [];
+
+/** Lista de voces cargada de /api/voices (vacia hasta que termina loadVoices). */
+export function getAvailableVoices() {
+  return availableVoices;
+}
 let selectedVoice = null;
 
 const voiceSelect = document.getElementById('voiceSelect');

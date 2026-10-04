@@ -83,6 +83,8 @@
     "dictFilterHint": "활성 음성 언어 또는 허용한 추가 언어로 작성된 메시지만 읽습니다. 알 수 없는 단어(이름, 오타)는 차단되지 않습니다.",
     "cleanNicks": "사용자 이름 정리",
     "cleanNicksHint": "숫자, 밑줄, 장식을 제거합니다: \"xX_Pedro_1234_Xx\"는 \"Pedro\"로 읽습니다.",
+    "randomVoicePerUser": "시청자마다 다른 음성",
+    "randomVoicePerUserHint": "각 시청자는 사용 언어의 자연스러운 음성을 무작위로 받고, 항상 같은 음성을 유지합니다. 알림(선물, 팔로우)은 기본 음성을 사용합니다.",
     "linkFilter": "링크가 포함된 메시지 무시",
     "linkFilterHint": "링크(http, www 또는 xxx.com)가 포함된 메시지는 읽거나 표시하지 않습니다. 팔로워나 시청자를 홍보하는 봇을 막습니다.",
     "readNonFollowers": "비팔로워도 읽기"
@@ -191,6 +193,10 @@
     "nickAliasesTitle": "고정 별명",
     "nickAliasesDesc": "한 줄에 한 사용자: 채팅 속 이름 = 읽게 하고 싶은 이름.",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = 페드로",
+    "userVoicesTitle": "사용자별 음성",
+    "userVoicesFixedTitle": "고정 음성",
+    "userVoicesFixedDesc": "한 줄에 한 명: 채팅 이름 = 선택 목록의 음성 이름 (SunHi, InJoon 등).",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = InJoon",
     "announceTplGift": "선물을 받은 후",
     "announceTplExGift": "통 크게 쐈어요",
     "announceTplJoin": "누군가 입장한 후",
@@ -623,6 +629,8 @@
   },
   "toast": {
     "pronunciationSaved": "발음이 저장되었습니다",
+    "unknownVoices": "다음 음성을 찾을 수 없습니다: {voices}. 선택 목록에 표시된 이름을 사용하세요.",
+    "userVoicesSaved": "사용자별 음성을 저장했습니다",
     "portalTabLimit": "브라우저는 최대 6개 탭까지 가능합니다",
     "portalFavoriteInvalid": "이름 또는 URL이 올바르지 않습니다",
     "portalDownloadDone": "다운로드 완료: {filename}",

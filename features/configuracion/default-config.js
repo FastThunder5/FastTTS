@@ -37,6 +37,10 @@ const DEFAULT_CONFIG = {
   ttsNickAliases: {},
   // true = "xX_Pedro_1234_Xx" se lee "Pedro" (sin numeros, guiones ni adornos).
   ttsCleanNicks: true,
+  // Voz por espectador: { nick: 'Jorge' } (nombre de voz del selector) y
+  // true = cada espectador sin voz fija recibe una voz Edge estable al azar.
+  ttsUserVoices: {},
+  ttsRandomVoicePerUser: false,
   // Plantillas propias de avisos ({usuario}, {regalo}, ...) por evento; vacio = texto estandar.
   announceTemplates: {},
   // true = el TTS lee a todo el mundo (comportamiento historico).

@@ -17,9 +17,10 @@
 import { appSettings, SETTINGS_KEY } from './ajustes-app.js';
 import { t } from '../i18n/i18n.js';
 import { showToast } from '../../componentes/toast.js';
-import { syncTtsVoiceLang } from '../../vistas/principal/voces.js';
+import { syncTtsVoiceLang, getAvailableVoices } from '../../vistas/principal/voces.js';
 import { aLineas, nombreParaTts } from '../tts/pronunciacion.js';
 import { idiomaDeVoz } from '../tts/idioma-de-voz.js';
+import { vozParaUsuario } from '../tts/voz-por-usuario.js';
 
 export let CHAT_TTS_MAX_LEN = 200;
 export let MAX_QUEUE_SIZE = 15;
@@ -34,6 +35,18 @@ export let announceTemplates = {};
 export let ttsPronunciations = {};
 let ttsNickAliases = {};
 let ttsCleanNicks = true;
+let ttsUserVoices = {};
+let ttsRandomVoicePerUser = false;
+
+/** Voz con la que se lee el chat de este nick (null = la voz principal). */
+export function vozDeUsuario(nick) {
+  return vozParaUsuario(nick, {
+    fijas: ttsUserVoices,
+    aleatoria: ttsRandomVoicePerUser,
+    voces: getAvailableVoices(),
+    vozPrincipal: appSettings.voice,
+  });
+}
 
 /** Nombre de usuario tal como lo lee el TTS (apodo fijo o nick limpio). */
 export function nombreTts(nick) {
@@ -51,7 +64,15 @@ export function applyPronunciacionConfig(cfg) {
   if (cfg.ttsNickAliases && typeof cfg.ttsNickAliases === 'object') ttsNickAliases = cfg.ttsNickAliases;
   if (typeof cfg.ttsCleanNicks === 'boolean') ttsCleanNicks = cfg.ttsCleanNicks;
   rellenarLista('ttsPronunciationsInput', ttsPronunciations);
+  if (cfg.ttsUserVoices && typeof cfg.ttsUserVoices === 'object') ttsUserVoices = cfg.ttsUserVoices;
+  if (typeof cfg.ttsRandomVoicePerUser === 'boolean') ttsRandomVoicePerUser = cfg.ttsRandomVoicePerUser;
   rellenarLista('ttsNickAliasesInput', ttsNickAliases);
+  rellenarLista('ttsUserVoicesInput', ttsUserVoices);
+  const rnd = document.getElementById('ttsRandomVoiceToggle');
+  if (rnd) {
+    rnd.checked = ttsRandomVoicePerUser;
+    rnd.closest('.toggle-chip')?.classList.toggle('active', ttsRandomVoicePerUser);
+  }
   const cb = document.getElementById('ttsCleanNicksToggle');
   if (cb) {
     cb.checked = ttsCleanNicks;

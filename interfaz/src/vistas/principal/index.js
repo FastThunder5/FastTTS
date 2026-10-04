@@ -48,7 +48,7 @@ import {
   toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector, updateConnectorChipState, selectVoice,
   loadVoices, testVoice, iniciarCierreDropdownVoces,
 } from './voces.js';
-import { iniciarAjustesPronunciacion, toggleCleanNicks } from './pronunciacion-ajustes.js';
+import { iniciarAjustesPronunciacion, toggleCleanNicks, toggleRandomVoicePerUser } from './pronunciacion-ajustes.js';
 import { escapeHtml, initChatScrollFollow, initSpeakingGoto, clearChatAndQueue } from './chat-ui.js';
 import {
   openDictLangModal, closeDictLangModal,
@@ -111,7 +111,7 @@ Object.assign(window, {
   setReadNonFollowers,
   // voces
   toggleVoiceDropdown, toggleLangFilter, toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector,
-  toggleCleanNicks,
+  toggleCleanNicks, toggleRandomVoicePerUser,
   selectVoice, testVoice,
   // chat / tts
   clearChatAndQueue, skipCurrentTTS, togglePauseTts, toggleGlobalTTS,
