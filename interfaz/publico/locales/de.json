@@ -83,13 +83,19 @@
     "dictFilterHint": "Liest nur Nachrichten in der Sprache der aktiven Stimme oder in den zusätzlich erlaubten Sprachen. Unbekannte Wörter (Namen, Tippfehler) blockieren nicht.",
     "cleanNicks": "Nutzernamen bereinigen",
     "cleanNicksHint": "Entfernt Zahlen, Unterstriche und Verzierungen: „xX_Pedro_1234_Xx\" wird als „Pedro\" gelesen.",
+    "randomVoicePerUser": "Eine andere Stimme für jeden Zuschauer",
+    "randomVoicePerUserHint": "Jeder Zuschauer bekommt immer dieselbe natürliche Stimme deiner Sprache, zufällig gewählt. Hinweise (Geschenke, Follows) behalten deine Hauptstimme.",
     "linkFilter": "Nachrichten mit Links ignorieren",
     "linkFilterHint": "Liest und zeigt keine Nachrichten mit Link (http, www oder etwas.com). Stoppt Bots, die Follower oder Zuschauer bewerben.",
     "readNonFollowers": "Nicht-Follower vorlesen"
   },
   "tts": {
     "on": "TTS An",
-    "off": "TTS Aus"
+    "off": "TTS Aus",
+    "voiceGroupEdgeEs": "Microsoft Edge (natürlich) — Spanisch",
+    "voiceGroupEdgeOther": "Microsoft Edge (natürlich) — Andere Sprachen",
+    "voiceGroupGoogleEs": "Google — Spanisch",
+    "voiceGroupGoogleOther": "Google — Andere Sprachen"
   },
   "chatToggles": {
     "summaryPrefix": "Liest:",
@@ -187,6 +193,17 @@
     "nickAliasesTitle": "Feste Spitznamen",
     "nickAliasesDesc": "Ein Nutzer pro Zeile: Name im Chat = wie er gelesen werden soll.",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = Peter",
+    "userVoicesTitle": "Stimme pro Nutzer",
+    "userVoicesFixedTitle": "Feste Stimmen",
+    "userVoicesFixedDesc": "Ein Nutzer pro Zeile: Name im Chat = Name der Stimme aus der Auswahl (Katja, Conrad...).",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = Conrad",
+    "userCooldownTitle": "Wartezeit pro Zuschauer",
+    "userCooldownDesc": "Sekunden, bevor dieselbe Person wieder vorgelesen wird. Ihre Nachrichten bleiben im Chat sichtbar. 0 = keine Wartezeit.",
+    "backupTitle": "Sicherung",
+    "backupDesc": "Speichere deine Einstellungen, Stimmen, blockierten Wörter, Moderationsstrafen, Playlist und das Soundpad in einer Datei, um sie auf einen anderen PC zu übertragen oder wiederherzustellen.",
+    "backupExport": "Einstellungen exportieren",
+    "backupImport": "Einstellungen importieren",
+    "backupConfirm": "Deine aktuellen Einstellungen werden durch die der Datei ersetzt und die App lädt neu. Fortfahren?",
     "announceTplGift": "Nach einem Geschenk",
     "announceTplExGift": "hat alles gegeben",
     "announceTplJoin": "Nachdem jemand beitritt",
@@ -325,6 +342,8 @@
     "botSettingsSubtitle": "Grenzwerte des Musik-Bots: Abklingzeit zwischen Anfragen und maximale Warteschlangengröße.",
     "cooldown": "Abklingzeit pro Nutzer (Sek)",
     "maxQueue": "Max. Songs in Warteschlange",
+    "skipVotes": "!skip-Stimmen zum Überspringen",
+    "chatCommandsHint": "Chat-Befehle: !p Song, !song (läuft gerade), !queue (als Nächstes), !remove (löscht deinen letzten Wunsch), !skip (Abstimmung zum Überspringen; wer den Song gewünscht hat, überspringt ihn sofort). Bei 0 Stimmen kann nur der Wünschende ihn überspringen.",
     "bannedUsers": "Von !p gesperrte Nutzer",
     "banPlaceholder": "@Nutzer oder ID",
     "ban": "Sperren",
@@ -619,6 +638,14 @@
   },
   "toast": {
     "pronunciationSaved": "Aussprache gespeichert",
+    "unknownVoices": "Diese Stimmen wurden nicht gefunden: {voices}. Nutze den Namen aus der Auswahl.",
+    "userVoicesSaved": "Stimmen pro Nutzer gespeichert",
+    "userCooldownSaved": "Wartezeit pro Zuschauer gespeichert",
+    "backupExported": "Sicherung gespeichert",
+    "backupImported": "Einstellungen importiert, lade neu…",
+    "backupFailed": "Die Sicherung konnte nicht abgeschlossen werden",
+    "backupInvalid": "Diese Datei ist keine Sicherung dieser App",
+    "backupNewer": "Diese Sicherung stammt von einer neueren App-Version; bitte zuerst aktualisieren",
     "portalTabLimit": "Maximal 6 Tabs im Browser",
     "portalFavoriteInvalid": "Ungültiger Name oder ungültige URL",
     "portalDownloadDone": "Download abgeschlossen: {filename}",
@@ -870,7 +897,7 @@
     "introTitle": "Stimme & Audio",
     "introDesc": "Hier stellst du die Stimme ein, die den Chat vorliest: Sprache, Geschwindigkeit, Lautstärke und welche Nachrichten je nach Sprache vorgelesen werden.",
     "voiceTitle": "Stimmenauswahl",
-    "voiceDesc": "Wähle Sprache und Akzent der TTS-Stimme. 13 Optionen (Spanisch, Englisch, Portugiesisch, Französisch, Deutsch, Italienisch, Japanisch, Chinesisch, Russisch, Koreanisch). Ein Wechsel wirkt sich auch auf die Sprachfilter unten aus.",
+    "voiceDesc": "Wähle die TTS-Stimme. Microsoft-Edge-Stimmen klingen natürlich und gibt es mit mehreren Akzenten; die Google-Stimmen sind die klassischen. Fällt Edge aus, wird die Google-Stimme derselben Sprache verwendet. Ein Wechsel wirkt sich auch auf die Sprachfilter unten aus.",
     "testTitle": "Stimme testen",
     "testDesc": "Gib beliebigen Text ein und klicke auf Testen, um die gewählte Stimme zu hören — ganz ohne verbundenen Chat.",
     "rateTitle": "Geschwindigkeit",
@@ -1208,5 +1235,15 @@
     "channelTitle": "Kanal eingeben", "channelDesc": "Gib Benutzername oder Link ein. Für YouTube gehen auch @Kanal oder Channel ID.",
     "saveTitle": "Speichern", "saveDesc": "Speichere ihn, damit er bereit ist. Das startet keine Verbindung.",
     "connectTitle": "Alle verbinden", "connectDesc": "In Chat verbindet dieser Button gespeicherte Kanäle, wenn sie live sind."
+  },
+  "botReply": {
+    "nothingPlaying": "Es läuft gerade kein Song.",
+    "nowPlaying": "Es läuft {title}, gewünscht von {user}.",
+    "nowPlayingPlaylist": "Es läuft {title}.",
+    "queueEmpty": "Die Song-Warteschlange ist leer.",
+    "queue": "{count} in der Warteschlange. Als Nächstes: {list}.",
+    "removed": "{user} hat {title} aus der Warteschlange entfernt.",
+    "skipped": "{title} übersprungen.",
+    "skipVote": "Stimme zum Überspringen: {count} von {needed}."
   }
 }

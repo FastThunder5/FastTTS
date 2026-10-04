@@ -6,7 +6,7 @@ const { Tray, Menu, nativeImage, dialog } = require('electron');
 
 function buildTrayMenu({ onOpen, onInstallUpdate, onQuit }, updateVersion = null) {
   const items = [
-    { label: 'Abrir TikLiveTTS', click: onOpen },
+    { label: 'Abrir FastTTS', click: onOpen },
     { type: 'separator' },
   ];
 
@@ -28,7 +28,7 @@ function createTray({ iconPath, logger, onOpen, onInstallUpdate, onQuit }) {
   try {
     const icon = nativeImage.createFromPath(iconPath);
     const tray = new Tray(icon);
-    tray.setToolTip('TikLiveTTS');
+    tray.setToolTip('FastTTS');
     tray.setContextMenu(buildTrayMenu({ onOpen, onInstallUpdate, onQuit }));
     tray.on('double-click', onOpen);
     return tray;
@@ -44,7 +44,7 @@ function createTray({ iconPath, logger, onOpen, onInstallUpdate, onQuit }) {
 function showStartupError(error) {
   return dialog.showMessageBox({
     type: 'error',
-    title: 'TikLiveTTS - Error de inicio',
+    title: 'FastTTS - Error de inicio',
     message: 'Hubo un error al iniciar la aplicacion.',
     detail: error.message,
     buttons: ['Cerrar'],

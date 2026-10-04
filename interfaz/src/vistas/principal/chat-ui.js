@@ -1,7 +1,7 @@
 import { t } from '../../nucleo/i18n/i18n.js';
 import { escaparHtml as escapeHtml, escaparAtributo } from '../../../compartido/escapar-html.js';
 import { options } from '../../nucleo/estado/opciones-lectura.js';
-import { CHAT_TTS_MAX_LEN, nombreTts, ttsPronunciations } from '../../nucleo/estado/config-runtime.js';
+import { CHAT_TTS_MAX_LEN, nombreTts, ttsPronunciations, vozDeUsuario, puedeHablarUsuario } from '../../nucleo/estado/config-runtime.js';
 import { aplicarDiccionario } from '../../nucleo/tts/pronunciacion.js';
 import { getSayUsernameConnector } from './modales-avisos.js';
 import { openUserMenu } from './moderacion.js';
@@ -286,6 +286,8 @@ export function handleChatData(data, chatId) {
     if (!ttsBase || !ttsBase.trim()) return;
     // Un mensaje hecho solo de palabras que el diccionario omite no se anuncia ("Pedro:" a secas).
     if (!aplicarDiccionario(ttsBase, ttsPronunciations)) return;
+    // Espera por usuario: el mensaje ya se mostro arriba, solo no se lee.
+    if (!puedeHablarUsuario(data.user, data.isAdmin)) return;
     let raw;
     if (!options.sayUsername) {
       raw = ttsBase;
@@ -295,6 +297,6 @@ export function handleChatData(data, chatId) {
       raw = connector ? `${nombre} ${connector} ${ttsBase}` : `${nombre}: ${ttsBase}`;
     }
     const text = raw.length > CHAT_TTS_MAX_LEN ? raw.substring(0, CHAT_TTS_MAX_LEN) : raw;
-    speak(text, chatId, data.timestamp);
+    speak(text, chatId, data.timestamp, vozDeUsuario(data.user));
   }
 }

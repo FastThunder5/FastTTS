@@ -14,7 +14,6 @@
  * Ningun otro modulo deberia asignar cosas a window — todo pasa por aca.
  */
 import { paintRangeFill, iniciarPintadoDeRangos } from '../../componentes/campos-formulario.js';
-import { showToast } from '../../componentes/toast.js';
 import { iniciarCapturaErroresCliente } from '../../nucleo/log-storage.js';
 import { loadSettings, applySettings, appSettings } from '../../nucleo/estado/ajustes-app.js';
 import { loadRuntimeConfig } from '../../nucleo/estado/config-runtime.js';
@@ -30,7 +29,7 @@ import { switchView } from './vistas-router.js';
 import { copyToClipboard, showKnownIssuesNotice } from './utils-app.js';
 import { uploadBg, removeBg } from './subida-fondo.js';
 import {
-  buildOverlayUrl, updateOverlayUrl, onCfgChange, onChatPlatformChange, copyCfgUrl,
+  onCfgChange, onChatPlatformChange, copyCfgUrl,
   updateFollowerDisplay, testGiftAlert, testSocialAlert,
   updateSocialOverlayUrl, copySocialAlertUrl, testTopLikers,
 } from './configurador-overlays.js';
@@ -44,11 +43,12 @@ import {
 } from './atajos-teclado.js';
 import { setReadNonFollowers } from '../../nucleo/estado/config-runtime.js';
 import {
-  toggleVoiceDropdown, patchConfigSetting, syncTtsVoiceLang, toggleLangFilter,
-  toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector, updateConnectorChipState, selectVoice,
+  toggleVoiceDropdown, toggleLangFilter,
+  toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector, selectVoice,
   loadVoices, testVoice, iniciarCierreDropdownVoces,
 } from './voces.js';
-import { iniciarAjustesPronunciacion, toggleCleanNicks } from './pronunciacion-ajustes.js';
+import { iniciarAjustesPronunciacion, toggleCleanNicks, toggleRandomVoicePerUser } from './pronunciacion-ajustes.js';
+import { exportarRespaldo, elegirArchivoRespaldo, importarRespaldo } from './respaldo.js';
 import { escapeHtml, initChatScrollFollow, initSpeakingGoto, clearChatAndQueue } from './chat-ui.js';
 import {
   openDictLangModal, closeDictLangModal,
@@ -72,7 +72,7 @@ import {
 import { doInstallUpdate, iniciarEventosElectron } from './eventos-electron.js';
 import {
   musicRemoveFromQueue, musicSkip, musicTogglePause, musicSetEnabled, musicSetVolume,
-  musicSaveCooldown, musicSaveMaxQueue, musicClearQueue, musicBanUser, musicUnbanUser,
+  musicSaveCooldown, musicSaveMaxQueue, musicSaveSkipVotes, musicClearQueue, musicBanUser, musicUnbanUser,
   playlistSave, playlistSetEnabled, playlistSetShuffle, playlistPlay, musicInit,
   updatePlaylistInfo, musicSetOverlayAudio,
 } from './bot-musica.js';
@@ -111,7 +111,8 @@ Object.assign(window, {
   setReadNonFollowers,
   // voces
   toggleVoiceDropdown, toggleLangFilter, toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector,
-  toggleCleanNicks,
+  toggleCleanNicks, toggleRandomVoicePerUser,
+  exportarRespaldo, elegirArchivoRespaldo, importarRespaldo,
   selectVoice, testVoice,
   // chat / tts
   clearChatAndQueue, skipCurrentTTS, togglePauseTts, toggleGlobalTTS,
@@ -133,7 +134,7 @@ Object.assign(window, {
   doInstallUpdate,
   // musica
   musicRemoveFromQueue, musicSkip, musicTogglePause, musicSetEnabled, musicSetVolume,
-  musicSaveCooldown, musicSaveMaxQueue, musicClearQueue, musicBanUser, musicUnbanUser,
+  musicSaveCooldown, musicSaveMaxQueue, musicSaveSkipVotes, musicClearQueue, musicBanUser, musicUnbanUser,
   playlistSave, playlistSetEnabled, playlistSetShuffle, playlistPlay, updatePlaylistInfo,
   musicSetOverlayAudio,
   // moderacion / bloqueo de palabras

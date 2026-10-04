@@ -1,13 +1,13 @@
 {
   "name": "tiktok-live-tts",
-  "version": "1.10.5",
-  "description": "TikLiveTTS Live Chat Text-to-Speech Reader",
+  "version": "1.11.0",
+  "description": "FastTTS: lector de chat en vivo con voz (TikTok, Twitch, YouTube, Kick)",
   "author": "FastThunder5",
   "main": "main.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
     "test": "node --test test/*.test.js",
     "electron": "electron .",
     "make-icon": "electron scripts/make-app-icon.js && python scripts/make-app-icon.py",
@@ -18,7 +18,7 @@
     "postbuild:front": "node scripts/verify-front-build.js",
     "serve": "npm run build:front && node server.js",
     "serve:watch": "npm run build:front && node --watch server.js",
-    "prebuild:electron": "node scripts/ensure-configs.js && npm run build:front",
+    "prebuild:electron": "npm run build:front",
     "build:electron": "electron-builder --win"
   },
   "build": {
@@ -43,8 +43,8 @@
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": false,
-      "shortcutName": "TikLiveTTS",
-      "uninstallDisplayName": "TikLiveTTS",
+      "shortcutName": "FastTTS",
+      "uninstallDisplayName": "FastTTS",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true
     },
@@ -78,18 +78,6 @@
       {
         "from": "tray-icon.ico",
         "to": "tray-icon.ico"
-      },
-      {
-        "from": "webhook-config.generated.json",
-        "to": "webhook-config.json"
-      },
-      {
-        "from": "telemetry-config.generated.json",
-        "to": "telemetry-config.json"
-      },
-      {
-        "from": "aptabase-config.generated.json",
-        "to": "aptabase-config.json"
       }
     ],
     "npmRebuild": false,
@@ -109,9 +97,7 @@
     ]
   },
   "dependencies": {
-    "@aptabase/electron": "^0.3.1",
     "@modelcontextprotocol/sdk": "^1.30.0",
-    "@sentry/electron": "^7.17.0",
     "electron-updater": "^6.8.9",
     "express": "^4.22.2",
     "google-tts-api": "^2.0.2",

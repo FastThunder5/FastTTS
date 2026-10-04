@@ -4,7 +4,6 @@ import { escaparHtml as escHtml } from '../../../compartido/escapar-html.js';
 
 let musicAudio = null;
 let musicVol = 0.5;
-let musicCurrentTrack = null;
 let musicProgressInterval = null;
 export let musicQueue = [];
 // Peticiones !p que el server ya acepto pero todavia esta resolviendo
@@ -91,7 +90,6 @@ function musicDisposeAudio() {
 function musicPlayTrack(track) {
   musicDisposeAudio();
   clearInterval(musicProgressInterval);
-  musicCurrentTrack = track;
   const audio = new Audio(`/api/music/stream?videoId=${track.videoId}`);
   musicAudio = audio;
   audio.volume = musicVol;
@@ -143,7 +141,6 @@ function formatSecs(secs) {
 export function musicStop() {
   musicDisposeAudio();
   clearInterval(musicProgressInterval);
-  musicCurrentTrack = null;
   musicRenderNowPlaying(null);
   updateMusicPauseBtn();
 }
@@ -384,6 +381,11 @@ export function musicSaveMaxQueue(val) {
   fetch('/api/music/config', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ musicMaxQueue: n }) }).catch(() => {});
 }
 
+export function musicSaveSkipVotes(val) {
+  const n = Math.max(0, Math.min(50, parseInt(val, 10) || 0));
+  fetch('/api/music/config', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ musicSkipVotes: n }) }).catch(() => {});
+}
+
 export async function musicClearQueue() {
   if (musicQueueMutationInFlight) return;
   musicQueueMutationInFlight = true;
@@ -506,6 +508,8 @@ export function musicInit() {
     if (cd) cd.value = Math.round((d.musicUserCooldownMs || 60000) / 1000);
     const mq = document.getElementById('musicMaxQueueInput');
     if (mq) mq.value = d.musicMaxQueue || 10;
+    const sv = document.getElementById('musicSkipVotesInput');
+    if (sv && Number.isInteger(d.musicSkipVotes)) sv.value = d.musicSkipVotes;
     musicRenderBanned(d.musicBannedUsers || []);
   }).catch(() => {});
   fetch('/api/music/playlist').then((r) => r.json()).then((d) => {

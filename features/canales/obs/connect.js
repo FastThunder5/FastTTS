@@ -27,7 +27,7 @@ function connectObs(deps, port, password) {
       let msg;
       try {
         msg = JSON.parse(raw.toString());
-      } catch (parseErr) {
+      } catch {
         logger.log(
           'debug', 'canales', 'canales/obs/connect.js#connectObs', 'canales.obs.mensaje_no_parseable',
           'Mensaje de OBS WebSocket no parseable', { rawPreview: raw.toString().slice(0, 200) }

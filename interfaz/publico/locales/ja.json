@@ -83,13 +83,19 @@
     "dictFilterHint": "アクティブな音声の言語、または許可した追加言語で書かれたメッセージのみ読み上げます。未知の単語（名前、タイプミス）はブロックされません。",
     "cleanNicks": "ユーザー名を整える",
     "cleanNicksHint": "数字・アンダーバー・飾りを取り除きます：「xX_Pedro_1234_Xx」は「Pedro」と読みます。",
+    "randomVoicePerUser": "視聴者ごとに別の音声",
+    "randomVoicePerUserHint": "各視聴者には、あなたの言語の自然な音声がランダムに割り当てられ、常に同じ音声になります。通知（ギフト、フォロー）はメイン音声のままです。",
     "linkFilter": "リンクを含むメッセージを無視",
     "linkFilterHint": "リンク（http、www、xxx.com）を含むメッセージを読み上げず表示もしません。フォロワーや視聴者を宣伝するボットを防ぎます。",
     "readNonFollowers": "非フォロワーも読む"
   },
   "tts": {
     "on": "TTS オン",
-    "off": "TTS オフ"
+    "off": "TTS オフ",
+    "voiceGroupEdgeEs": "Microsoft Edge（自然な音声）— スペイン語",
+    "voiceGroupEdgeOther": "Microsoft Edge（自然な音声）— その他の言語",
+    "voiceGroupGoogleEs": "Google — スペイン語",
+    "voiceGroupGoogleOther": "Google — その他の言語"
   },
   "chatToggles": {
     "summaryPrefix": "読み上げ:",
@@ -187,6 +193,17 @@
     "nickAliasesTitle": "固定ニックネーム",
     "nickAliasesDesc": "1行に1ユーザー：チャットでの名前 = 読ませたい名前。",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = ペドロ",
+    "userVoicesTitle": "ユーザーごとの音声",
+    "userVoicesFixedTitle": "固定音声",
+    "userVoicesFixedDesc": "1行に1ユーザー：チャットの名前 = 選択肢にある音声の名前（Nanami、Keita など）。",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = Keita",
+    "userCooldownTitle": "視聴者ごとの待ち時間",
+    "userCooldownDesc": "同じ人のメッセージを再び読み上げるまでの秒数。メッセージはチャットに表示されたままです。0 = 待ち時間なし。",
+    "backupTitle": "バックアップ",
+    "backupDesc": "設定、音声、ブロックした単語、モデレーションの処分、プレイリスト、サウンドパッドをファイルに保存し、別のPCへの移行や復元に使えます。",
+    "backupExport": "設定をエクスポート",
+    "backupImport": "設定をインポート",
+    "backupConfirm": "現在の設定がファイルの内容で置き換えられ、アプリが再読み込みされます。続けますか？",
     "announceTplGift": "ギフトを受け取った後",
     "announceTplExGift": "奮発しました",
     "announceTplJoin": "誰かが入室した後",
@@ -325,6 +342,8 @@
     "botSettingsSubtitle": "音楽Botの制限: リクエスト間のクールダウンとキューの最大数。",
     "cooldown": "ユーザーごとのクールダウン（秒）",
     "maxQueue": "キュー最大曲数",
+    "skipVotes": "スキップに必要な!skip票数",
+    "chatCommandsHint": "チャットコマンド：!p 曲名、!song（再生中）、!queue（次の曲）、!remove（自分の最後のリクエストを削除）、!skip（スキップ投票。リクエストした本人はすぐにスキップ）。0票にするとリクエストした本人だけがスキップできます。",
     "bannedUsers": "!pからBANされたユーザー",
     "banPlaceholder": "@ユーザー または ID",
     "ban": "BAN",
@@ -619,6 +638,14 @@
   },
   "toast": {
     "pronunciationSaved": "読み方を保存しました",
+    "unknownVoices": "次の音声が見つかりません：{voices}。選択肢に表示される名前を使ってください。",
+    "userVoicesSaved": "ユーザーごとの音声を保存しました",
+    "userCooldownSaved": "視聴者ごとの待ち時間を保存しました",
+    "backupExported": "バックアップを保存しました",
+    "backupImported": "設定をインポートしました。再読み込みしています…",
+    "backupFailed": "バックアップを完了できませんでした",
+    "backupInvalid": "このファイルはこのアプリのバックアップではありません",
+    "backupNewer": "このバックアップは新しいバージョンのアプリのものです。先に更新してください",
     "portalTabLimit": "ブラウザは最大6タブまでです",
     "portalFavoriteInvalid": "名前またはURLが無効です",
     "portalDownloadDone": "ダウンロード完了: {filename}",
@@ -870,7 +897,7 @@
     "introTitle": "音声とオーディオ",
     "introDesc": "チャットを読み上げる音声を設定します：言語、速度、音量、そしてどの言語のメッセージを読み上げるか。",
     "voiceTitle": "音声選択",
-    "voiceDesc": "TTS音声の言語とアクセントを選びます。13種類（スペイン語、英語、ポルトガル語、フランス語、ドイツ語、イタリア語、日本語、中国語、ロシア語、韓国語）。変更すると下の言語フィルターにも影響します。",
+    "voiceDesc": "TTS音声を選びます。Microsoft Edgeの音声は自然で、さまざまなアクセントがあります。Googleの音声は従来のものです。Edgeが使えない場合は同じ言語のGoogle音声が使われます。変更すると下の言語フィルターにも影響します。",
     "testTitle": "音声テスト",
     "testDesc": "好きなテキストを入力して「テスト」を押すと、チャットを接続しなくても選んだ音声を確認できます。",
     "rateTitle": "速度",
@@ -1208,5 +1235,15 @@
     "channelTitle": "チャンネルを入力", "channelDesc": "ユーザー名またはリンクを入力します。YouTube では @チャンネルや Channel ID も使えます。",
     "saveTitle": "保存", "saveDesc": "準備のために保存します。保存だけでは接続されません。",
     "connectTitle": "すべて接続", "connectDesc": "チャット画面で、このボタンは保存済みチャンネルが配信中に接続します。"
+  },
+  "botReply": {
+    "nothingPlaying": "再生中の曲はありません。",
+    "nowPlaying": "再生中：{title}（リクエスト：{user}）。",
+    "nowPlayingPlaylist": "再生中：{title}。",
+    "queueEmpty": "曲のキューは空です。",
+    "queue": "キューに{count}曲。次は：{list}。",
+    "removed": "{user}が{title}をキューから削除しました。",
+    "skipped": "{title}をスキップしました。",
+    "skipVote": "スキップ投票：{needed}票中{count}票。"
   }
 }

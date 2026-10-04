@@ -11,7 +11,7 @@ export async function loadBlockedWords() {
     const data = await res.json();
     blockedWords = data.words || [];
     renderTags();
-  } catch (e) {
+  } catch {
     showToast(t('adv.errorLoadBlocked'));
   }
 }

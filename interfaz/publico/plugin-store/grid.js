@@ -1,4 +1,5 @@
 'use strict';
+/* exported showPluginGrid */
 
 // ── Grid de la Tienda de plugins (vista tipo "All apps") ─────────────────
 function showPluginGrid() {

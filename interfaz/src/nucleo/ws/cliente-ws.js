@@ -17,7 +17,7 @@ import {
   enableEmergencyTTSMode, sendStateSync, speak,
 } from '../tts/cola-tts.js';
 import { incrementarMsgCount, handleChatData, addSystemMsg } from '../../vistas/principal/chat-ui.js';
-import { setStatus, getSayUsernameConnector } from '../../vistas/principal/modales-avisos.js';
+import { setStatus } from '../../vistas/principal/modales-avisos.js';
 import { updateFollowerDisplay } from '../../vistas/principal/configurador-overlays.js';
 import { renderSettingsChannels } from '../../vistas/principal/plataformas.js';
 import { updateOBSStatus, getClipsData, getLocalDateStr, deleteClip, startStreamManual, markClip, obtenerStreamStartTime } from '../../vistas/principal/clips.js';
@@ -58,7 +58,7 @@ export function connectWS() {
     let d;
     try {
       d = JSON.parse(e.data);
-    } catch (err) {
+    } catch {
       logStorage.addLog('warn', 'ws', 'mensaje WS no parseable');
       return;
     }
@@ -104,21 +104,14 @@ function handleMessage(data) {
       break;
     }
 
-    case 'admin-announce': {
-      const adminMsgId = nuevoMsgId();
-      const voiceSelect = document.getElementById('voiceSelect');
-      const adminTxt = (data.texts && data.texts[voiceSelect?.value]) || data.text;
-      addSystemMsg(adminTxt, 'admin', adminMsgId, { iconSrc: 'icons/check_circle.svg' });
-      speak(adminTxt, adminMsgId, data.timestamp);
-      break;
-    }
-
-    case 'promo-announce': {
-      const promoMsgId = nuevoMsgId();
-      const voiceSelect = document.getElementById('voiceSelect');
-      const promoTxt = (data.texts && data.texts[voiceSelect?.value]) || data.text;
-      addSystemMsg(promoTxt, 'promo', promoMsgId, { iconSrc: 'icons/flash_on.svg' });
-      speak(promoTxt, promoMsgId, data.timestamp);
+    // Respuesta del bot musical a !cancion / !cola / !quitar / !skip
+    // (features/sonido/musica/handle-chat-command.js): se arma en el idioma de la UI.
+    case 'bot-reply': {
+      const botMsgId = nuevoMsgId();
+      const botTxt = t(`botReply.${data.key}`, data.vars || {});
+      if (botTxt === `botReply.${data.key}`) break;
+      addSystemMsg(botTxt, 'admin', botMsgId, { iconSrc: 'icons/music_note.svg' });
+      speak(botTxt, botMsgId, data.timestamp);
       break;
     }
 

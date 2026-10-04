@@ -30,7 +30,7 @@ export async function loadConfig() {
     applyA11ySelf(cfg);
 
     updateRlBadge(cfg.rateLimitEnabled);
-  } catch (e) {
+  } catch {
     showToast(t('adv.errorLoadConfig'));
   }
 }

@@ -83,13 +83,19 @@
     "dictFilterHint": "仅朗读使用当前语音语言或你允许的额外语言书写的消息。未知单词（名字、拼写错误）不会被屏蔽。",
     "cleanNicks": "清理用户名",
     "cleanNicksHint": "去掉数字、下划线和装饰：“xX_Pedro_1234_Xx” 读作 “Pedro”。",
+    "randomVoicePerUser": "每位观众使用不同的语音",
+    "randomVoicePerUserHint": "每位观众会随机分配一个你所用语言的自然语音，并始终保持相同。通知（礼物、关注）仍使用主语音。",
     "linkFilter": "忽略包含链接的消息",
     "linkFilterHint": "不朗读也不显示包含链接（http、www 或 xxx.com）的消息。可拦截推销粉丝或观众的机器人。",
     "readNonFollowers": "朗读非关注者"
   },
   "tts": {
     "on": "TTS 开启",
-    "off": "TTS 关闭"
+    "off": "TTS 关闭",
+    "voiceGroupEdgeEs": "Microsoft Edge（自然语音）— 西班牙语",
+    "voiceGroupEdgeOther": "Microsoft Edge（自然语音）— 其他语言",
+    "voiceGroupGoogleEs": "Google — 西班牙语",
+    "voiceGroupGoogleOther": "Google — 其他语言"
   },
   "chatToggles": {
     "summaryPrefix": "朗读：",
@@ -187,6 +193,17 @@
     "nickAliasesTitle": "固定昵称",
     "nickAliasesDesc": "每行一个用户：聊天中的名字 = 你想要的读法。",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = 小佩",
+    "userVoicesTitle": "按用户分配语音",
+    "userVoicesFixedTitle": "固定语音",
+    "userVoicesFixedDesc": "每行一个用户：聊天中的名字 = 选择器中的语音名称（Xiaoxiao、Yunxi 等）。",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = Yunxi",
+    "userCooldownTitle": "每位观众的等待时间",
+    "userCooldownDesc": "再次朗读同一个人之前的秒数。其消息仍会显示在聊天中。0 = 不等待。",
+    "backupTitle": "备份",
+    "backupDesc": "将设置、语音、屏蔽词、审核处罚、播放列表和音效板保存到文件中，方便迁移到其他电脑或恢复。",
+    "backupExport": "导出设置",
+    "backupImport": "导入设置",
+    "backupConfirm": "当前设置将被文件中的设置替换，应用将重新加载。是否继续？",
     "announceTplGift": "收到礼物后",
     "announceTplExGift": "大手笔",
     "announceTplJoin": "有人进入后",
@@ -325,6 +342,8 @@
     "botSettingsSubtitle": "音乐机器人限制：点歌冷却时间和队列最大长度。",
     "cooldown": "每用户冷却时间（秒）",
     "maxQueue": "队列最大曲数",
+    "skipVotes": "跳过所需的 !skip 票数",
+    "chatCommandsHint": "聊天指令：!p 歌名、!song（正在播放）、!queue（接下来）、!remove（删除你最后一次点歌）、!skip（投票跳过；点歌的人可直接跳过）。设为 0 票时，只有点歌的人能跳过。",
     "bannedUsers": "被封禁的 !p 用户",
     "banPlaceholder": "@用户 或 ID",
     "ban": "封禁",
@@ -619,6 +638,14 @@
   },
   "toast": {
     "pronunciationSaved": "发音已保存",
+    "unknownVoices": "未找到这些语音：{voices}。请使用选择器中显示的名称。",
+    "userVoicesSaved": "已保存按用户分配的语音",
+    "userCooldownSaved": "已保存每位观众的等待时间",
+    "backupExported": "备份已保存",
+    "backupImported": "设置已导入，正在重新加载…",
+    "backupFailed": "无法完成备份",
+    "backupInvalid": "该文件不是本应用的备份",
+    "backupNewer": "该备份来自更新版本的应用，请先更新",
     "portalTabLimit": "浏览器最多支持6个标签页",
     "portalFavoriteInvalid": "名称或URL无效",
     "portalDownloadDone": "下载完成：{filename}",
@@ -870,7 +897,7 @@
     "introTitle": "语音与音频",
     "introDesc": "在这里设置朗读聊天的语音：语言、语速、音量，以及根据消息语言决定是否朗读。",
     "voiceTitle": "语音选择",
-    "voiceDesc": "选择 TTS 语音的语言和口音，共 13 种（西班牙语、英语、葡萄牙语、法语、德语、意大利语、日语、中文、俄语、韩语）。更改语音也会影响下方的语言过滤器。",
+    "voiceDesc": "选择 TTS 语音。Microsoft Edge 语音听起来自然，并有多种口音；Google 语音为经典语音。如果 Edge 不可用，将使用同一语言的 Google 语音。更改语音也会影响下方的语言过滤器。",
     "testTitle": "测试语音",
     "testDesc": "输入任意文字并点击“测试”即可听到所选语音的效果，无需连接聊天室。",
     "rateTitle": "语速",
@@ -1208,5 +1235,15 @@
     "channelTitle": "输入频道", "channelDesc": "输入用户名或链接。YouTube 也可使用 @频道或 Channel ID。",
     "saveTitle": "保存", "saveDesc": "保存后即可使用。保存不会开始连接。",
     "connectTitle": "全部连接", "connectDesc": "在聊天页，此按钮会在已保存频道直播时连接它们。"
+  },
+  "botReply": {
+    "nothingPlaying": "当前没有播放歌曲。",
+    "nowPlaying": "正在播放 {title}，由 {user} 点播。",
+    "nowPlayingPlaylist": "正在播放 {title}。",
+    "queueEmpty": "歌曲队列是空的。",
+    "queue": "队列中有 {count} 首。接下来：{list}。",
+    "removed": "{user} 将 {title} 移出了队列。",
+    "skipped": "已跳过 {title}。",
+    "skipVote": "跳过投票：{count}/{needed}。"
   }
 }

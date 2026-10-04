@@ -83,13 +83,19 @@
     "dictFilterHint": "Legge solo i messaggi scritti nella lingua della voce attiva o nelle lingue extra che consenti. Le parole sconosciute (nomi, errori di battitura) non bloccano.",
     "cleanNicks": "Pulisci i nomi utente",
     "cleanNicksHint": "Rimuove numeri, trattini e decorazioni: \"xX_Pedro_1234_Xx\" viene letto \"Pedro\".",
+    "randomVoicePerUser": "Una voce diversa per ogni spettatore",
+    "randomVoicePerUserHint": "Ogni spettatore riceve sempre la stessa voce naturale della tua lingua, scelta a caso. Gli avvisi (regali, follow) mantengono la tua voce principale.",
     "linkFilter": "Ignora i messaggi con link",
     "linkFilterHint": "Non legge né mostra i messaggi che contengono un link (http, www o qualcosa.com). Ferma i bot che promuovono follower o spettatori.",
     "readNonFollowers": "Leggi i non follower"
   },
   "tts": {
     "on": "TTS Attivo",
-    "off": "TTS Disattivo"
+    "off": "TTS Disattivo",
+    "voiceGroupEdgeEs": "Microsoft Edge (naturale) — Spagnolo",
+    "voiceGroupEdgeOther": "Microsoft Edge (naturale) — Altre lingue",
+    "voiceGroupGoogleEs": "Google — Spagnolo",
+    "voiceGroupGoogleOther": "Google — Altre lingue"
   },
   "chatToggles": {
     "summaryPrefix": "Legge:",
@@ -187,6 +193,17 @@
     "nickAliasesTitle": "Soprannomi fissi",
     "nickAliasesDesc": "Un utente per riga: nome in chat = come vuoi che venga letto.",
     "nickAliasesPlaceholder": "xX_Pedro_Xx = Pietro",
+    "userVoicesTitle": "Voce per utente",
+    "userVoicesFixedTitle": "Voci fisse",
+    "userVoicesFixedDesc": "Un utente per riga: nome in chat = nome della voce nel selettore (Elsa, Diego...).",
+    "userVoicesFixedPlaceholder": "xX_Pedro_Xx = Diego",
+    "userCooldownTitle": "Attesa per spettatore",
+    "userCooldownDesc": "Secondi prima di leggere di nuovo la stessa persona. I suoi messaggi restano visibili in chat. 0 = nessuna attesa.",
+    "backupTitle": "Backup",
+    "backupDesc": "Salva in un file impostazioni, voci, parole bloccate, sanzioni di moderazione, playlist e pad dei suoni, per portarli su un altro PC o ripristinarli.",
+    "backupExport": "Esporta configurazione",
+    "backupImport": "Importa configurazione",
+    "backupConfirm": "Le impostazioni attuali verranno sostituite con quelle del file e l'app si ricaricherà. Continuare?",
     "announceTplGift": "Dopo aver ricevuto un regalo",
     "announceTplExGift": "ha fatto il colpaccio",
     "announceTplJoin": "Dopo l'arrivo di qualcuno",
@@ -325,6 +342,8 @@
     "botSettingsSubtitle": "Limiti del bot musicale: tempo di attesa tra richieste e dimensione massima della coda.",
     "cooldown": "Cooldown per utente (sec)",
     "maxQueue": "Canzoni max in coda",
+    "skipVotes": "Voti !skip per saltare",
+    "chatCommandsHint": "Comandi chat: !p canzone, !song (in riproduzione), !queue (prossime), !remove (cancella la tua ultima richiesta), !skip (vota per saltare; chi ha chiesto la canzone la salta subito). Con 0 voti, solo chi l'ha chiesta può saltarla.",
     "bannedUsers": "Bannati dal !p",
     "banPlaceholder": "@utente o ID",
     "ban": "Banna",
@@ -619,6 +638,14 @@
   },
   "toast": {
     "pronunciationSaved": "Pronuncia salvata",
+    "unknownVoices": "Voci non trovate: {voices}. Usa il nome mostrato nel selettore.",
+    "userVoicesSaved": "Voci per utente salvate",
+    "userCooldownSaved": "Attesa per spettatore salvata",
+    "backupExported": "Backup salvato",
+    "backupImported": "Configurazione importata, ricarico…",
+    "backupFailed": "Impossibile completare il backup",
+    "backupInvalid": "Questo file non è un backup dell'app",
+    "backupNewer": "Questo backup è di una versione più recente dell'app; aggiorna prima",
     "portalTabLimit": "Massimo 6 schede nel browser",
     "portalFavoriteInvalid": "Nome o URL non validi",
     "portalDownloadDone": "Download completato: {filename}",
@@ -870,7 +897,7 @@
     "introTitle": "Voce e audio",
     "introDesc": "Qui configuri la voce che legge la chat: lingua, velocità, volume e quali messaggi vengono letti in base alla lingua in cui sono scritti.",
     "voiceTitle": "Selettore voce",
-    "voiceDesc": "Scegli lingua e accento della voce TTS. 13 opzioni (spagnolo, inglese, portoghese, francese, tedesco, italiano, giapponese, cinese, russo, coreano). Cambiarla influisce anche sui filtri lingua qui sotto.",
+    "voiceDesc": "Scegli la voce TTS. Le voci di Microsoft Edge suonano naturali e hanno vari accenti; quelle di Google sono le classiche. Se Edge non risponde, si usa la voce Google della stessa lingua. Cambiarla influisce anche sui filtri lingua qui sotto.",
     "testTitle": "Prova voce",
     "testDesc": "Scrivi un testo qualsiasi e premi Prova per sentire come suona la voce scelta, senza bisogno di avere la chat connessa.",
     "rateTitle": "Velocità",
@@ -1208,5 +1235,15 @@
     "channelTitle": "Inserisci il canale", "channelDesc": "Inserisci utente o link. Per YouTube puoi usare anche @canale o Channel ID.",
     "saveTitle": "Salva", "saveDesc": "Salvalo per averlo pronto. Salvare non avvia una connessione.",
     "connectTitle": "Connetti tutto", "connectDesc": "Da Chat, questo pulsante collega i canali salvati quando sono in diretta."
+  },
+  "botReply": {
+    "nothingPlaying": "Nessuna canzone in riproduzione.",
+    "nowPlaying": "In riproduzione {title}, richiesta da {user}.",
+    "nowPlayingPlaylist": "In riproduzione {title}.",
+    "queueEmpty": "La coda delle canzoni è vuota.",
+    "queue": "{count} in coda. Prossime: {list}.",
+    "removed": "{user} ha tolto {title} dalla coda.",
+    "skipped": "{title} saltata.",
+    "skipVote": "Voto per saltare: {count} su {needed}."
   }
 }

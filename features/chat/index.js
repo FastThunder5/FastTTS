@@ -1,6 +1,6 @@
 'use strict';
 
-const { emitChatMessage, resetAdminAnnounce } = require('./emit-chat-message');
+const { emitChatMessage } = require('./emit-chat-message');
 const { testChat } = require('./routes/test-chat');
 
 module.exports = {
@@ -8,7 +8,6 @@ module.exports = {
 
   register({ app, bus, logger }) {
     const deps = { bus, logger };
-    let prevTotal = 0;
 
     bus.on('canal:mensaje-crudo', emitChatMessage(deps), 'chat');
 
@@ -34,22 +33,8 @@ module.exports = {
       res.json({ messages: recientes.slice(-limit), total: recientes.length });
     });
 
-    // 'desconectado' es por-canal y transitorio (watchdogs de YouTube/Twitch/Kick
-    // lo emiten cada pocos minutos con otras plataformas aun activas) — no es fin
-    // de sesion, resetear ahi hacia que el aviso del creador re-sonara en casi
-    // cada mensaje. La unica senal real de fin de sesion es 'lista-canales' con
-    // total 0 (cuenta las 4 plataformas de una, ver broadcast-channels.js), y la
-    // transicion 0 -> N re-arma el aviso para la sesion nueva.
-    bus.on('canal:estado', (payload) => {
-      if (!payload || payload.state !== 'lista-canales') return;
-      const total = ['tiktok', 'twitch', 'youtube', 'kick']
-        .reduce((s, p) => s + (Array.isArray(payload[p]) ? payload[p].length : 0), 0);
-      if (total === 0 || prevTotal === 0) resetAdminAnnounce();
-      prevTotal = total;
-    }, 'chat');
-
     app.post('/api/test/chat', testChat(deps));
 
-    return { rutas: 2, listeners: 4 };
+    return { rutas: 2, listeners: 3 };
   },
 };

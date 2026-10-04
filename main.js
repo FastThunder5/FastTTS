@@ -3,7 +3,7 @@
 const { app, globalShortcut } = require('electron');
 const path = require('path');
 
-app.setName('TikLiveTTS');
+app.setName('FastTTS');
 // Conserva los datos y sesiones de instalaciones previas tras cambiar productName.
 app.setPath('userData', path.join(app.getPath('appData'), 'tiktok-live-tts'));
 
@@ -23,26 +23,11 @@ const { createPortalViewController } = require('./electron-shell/portal-view/con
 const { attachPortalViewIpc } = require('./electron-shell/portal-view/ipc');
 const { startUiohook, stopUiohook, isUiohookActive, registerUiohookShortcut } = require('./electron-shell/uiohook');
 const { GLOBAL_SHORTCUT } = require('./features/clips/global-shortcut');
-const telemetryRuntime = require('./features/telemetria/runtime');
-const glitchtip = require('./electron-shell/glitchtip');
-const aptabase = require('./electron-shell/aptabase');
-const { resolveConfigValue } = require('./electron-shell/resolve-config-value');
-const { getActiveAccount, accountDataDir } = require('./core/account-data-path');
-
-// GlitchTip (error tracking) — se inicia lo antes posible, antes de cargar
-// server.js, para captar hasta un fallo de arranque de los dominios. El
-// enganche al bus (attach) viene después, cuando ya existe el logger.
-glitchtip.init({
-  appVersion: app.getVersion(),
-  isDebug: !app.isPackaged,
-  userDataDir: app.getPath('userData'),
-  logger: null,
-});
+const { getActiveAccount } = require('./core/account-data-path');
 
 let mainWindow = null;
 let tray = null;
 let isQuitting = false;
-let pendingUpdateVersion = null;
 let quitTasksDone = false;
 let cierresListos = false;
 let ipcHandles = null;
@@ -50,18 +35,6 @@ let portalView = null;
 let portalViewIpcHandles = null;
 
 ensureSingleInstance(app, () => showMainWindow(mainWindow));
-
-// Aptabase (analytics de eventos de producto) — init temprano (antes de
-// app.isReady(), requisito del SDK) pero DESPUÉS del lock de instancia única:
-// así una 2ª instancia ya hizo process.exit(0) y no dispara installacion /
-// app_started por duplicado. attach al bus más abajo cuando ya hay logger.
-aptabase.init({
-  appVersion: app.getVersion(),
-  isPackaged: app.isPackaged,
-  isDebug: !app.isPackaged,
-  userDataDir: app.getPath('userData'),
-  logger: null,
-});
 
 // Arranca /core + los 16 dominios de negocio (server.js ya no tiene logica
 // propia desde la Fase 1). Envuelto para mostrar un dialogo recuperable en
@@ -78,10 +51,8 @@ try {
 const bus = serverModule && serverModule.bus;
 const logger = serverModule && serverModule.logger;
 
-if (bus) glitchtip.attach(bus, logger);
-if (bus) aptabase.attach(bus, logger);
 // uncaughtException / unhandledRejection: los registra server.js (siempre, para
-// `node server.js` y para Electron) y ademas @sentry/electron los captura.
+// `node server.js` y para Electron).
 
 const ICON_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'tray-icon.ico')
@@ -89,30 +60,6 @@ const ICON_PATH = app.isPackaged
 
 function getMainWindow() { return mainWindow; }
 function getTray() { return tray; }
-
-// La URL/token de telemetria salen de TELEMETRY_URL+TELEMETRY_TOKEN (override
-// de dev), de telemetry.json en userData (override manual), o de
-// telemetry-config.json bakeado en el build. Archivo aparte a proposito:
-// config.json lo gestiona /configuracion, que descarta claves desconocidas y
-// borraria esta en el primer guardado.
-function resolveTelemetryUrl() {
-  return resolveConfigValue({
-    envVars: ['TELEMETRY_URL'],
-    userFile: path.join(app.getPath('userData'), 'telemetry.json'),
-    bundledFile: path.join(process.env.TIKTOK_RESOURCES_PATH || __dirname, 'telemetry-config.json'),
-    field: 'url',
-    validate: (v) => /^https?:\/\//i.test(v),
-  });
-}
-
-function resolveIngestToken() {
-  return resolveConfigValue({
-    envVars: ['TELEMETRY_TOKEN'],
-    userFile: path.join(app.getPath('userData'), 'telemetry.json'),
-    bundledFile: path.join(process.env.TIKTOK_RESOURCES_PATH || __dirname, 'telemetry-config.json'),
-    field: 'token',
-  });
-}
 
 function trayCallbacks() {
   return {
@@ -173,19 +120,9 @@ app.whenReady().then(() => {
         getMainWindow,
         getTray,
         buildTrayMenu: (version) => buildTrayMenu(trayCallbacks(), version),
-        onPendingVersion: (version) => { pendingUpdateVersion = version; },
+        onPendingVersion: () => {},
       });
     }
-
-    telemetryRuntime.init({
-      url: resolveTelemetryUrl(),
-      token: resolveIngestToken(),
-      appVersion: app.getVersion(),
-      dataDir: app.getPath('userData'),
-      creatorDataDir: accountDataDir(),
-      bus,
-      logger,
-    });
 
     startUiohook(logger);
 
@@ -235,13 +172,10 @@ app.on('before-quit', (event) => {
   quitTasksDone = true;
 
   // Shutdown ordenado de los dominios (moderation.json flush, matar children
-  // de yt-dlp, cerrar WS de canales) + telemetria/GlitchTip/Aptabase.
+  // de yt-dlp, cerrar WS de canales).
   // shutdownAll es async y process.on('exit') no puede esperar microtasks.
   const HARD_QUIT_MS = 8000;
   const cierres = [require('./core/shutdown').shutdownAll(logger)];
-  if (telemetryRuntime.enabled) cierres.push(telemetryRuntime.shutdown({ timeoutMs: 1500 }));
-  if (glitchtip.enabled) cierres.push(glitchtip.shutdown());
-  if (aptabase.enabled) cierres.push(aptabase.shutdown());
   Promise.race([
     Promise.allSettled(cierres),
     new Promise((r) => setTimeout(r, HARD_QUIT_MS)),

@@ -676,6 +676,14 @@
               <input type="number" id="musicMaxQueueInput" min="1" max="50" value="10"
                 onchange="musicSaveMaxQueue(this.value)">
             </div>
+            <div class="cfg-field">
+              <label data-i18n="bot.skipVotes">Votos de !skip para saltar</label>
+              <input type="number" id="musicSkipVotesInput" min="0" max="50" value="3"
+                onchange="musicSaveSkipVotes(this.value)">
+            </div>
+            <div class="cfg-field full">
+              <div style="color:var(--text-muted);font-size:12px;line-height:1.45;" data-i18n="bot.chatCommandsHint">Comandos del chat: !p canción, !cancion (qué suena), !cola (próximas), !quitar (borra tu último pedido), !skip (vota para saltar; quien pidió la canción la salta al instante). Con 0 votos, solo quien la pidió puede saltarla.</div>
+            </div>
             <div class="cfg-field full">
               <label data-i18n="bot.bannedUsers">Usuarios baneados del !p</label>
               <div style="display:flex;gap:8px;">
@@ -859,6 +867,22 @@
             <div class="setting-hint" data-i18n="settings.nickAliasesDesc">Un usuario por línea: nombre en el chat = cómo quieres que lo lea.</div>
             <textarea id="ttsNickAliasesInput" rows="4" spellcheck="false" data-i18n-placeholder="settings.nickAliasesPlaceholder" placeholder="xX_Pedro_Xx = Pedrito"></textarea>
           </div>
+          <div class="setting-group" id="voiceUserGroup">
+            <label><img class="icon-inline" src="icons/record_voice_over.svg" alt=""> <span data-i18n="settings.userVoicesTitle">Voz por usuario</span></label>
+            <label class="toggle-chip" style="width:max-content;">
+              <input type="checkbox" id="ttsRandomVoiceToggle" onchange="toggleRandomVoicePerUser(this)" />
+              <span data-i18n="toggle.randomVoicePerUser">Una voz distinta para cada espectador</span>
+            </label>
+            <div class="setting-hint" data-i18n="toggle.randomVoicePerUserHint">Cada espectador recibe siempre la misma voz natural de tu idioma, elegida al azar. Los avisos (regalos, follows) siguen con tu voz principal.</div>
+            <label for="ttsUserVoicesInput" class="setting-sublabel" data-i18n="settings.userVoicesFixedTitle">Voces fijas</label>
+            <div class="setting-hint" data-i18n="settings.userVoicesFixedDesc">Un usuario por línea: nombre en el chat = nombre de la voz del selector (Dalia, Jorge, Elena...).</div>
+            <textarea id="ttsUserVoicesInput" rows="4" spellcheck="false" data-i18n-placeholder="settings.userVoicesFixedPlaceholder" placeholder="xX_Pedro_Xx = Jorge"></textarea>
+          </div>
+          <div class="setting-group" id="userCooldownGroup">
+            <label for="ttsUserCooldownInput"><img class="icon-inline" src="icons/hourglass_empty.svg" alt=""> <span data-i18n="settings.userCooldownTitle">Espera por usuario</span></label>
+            <div class="setting-hint" data-i18n="settings.userCooldownDesc">Segundos que pasan antes de volver a leer a la misma persona. Sus mensajes se siguen viendo en el chat. 0 = sin espera.</div>
+            <input type="number" id="ttsUserCooldownInput" min="0" max="600" step="1" value="0" style="width:110px;" />
+          </div>
         </div>
       </div>
 
@@ -1001,6 +1025,20 @@
             </div>
             <div id="musicSkipShortcutHint" style="font-size:11px;color:var(--text-muted);margin-top:4px;">
               <span data-i18n="conn.shortcutHint">Atajo activo:</span> <span style="color:var(--accent);font-family:monospace;font-weight:600;">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section" id="settingsSectionBackup">
+        <div class="settings-section-title" data-i18n="settings.backupTitle">Respaldo</div>
+        <div class="settings-panel" style="grid-template-columns:1fr;">
+          <div class="setting-group">
+            <div class="setting-hint" data-i18n="settings.backupDesc">Guarda en un archivo tus ajustes, voces, palabras bloqueadas, castigos de moderación, playlist y pad de sonidos, para pasarlos a otra PC o recuperarlos.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="cfg-btn" id="btnExportBackup" onclick="exportarRespaldo()"><img class="icon-inline" src="icons/download.svg" alt=""> <span data-i18n="settings.backupExport">Exportar configuración</span></button>
+              <button class="cfg-btn" id="btnImportBackup" onclick="elegirArchivoRespaldo()"><img class="icon-inline" src="icons/upload.svg" alt=""> <span data-i18n="settings.backupImport">Importar configuración</span></button>
+              <input type="file" id="backupFileInput" accept=".json,application/json" style="display:none" onchange="importarRespaldo(this)" />
             </div>
           </div>
         </div>

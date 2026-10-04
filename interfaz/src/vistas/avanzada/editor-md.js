@@ -7,7 +7,7 @@ export async function loadMdContent() {
     const res = await fetch('/api/blocked-words/export');
     const text = await res.text();
     document.getElementById('mdEditor').value = text;
-  } catch (e) {
+  } catch {
     showToast(t('adv.errorLoadMd'));
   }
 }
@@ -23,7 +23,7 @@ export async function saveMdContent() {
     const data = await res.json();
     setBlockedWords(data.words || []);
     showToast(t('adv.savedMd'));
-  } catch (e) {
+  } catch {
     showToast(t('adv.errorSaveMd'));
   }
 }
@@ -45,7 +45,7 @@ export function uploadMdFile() {
       document.getElementById('mdEditor').value = e.target.result;
       input.value = '';
       showToast(t('adv.importedMd'));
-    } catch (err) {
+    } catch {
       showToast(t('adv.errorImportMd'));
     }
   };

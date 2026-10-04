@@ -1,4 +1,5 @@
 'use strict';
+/* exported SIDEBAR_TOOLS_LEGACY_VISIBLE, toolById */
 
 // ─── SIDEBAR TOOL REGISTRY ("Más herramientas" / Tienda de plugins) ────
 // Fuente de verdad de todo lo que puede aparecer en la barra lateral.

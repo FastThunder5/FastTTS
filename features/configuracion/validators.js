@@ -40,6 +40,7 @@ const CONFIG_VALIDATORS = {
   // o la carga de la playlist en el siguiente uso.
   musicBannedUsers: isStringArray,
   musicVolume: (v) => typeof v === 'number' && v >= 0 && v <= 1,
+  musicSkipVotes: (v) => Number.isInteger(v) && v >= 0 && v <= 50,
   musicOverlayAudio: (v) => typeof v === 'boolean',
   streamerPlaylist: isStringArray,
   playlistShuffle: (v) => typeof v === 'boolean',
@@ -58,6 +59,9 @@ const CONFIG_VALIDATORS = {
   ttsPronunciations: isWordMap,
   ttsNickAliases: isWordMap,
   ttsCleanNicks: (v) => typeof v === 'boolean',
+  ttsUserVoices: isWordMap,
+  ttsRandomVoicePerUser: (v) => typeof v === 'boolean',
+  ttsUserCooldownSec: (v) => Number.isInteger(v) && v >= 0 && v <= 600,
   ttsReadNonFollowers: (v) => typeof v === 'boolean',
   mcpEnabled: (v) => typeof v === 'boolean',
   mcpDestructiveToolsEnabled: (v) => typeof v === 'boolean',

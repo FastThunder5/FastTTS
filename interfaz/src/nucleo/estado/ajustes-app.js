@@ -26,7 +26,7 @@ import * as datosPorCuenta from './datos-por-cuenta.js';
 export const SETTINGS_KEY = 'tikliveTTS_v1';
 
 export const DEFAULT_SETTINGS = {
-  voice: 'es-MX',
+  voice: 'edge:es-MX-DaliaNeural', // si Edge falla, fetch-audio.js cae a Google es-MX
   rate: 1.0,
   vol: 1.0,
   readChat: true,

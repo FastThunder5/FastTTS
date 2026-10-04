@@ -12,6 +12,8 @@ const DEFAULT_CONFIG = {
   musicMaxQueue: 10,
   musicBannedUsers: [],
   musicVolume: 0.5,
+  // Votos de !skip necesarios para saltar la cancion actual (0 = solo quien la pidio).
+  musicSkipVotes: 3,
   // true = el audio de musica se reproduce SOLO en /overlay-musica.html
   // (fuente aparte para OBS), no en el panel principal. Default false para
   // no romper a nadie que ya use la app tal cual (el panel sigue sonando).
@@ -37,6 +39,12 @@ const DEFAULT_CONFIG = {
   ttsNickAliases: {},
   // true = "xX_Pedro_1234_Xx" se lee "Pedro" (sin numeros, guiones ni adornos).
   ttsCleanNicks: true,
+  // Voz por espectador: { nick: 'Jorge' } (nombre de voz del selector) y
+  // true = cada espectador sin voz fija recibe una voz Edge estable al azar.
+  ttsUserVoices: {},
+  ttsRandomVoicePerUser: false,
+  // Segundos que espera un espectador entre mensajes leidos (0 = sin espera).
+  ttsUserCooldownSec: 0,
   // Plantillas propias de avisos ({usuario}, {regalo}, ...) por evento; vacio = texto estandar.
   announceTemplates: {},
   // true = el TTS lee a todo el mundo (comportamiento historico).

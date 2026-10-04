@@ -17,8 +17,11 @@
 import { appSettings, SETTINGS_KEY } from './ajustes-app.js';
 import { t } from '../i18n/i18n.js';
 import { showToast } from '../../componentes/toast.js';
-import { syncTtsVoiceLang } from '../../vistas/principal/voces.js';
+import { syncTtsVoiceLang, getAvailableVoices } from '../../vistas/principal/voces.js';
 import { aLineas, nombreParaTts } from '../tts/pronunciacion.js';
+import { idiomaDeVoz } from '../tts/idioma-de-voz.js';
+import { vozParaUsuario } from '../tts/voz-por-usuario.js';
+import { crearEsperaPorUsuario } from '../tts/espera-por-usuario.js';
 
 export let CHAT_TTS_MAX_LEN = 200;
 export let MAX_QUEUE_SIZE = 15;
@@ -33,6 +36,26 @@ export let announceTemplates = {};
 export let ttsPronunciations = {};
 let ttsNickAliases = {};
 let ttsCleanNicks = true;
+let ttsUserVoices = {};
+let ttsRandomVoicePerUser = false;
+let ttsUserCooldownSec = 0;
+const esperaPorUsuario = crearEsperaPorUsuario();
+
+/** false = este espectador ya fue leido hace menos de ttsUserCooldownSec (el admin no espera). */
+export function puedeHablarUsuario(nick, esAdmin = false) {
+  if (esAdmin) return true;
+  return esperaPorUsuario.puedeHablar(nick, ttsUserCooldownSec);
+}
+
+/** Voz con la que se lee el chat de este nick (null = la voz principal). */
+export function vozDeUsuario(nick) {
+  return vozParaUsuario(nick, {
+    fijas: ttsUserVoices,
+    aleatoria: ttsRandomVoicePerUser,
+    voces: getAvailableVoices(),
+    vozPrincipal: appSettings.voice,
+  });
+}
 
 /** Nombre de usuario tal como lo lee el TTS (apodo fijo o nick limpio). */
 export function nombreTts(nick) {
@@ -50,7 +73,18 @@ export function applyPronunciacionConfig(cfg) {
   if (cfg.ttsNickAliases && typeof cfg.ttsNickAliases === 'object') ttsNickAliases = cfg.ttsNickAliases;
   if (typeof cfg.ttsCleanNicks === 'boolean') ttsCleanNicks = cfg.ttsCleanNicks;
   rellenarLista('ttsPronunciationsInput', ttsPronunciations);
+  if (cfg.ttsUserVoices && typeof cfg.ttsUserVoices === 'object') ttsUserVoices = cfg.ttsUserVoices;
+  if (typeof cfg.ttsRandomVoicePerUser === 'boolean') ttsRandomVoicePerUser = cfg.ttsRandomVoicePerUser;
+  if (Number.isInteger(cfg.ttsUserCooldownSec)) ttsUserCooldownSec = cfg.ttsUserCooldownSec;
+  const esperaEl = document.getElementById('ttsUserCooldownInput');
+  if (esperaEl && document.activeElement !== esperaEl) esperaEl.value = String(ttsUserCooldownSec);
   rellenarLista('ttsNickAliasesInput', ttsNickAliases);
+  rellenarLista('ttsUserVoicesInput', ttsUserVoices);
+  const rnd = document.getElementById('ttsRandomVoiceToggle');
+  if (rnd) {
+    rnd.checked = ttsRandomVoicePerUser;
+    rnd.closest('.toggle-chip')?.classList.toggle('active', ttsRandomVoicePerUser);
+  }
   const cb = document.getElementById('ttsCleanNicksToggle');
   if (cb) {
     cb.checked = ttsCleanNicks;
@@ -82,7 +116,7 @@ function migrarLangFilterLegacy() {
     if (typeof parsed.dictFilterEnabled === 'boolean') { legacy.dictFilterEnabled = parsed.dictFilterEnabled; tieneAlgo = true; }
     if (Array.isArray(parsed.allowedExtraLangs) && parsed.allowedExtraLangs.length) { legacy.allowedExtraLangs = parsed.allowedExtraLangs; tieneAlgo = true; }
     return tieneAlgo ? legacy : null;
-  } catch (e) { return null; }
+  } catch { return null; }
 }
 
 export async function loadRuntimeConfig() {
@@ -100,7 +134,7 @@ export async function loadRuntimeConfig() {
     if (Number.isInteger(cfg.MAX_QUEUE_MSG) && cfg.MAX_QUEUE_MSG > 0) MAX_QUEUE_SIZE = cfg.MAX_QUEUE_MSG;
     // El cliente es la autoridad de su voz TTS: si el backend quedo con otro
     // ttsVoiceLang (patch viejo perdido, carrera de arranque), lo corrige.
-    if (appSettings.voice && cfg.ttsVoiceLang !== appSettings.voice) {
+    if (appSettings.voice && cfg.ttsVoiceLang !== idiomaDeVoz(appSettings.voice)) {
       syncTtsVoiceLang(appSettings.voice);
     }
     applyA11yConfig(cfg);
@@ -108,7 +142,7 @@ export async function loadRuntimeConfig() {
     applyFiltroIdiomaConfig(cfg);
     applyAnnounceTemplates(cfg);
     applyPronunciacionConfig(cfg);
-  } catch (e) { /* config no disponible aun; se reintenta en el proximo ciclo */ }
+  } catch { /* config no disponible aun; se reintenta en el proximo ciclo */ }
 }
 
 /** Hidrata el estado en memoria + los 2 checkboxes de esta pantalla desde

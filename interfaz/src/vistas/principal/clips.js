@@ -14,7 +14,7 @@ let obsConnected = false;
 export function obtenerStreamStartTime() { return streamStartTime; }
 
 export function getClipsData() {
-  try { return JSON.parse(datosPorCuenta.get(CLIPS_KEY) || '{}'); } catch (e) { return {}; }
+  try { return JSON.parse(datosPorCuenta.get(CLIPS_KEY) || '{}'); } catch { return {}; }
 }
 function saveClipsData(data) {
   datosPorCuenta.set(CLIPS_KEY, JSON.stringify(data));
@@ -219,7 +219,7 @@ export async function connectOBSFromUI() {
       showToast(t('toast.obsError').replace('{error}', tErr(d, null) || 'desconocido'));
       if (btn) { btn.disabled = false; btn.textContent = t('btn.connectOBS'); }
     }
-  } catch (e) {
+  } catch {
     showToast(t('toast.obsConnectFailed'));
     if (btn) { btn.disabled = false; btn.textContent = t('btn.connectOBS'); }
   }

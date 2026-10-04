@@ -9,8 +9,8 @@ function postClientLog(logger) {
     if (!message) return res.status(400).json({ error: 'message requerido' });
     const data = { source };
     if (stack) data.stack = String(stack).slice(0, 4000);
-    // `recientes` = ultimos logs locales de la UI (LogStorage). Los usa
-    // electron-shell/glitchtip.js como breadcrumbs del issue del renderer.
+    // `recientes` = ultimos logs locales de la UI (LogStorage), como contexto
+    // del error en el log local.
     if (Array.isArray(recientes) && recientes.length) {
       data.recientes = recientes.slice(-25).map((r) => ({
         ts: typeof r === 'object' && r ? r.timestamp : undefined,

@@ -14,6 +14,7 @@ const { createMusicEngine } = require('./musica/engine/create');
 const { UPDATE_INTERVAL_MS } = require('./musica/engine/check-for-updates');
 const { createMusicState } = require('./musica/state');
 const { handleMusicRequest } = require('./musica/handle-request');
+const { handleChatCommand } = require('./musica/handle-chat-command');
 const { resolveAndSavePlaylist } = require('./musica/resolve-and-save-playlist');
 const { getConfigSnapshot, patchConfig } = require('./config-bridge');
 const { advanceMusicQueue } = require('./musica/advance-queue');
@@ -107,9 +108,18 @@ module.exports = {
     // ── Bot musical: consume bot:comando de /bot (Fase 10) — la deteccion
     // de !p ya no vive aca, solo la ejecucion.
     const runMusicRequest = handleMusicRequest(deps);
+    const runChatCommand = handleChatCommand(deps);
     bus.on('bot:comando', (cmd) => {
-      if (!cmd || cmd.cmd !== 'play') return;
-      if (!entitlements.check('bot-musical')) return; // feature Pro (ya gateado en /bot, defensa extra)
+      if (!cmd || !entitlements.check('bot-musical')) return;
+      if (cmd.cmd !== 'play') {
+        try { runChatCommand(cmd); } catch (error) {
+          logger.log(
+            'error', 'sonido', 'sonido/index.js#register', 'sonido.musica.comando_fallido',
+            `No se pudo procesar el comando !${cmd.cmd} de ${cmd.user}: ${error.message}`, { error: error.message }
+          );
+        }
+        return;
+      }
       Promise.resolve(runMusicRequest({ query: cmd.args, user: cmd.user, userId: cmd.userId, platform: cmd.platform })).catch((error) => {
         logger.log(
           'error', 'sonido', 'sonido/index.js#register', 'sonido.musica.solicitud_fallida',
@@ -124,7 +134,7 @@ module.exports = {
 
     // ── chat:mensaje-permitido: expone el gancho de habla (el front decide
     // via el campo ttsBlocked que ya viaja en el WS de /chat — este evento
-    // es un gancho adicional para consumidores futuros, ej. telemetria) ──
+    // es un gancho adicional para consumidores futuros, ej. estadisticas) ──
     bus.on('chat:mensaje-permitido', (payload) => {
       if (!payload || payload.ttsBlocked) return;
       const text = payload.ttsComment || payload.comment;
