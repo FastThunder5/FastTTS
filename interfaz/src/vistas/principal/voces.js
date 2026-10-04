@@ -1,5 +1,5 @@
 import { appSettings, saveSettings } from '../../nucleo/estado/ajustes-app.js';
-import { setLangFilterEnabled, setDictFilterEnabled } from '../../nucleo/estado/config-runtime.js';
+import { setLangFilterEnabled, setDictFilterEnabled, setLinkFilterEnabled } from '../../nucleo/estado/config-runtime.js';
 import { t, tErr } from '../../nucleo/i18n/i18n.js';
 import { showToast } from '../../componentes/toast.js';
 import { playAudioBlob } from '../../nucleo/tts/cola-tts.js';
@@ -65,6 +65,11 @@ export function toggleLangFilter(checkbox) {
 export function toggleDictFilter(checkbox) {
   checkbox.closest('.toggle-chip')?.classList.toggle('active', checkbox.checked);
   setDictFilterEnabled(checkbox.checked);
+}
+
+export function toggleLinkFilter(checkbox) {
+  checkbox.closest('.toggle-chip')?.classList.toggle('active', checkbox.checked);
+  setLinkFilterEnabled(checkbox.checked);
 }
 
 export function toggleSayUsernameConnector(checkbox) {

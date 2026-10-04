@@ -30,6 +30,7 @@ function createPolicy({ store, logger, bus, blockedMatchersState, dupState }) {
         voiceId: config.ttsVoiceLang,
         langFilterEnabled: !!config.langFilterEnabled,
         dictFilterEnabled: !!config.dictFilterEnabled,
+        linkFilterEnabled: config.linkFilterEnabled !== false,
         allowedExtraLangs: config.allowedExtraLangs || [],
       };
 

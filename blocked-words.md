@@ -1,14 +1,16 @@
-# Palabras Prohibidas — TikLiveTTS
+# Palabras Prohibidas — FastTTS
 
 Edita este archivo directamente o usa la web en `/advanced.html`.
 Las palabras se comparan en minúsculas, sin importar acentos.
 
+- ai
 - boluda
 - boludo
 - cabron
 - cabrona
 - caca
 - carajo
+- cheap
 - chingada
 - chingar
 - cojon
@@ -22,6 +24,7 @@ Las palabras se comparan en minúsculas, sin importar acentos.
 - entro al live
 - estupida
 - estupido
+- followers
 - forra
 - forro
 - gilipollas
@@ -51,6 +54,7 @@ Las palabras se comparan en minúsculas, sin importar acentos.
 - pinche
 - pito
 - pollas
+- promo
 - prostituta
 - puta
 - puto
@@ -58,4 +62,5 @@ Las palabras se comparan en minúsculas, sin importar acentos.
 - retrasado
 - subnormal
 - verga
+- viewers
 - zorra

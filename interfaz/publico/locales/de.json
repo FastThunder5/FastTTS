@@ -81,6 +81,8 @@
     "langFilterHint": "Ignoriert Chat-Nachrichten mit Zeichen, die nicht zur Sprache der aktiven Stimme passen (z. B. Chinesisch/Japanisch blockieren, wenn die Stimme Spanisch ist, und umgekehrt).",
     "dictFilter": "Nach Sprache filtern (Wörter)",
     "dictFilterHint": "Liest nur Nachrichten in der Sprache der aktiven Stimme oder in den zusätzlich erlaubten Sprachen. Unbekannte Wörter (Namen, Tippfehler) blockieren nicht.",
+    "linkFilter": "Nachrichten mit Links ignorieren",
+    "linkFilterHint": "Liest und zeigt keine Nachrichten mit Link (http, www oder etwas.com). Stoppt Bots, die Follower oder Zuschauer bewerben.",
     "readNonFollowers": "Nicht-Follower vorlesen"
   },
   "tts": {
