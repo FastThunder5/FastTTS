@@ -228,7 +228,7 @@ detección de "sesión problemática", perf spans (`tracesSampleRate: 0.05`). El
 
 ## Analytics de producto (`electron-shell/aptabase.js`)
 
-Aptabase (self-hosted en `https://aptabase.tiklivetts.es`, `@aptabase/electron`).
+Aptabase (self-hosted propio, `@aptabase/electron`; sin `APTABASE_HOST` + `APTABASE_APP_KEY` queda desactivado).
 **Solo analítica de producto — conteo de eventos, funnels, DAU/MAU, retención.
 Los errores NO van acá.** Sin `APTABASE_APP_KEY` (env o `aptabase-config.json`
 bakeado) es un no-op total.
@@ -371,7 +371,7 @@ git push origin main --tags
 
 ## Auto-update
 
-`electron-updater` chequea `https://github.com/iKhunsa/tiktok-tts/releases/latest/download/latest.yml` al arrancar. Si hay versión nueva → descarga en background → diálogo "Instalar ahora / Después" → `autoUpdater.quitAndInstall()`. Solo activo en modo packaged (`app.isPackaged`).
+`electron-updater` chequea `https://github.com/FastThunder5/FastTTS/releases/latest/download/latest.yml` al arrancar. Si hay versión nueva → descarga en background → diálogo "Instalar ahora / Después" → `autoUpdater.quitAndInstall()`. Solo activo en modo packaged (`app.isPackaged`).
 
 ## i18n de la UI — obligatorio para todo texto nuevo visible al usuario
 
@@ -612,8 +612,8 @@ interfaz/
 
 ## Repositorio
 
-- GitHub: https://github.com/iKhunsa/tiktok-tts
-- Releases: https://github.com/iKhunsa/tiktok-tts/releases
+- GitHub: https://github.com/FastThunder5/FastTTS
+- Releases: https://github.com/FastThunder5/FastTTS/releases
 
 ## Documentación del rebuild por dominios
 

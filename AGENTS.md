@@ -89,7 +89,7 @@ git push origin main --tags
 
 ## Auto-update
 
-`electron-updater` chequea `https://github.com/iKhunsa/tiktok-tts/releases/latest/download/latest.yml` al arrancar. Si hay versión nueva → descarga en background → diálogo "Instalar ahora / Después" → `autoUpdater.quitAndInstall()`. Solo activo en modo packaged (`app.isPackaged`).
+`electron-updater` chequea `https://github.com/FastThunder5/FastTTS/releases/latest/download/latest.yml` al arrancar. Si hay versión nueva → descarga en background → diálogo "Instalar ahora / Después" → `autoUpdater.quitAndInstall()`. Solo activo en modo packaged (`app.isPackaged`).
 
 ## Funcionalidades actuales
 
@@ -210,5 +210,5 @@ no negociables por "lazy".
 
 ## Repositorio
 
-- GitHub: https://github.com/iKhunsa/tiktok-tts
-- Releases: https://github.com/iKhunsa/tiktok-tts/releases
+- GitHub: https://github.com/FastThunder5/FastTTS
+- Releases: https://github.com/FastThunder5/FastTTS/releases

@@ -75,6 +75,6 @@ export function crearNuevaPestana() {
 export function actualizarNuevaPestana(el) {
   const { favorites = [] } = almacenPortalView.getState(); const list = el.querySelector('.portal-view-shortcuts-sections'); const modal = el._portalFavoriteModal; const fragment = document.createDocumentFragment();
   if (favorites.length) for (const item of favorites) fragment.append(crearTarjeta(item, true, modal.open));
-  else { const ejemplo = crearTarjeta({ url: 'https://www.tiklivetts.es', label: t('portalView.exampleFavorite') }, false); ejemplo.classList.add('portal-view-shortcut--ejemplo'); fragment.append(ejemplo); }
+  else { const ejemplo = crearTarjeta({ url: 'https://github.com/FastThunder5/FastTTS', label: t('portalView.exampleFavorite') }, false); ejemplo.classList.add('portal-view-shortcut--ejemplo'); fragment.append(ejemplo); }
   list.replaceChildren(fragment);
 }

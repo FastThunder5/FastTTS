@@ -35,7 +35,8 @@ try {
   sdk = null;
 }
 
-const HOST_DEFECTO = 'https://aptabase.tiklivetts.es';
+// Sin host por defecto: el de upstream era el servidor del autor original.
+const HOST_DEFECTO = null;
 // Tope defensivo de props por evento. session_ended es el más ancho (~14
 // props de resumen); el resto usa 1-3.
 const MAX_PROPS = 20;
@@ -156,10 +157,10 @@ function init({ appVersion, isPackaged, isDebug, userDataDir, logger } = {}) {
   }
 
   const { appKey, host } = resolverConfig();
-  if (!appKey) {
+  if (!appKey || !host) {
     if (logger) logger.log(
       'info', 'electron-shell', 'electron-shell/aptabase.js#init', 'aptabase.sin_app_key',
-      'APTABASE_APP_KEY no configurado — analytics desactivado', {}
+      'APTABASE_APP_KEY/APTABASE_HOST no configurado — analytics desactivado', {}
     );
     return false;
   }

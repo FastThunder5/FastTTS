@@ -11,7 +11,7 @@
 ## Poner en marcha el proyecto
 
 ```bash
-git clone https://github.com/iKhunsa/tiktok-tts.git
+git clone https://github.com/FastThunder5/FastTTS.git
 cd tiktok-tts
 npm install
 ```

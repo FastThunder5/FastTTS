@@ -13,7 +13,7 @@
     "cuenta": "Account"
   },
   "community": {
-    "label": "Comunità TikLiveTTS",
+    "label": "Comunità FastTTS",
     "desc": "Discord ufficiale · feedback e domande benvenuti"
   },
   "bugReport": {
@@ -38,7 +38,7 @@
     "tourDesc": "Premi questo pulsante ogni volta che hai un problema per farmelo sapere.",
     "tourDone": "Capito"
   },
-  "ideas": {"sidebarEntry":"Suggerisci un'idea","title":"Suggerisci un'idea per TikLiveTTS","subtitle":"Hai un'idea per migliorare l'app? Raccontaci il problema e come lo risolveresti. Diamo priorità alle funzioni utili a molti streamer.","hint":"Non servono dettagli tecnici: spiegalo nel modo più semplice possibile.","problemLabel":"Quale problema vuoi risolvere?","problemPlaceholder":"Raccontaci cosa succede oggi.","ideaLabel":"Qual è la tua idea?","ideaPlaceholder":"Spiega cosa vorresti facesse TikLiveTTS.","audienceLabel":"A chi sarebbe utile?","audiencePlaceholder":"Scegli un'opzione","audienceAlmostAll":"Quasi tutti gli streamer","audienceMany":"Molti streamer","audienceSome":"Alcuni tipi di streamer","audienceLikeMe":"Soprattutto streamer come me","audienceUnsure":"Non ne sono sicuro","useCaseLabel":"Quando la useresti?","useCasePlaceholder":"Fai un esempio di quando ti servirebbe.","reasonLabel":"Perché varrebbe la pena aggiungerla?","reasonPlaceholder":"Pensa anche a come potrebbe aiutare altri utenti.","similarLabel":"Conosci un'app con qualcosa di simile?","optional":"(facoltativo)","similarPlaceholder":"Nome o link","submit":"Invia idea","sending":"Invio...","sent":"Grazie! La tua idea è stata inviata.","errorRequired":"Completa i campi obbligatori.","errorSend":"Non è stato possibile inviare l'idea. Riprova.","close":"Chiudi","charCount":"{count}/{max}","thanksTitle":"Grazie per la tua idea!","thanksText":"La esamineremo per continuare a migliorare TikLiveTTS."},
+  "ideas": {"sidebarEntry":"Suggerisci un'idea","title":"Suggerisci un'idea per FastTTS","subtitle":"Hai un'idea per migliorare l'app? Raccontaci il problema e come lo risolveresti. Diamo priorità alle funzioni utili a molti streamer.","hint":"Non servono dettagli tecnici: spiegalo nel modo più semplice possibile.","problemLabel":"Quale problema vuoi risolvere?","problemPlaceholder":"Raccontaci cosa succede oggi.","ideaLabel":"Qual è la tua idea?","ideaPlaceholder":"Spiega cosa vorresti facesse FastTTS.","audienceLabel":"A chi sarebbe utile?","audiencePlaceholder":"Scegli un'opzione","audienceAlmostAll":"Quasi tutti gli streamer","audienceMany":"Molti streamer","audienceSome":"Alcuni tipi di streamer","audienceLikeMe":"Soprattutto streamer come me","audienceUnsure":"Non ne sono sicuro","useCaseLabel":"Quando la useresti?","useCasePlaceholder":"Fai un esempio di quando ti servirebbe.","reasonLabel":"Perché varrebbe la pena aggiungerla?","reasonPlaceholder":"Pensa anche a come potrebbe aiutare altri utenti.","similarLabel":"Conosci un'app con qualcosa di simile?","optional":"(facoltativo)","similarPlaceholder":"Nome o link","submit":"Invia idea","sending":"Invio...","sent":"Grazie! La tua idea è stata inviata.","errorRequired":"Completa i campi obbligatori.","errorSend":"Non è stato possibile inviare l'idea. Riprova.","close":"Chiudi","charCount":"{count}/{max}","thanksTitle":"Grazie per la tua idea!","thanksText":"La esamineremo per continuare a migliorare FastTTS."},
   "footer": {
     "donate": "Donare",
     "newBadge": "Nuovo",
@@ -56,7 +56,7 @@
     "reload": "Ricarica",
     "shortcuts": "Accessi rapidi",
     "favorites": "Preferiti",
-    "exampleFavorite": "tiklivetts.es (esempio)",
+    "exampleFavorite": "FastTTS (esempio)",
     "addFavorite": "Aggiungi preferito",
     "editFavorite": "Modifica",
     "favoriteOptions": "Opzioni",
@@ -1180,7 +1180,7 @@
       "soundpad": "Carica i tuoi effetti sonori e riproducili con scorciatoie da tastiera.",
       "mcp": "Collega un agente IA (Claude) per far operare l'app al posto tuo.",
       "overlayDecoraciones": "Personalizza lo sfondo dei tuoi overlay con una tua immagine.",
-      "generic": "Sblocca tutte le funzioni Pro di TikLiveTTS."
+      "generic": "Sblocca tutte le funzioni Pro di FastTTS."
     },
     "overlayMsg": "Questa funzione richiede il piano Pro.",
     "overlayBtn": "Vedi i piani",
