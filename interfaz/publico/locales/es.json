@@ -126,6 +126,8 @@
     "langFilterHint": "Ignora mensajes de chat con caracteres que no correspondan al idioma de la voz activa (ej: bloquea chino/japonés si tu voz está en Español, y viceversa).",
     "dictFilter": "Filtrar por idioma (palabras)",
     "dictFilterHint": "Solo lee mensajes escritos en el idioma de la voz activa o en los idiomas extra que permitas. Las palabras desconocidas (nombres, typos) no bloquean.",
+    "cleanNicks": "Limpiar nombres de usuario",
+    "cleanNicksHint": "Quita números, guiones y adornos: \"xX_Pedro_1234_Xx\" se lee \"Pedro\".",
     "linkFilter": "Ignorar mensajes con enlaces",
     "linkFilterHint": "No lee ni muestra mensajes que traen un enlace (http, www o algo.com). Frena a los bots que promocionan seguidores o viewers.",
     "readNonFollowers": "Leer a no seguidores"
@@ -223,6 +225,13 @@
     "clipsHistory": "Historial de marcadores",
     "announceTplTitle": "Personaliza el final de los anuncios",
     "announceTplDesc": "Opcional: escribe lo que va después del nombre. Los datos se añaden solos; si lo dejas vacío, se usa el texto estándar.",
+    "pronunciationTitle": "Diccionario de pronunciación",
+    "pronunciationDesc": "Una palabra por línea: palabra = cómo se lee. Si dejas solo la palabra, el TTS la salta.",
+    "pronunciationPlaceholder": "xd = equis de",
+    "nickTitle": "Cómo se leen los nombres",
+    "nickAliasesTitle": "Apodos fijos",
+    "nickAliasesDesc": "Un usuario por línea: nombre en el chat = cómo quieres que lo lea.",
+    "nickAliasesPlaceholder": "xX_Pedro_Xx = Pedrito",
     "announceTplGift": "Después de recibir un regalo",
     "announceTplExGift": "se la comió",
     "announceTplJoin": "Después de que alguien entre",
@@ -654,6 +663,7 @@
     "share": "{user} está compartiendo el live"
   },
   "toast": {
+    "pronunciationSaved": "Pronunciación guardada",
     "portalTabLimit": "Máximo 6 pestañas en el navegador",
     "portalFavoriteInvalid": "Nombre o URL inválidos",
     "portalDownloadDone": "Descarga completa: {filename}",

@@ -83,6 +83,8 @@
     "langFilterHint": "Ignores chat messages with characters that don't match the active voice's language (e.g. blocks Chinese/Japanese if your voice is Spanish, and vice versa).",
     "dictFilter": "Filter by language (words)",
     "dictFilterHint": "Only reads messages written in the active voice language or in the extra languages you allow. Unknown words (names, typos) never block.",
+    "cleanNicks": "Clean up usernames",
+    "cleanNicksHint": "Removes numbers, underscores and decorations: \"xX_Pedro_1234_Xx\" is read as \"Pedro\".",
     "linkFilter": "Ignore messages with links",
     "linkFilterHint": "Doesn't read or show messages that contain a link (http, www or something.com). Stops bots that promote followers or viewers.",
     "readNonFollowers": "Read non-followers"
@@ -180,6 +182,13 @@
     "clipsHistory": "Clip history",
     "announceTplTitle": "Customize announcement endings",
     "announceTplDesc": "Optional: type what comes after the name. Event details are added automatically; leave it empty to use the standard text.",
+    "pronunciationTitle": "Pronunciation dictionary",
+    "pronunciationDesc": "One word per line: word = how it is read. If you leave only the word, the TTS skips it.",
+    "pronunciationPlaceholder": "lol = laughing out loud",
+    "nickTitle": "How names are read",
+    "nickAliasesTitle": "Fixed nicknames",
+    "nickAliasesDesc": "One user per line: name in chat = how you want it read.",
+    "nickAliasesPlaceholder": "xX_Pedro_Xx = Pete",
     "announceTplGift": "After receiving a gift",
     "announceTplExGift": "went all in",
     "announceTplJoin": "After someone joins",
@@ -611,6 +620,7 @@
     "share": "{user} is sharing the live"
   },
   "toast": {
+    "pronunciationSaved": "Pronunciation saved",
     "portalTabLimit": "Maximum 6 tabs in the browser",
     "portalFavoriteInvalid": "Invalid name or URL",
     "portalDownloadDone": "Download complete: {filename}",

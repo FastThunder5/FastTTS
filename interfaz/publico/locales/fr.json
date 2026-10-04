@@ -81,6 +81,8 @@
     "langFilterHint": "Ignore les messages du chat contenant des caractères ne correspondant pas à la langue de la voix active (ex : bloque le chinois/japonais si votre voix est en espagnol, et inversement).",
     "dictFilter": "Filtrer par langue (mots)",
     "dictFilterHint": "Ne lit que les messages écrits dans la langue de la voix active ou dans les langues supplémentaires autorisées. Les mots inconnus (noms, fautes de frappe) ne bloquent pas.",
+    "cleanNicks": "Nettoyer les noms d'utilisateur",
+    "cleanNicksHint": "Retire chiffres, tirets et décorations : « xX_Pedro_1234_Xx » est lu « Pedro ».",
     "linkFilter": "Ignorer les messages avec des liens",
     "linkFilterHint": "Ne lit ni n'affiche les messages contenant un lien (http, www ou quelquechose.com). Bloque les bots qui vendent des abonnés ou des viewers.",
     "readNonFollowers": "Lire les non-abonnés"
@@ -178,6 +180,13 @@
     "clipsHistory": "Historique des marqueurs",
     "announceTplTitle": "Personnalisez la fin des annonces",
     "announceTplDesc": "Facultatif : écris ce qui vient après le nom. Les détails de l'événement s'ajoutent automatiquement ; laisse vide pour utiliser le texte standard.",
+    "pronunciationTitle": "Dictionnaire de prononciation",
+    "pronunciationDesc": "Un mot par ligne : mot = comment il se lit. Si tu laisses seulement le mot, le TTS le saute.",
+    "pronunciationPlaceholder": "mdr = mort de rire",
+    "nickTitle": "Lecture des noms",
+    "nickAliasesTitle": "Surnoms fixes",
+    "nickAliasesDesc": "Un utilisateur par ligne : nom dans le chat = comment tu veux qu'il soit lu.",
+    "nickAliasesPlaceholder": "xX_Pedro_Xx = Pierrot",
     "announceTplGift": "Après avoir reçu un cadeau",
     "announceTplExGift": "a tout donné",
     "announceTplJoin": "Après l'arrivée de quelqu'un",
@@ -609,6 +618,7 @@
     "share": "{user} partage le live"
   },
   "toast": {
+    "pronunciationSaved": "Prononciation enregistrée",
     "portalTabLimit": "Maximum 6 onglets dans le navigateur",
     "portalFavoriteInvalid": "Nom ou URL invalide",
     "portalDownloadDone": "Téléchargement terminé : {filename}",

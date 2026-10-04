@@ -18,7 +18,8 @@ import { logStorage } from '../log-storage.js';
 import { getWs } from '../ws/cliente-ws.js';
 import { getClipsData, getLocalDateStr, obtenerStreamStartTime } from '../../vistas/principal/clips.js';
 import { chatFollowSpeaking } from '../../vistas/principal/chat-ui.js';
-import { MAX_QUEUE_SIZE } from '../estado/config-runtime.js';
+import { MAX_QUEUE_SIZE, ttsPronunciations } from '../estado/config-runtime.js';
+import { aplicarDiccionario } from './pronunciacion.js';
 
 export let ttsGlobalEnabled = true;
 export let ttsPaused = false;
@@ -247,8 +248,10 @@ export function updateVol(v) {
   saveSettings();
 }
 
-export function speak(text, msgId, timestamp) {
+export function speak(rawText, msgId, timestamp) {
   if (!ttsGlobalEnabled) return;
+  const text = aplicarDiccionario(rawText, ttsPronunciations);
+  if (!text || !String(text).trim()) return;
   if (speechQueue.length >= MAX_QUEUE_SIZE) {
     ttsDroppedCount++;
     window.electronAPI?.trackEvent('tts:queue-overflow');

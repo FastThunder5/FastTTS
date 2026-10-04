@@ -15,6 +15,14 @@ function isAnnounceTemplates(v) {
     && Object.entries(v).every(([k, x]) => ANNOUNCE_KEYS.includes(k) && typeof x === 'string' && x.length <= ANNOUNCE_MAX_LEN);
 }
 
+// Espejo de LISTA_MAX_ENTRADAS/CLAVE_MAX_LEN/VALOR_MAX_LEN (interfaz/src/nucleo/tts/pronunciacion.js).
+function isWordMap(v) {
+  return !!v && typeof v === 'object' && !Array.isArray(v)
+    && Object.keys(v).length <= 300
+    && Object.entries(v).every(([k, x]) => k.length >= 1 && k.length <= 40 && k === k.toLowerCase()
+      && typeof x === 'string' && x.length <= 80);
+}
+
 // Migracion 1:1 de CONFIG_VALIDATORS (backend-viejo/server.js:639-666). No se
 // agregan ni quitan claves en esta fase.
 const CONFIG_VALIDATORS = {
@@ -47,6 +55,9 @@ const CONFIG_VALIDATORS = {
   a11yHighContrast: (v) => typeof v === 'boolean',
   announceTemplates: isAnnounceTemplates,
   ttsSlowSpeech: (v) => typeof v === 'boolean',
+  ttsPronunciations: isWordMap,
+  ttsNickAliases: isWordMap,
+  ttsCleanNicks: (v) => typeof v === 'boolean',
   ttsReadNonFollowers: (v) => typeof v === 'boolean',
   mcpEnabled: (v) => typeof v === 'boolean',
   mcpDestructiveToolsEnabled: (v) => typeof v === 'boolean',
@@ -55,4 +66,4 @@ const CONFIG_VALIDATORS = {
     && ['tiktok', 'twitch', 'youtube', 'kick'].every((p) => Array.isArray(v[p]) && v[p].every((x) => typeof x === 'string')),
 };
 
-module.exports = { CONFIG_VALIDATORS, isStringArray, isAnnounceTemplates };
+module.exports = { CONFIG_VALIDATORS, isStringArray, isAnnounceTemplates, isWordMap };

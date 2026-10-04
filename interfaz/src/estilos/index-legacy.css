@@ -767,6 +767,30 @@
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
+    .setting-group textarea {
+      background: var(--bg-button);
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      font-size: var(--text-sm);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+    }
+
+    .setting-group textarea:hover { border-color: var(--text-muted); }
+    .setting-group textarea:focus {
+      border-color: rgba(240, 33, 58, 0.55);
+      box-shadow: 0 0 0 3px var(--brand-a12);
+    }
+    .setting-group textarea::placeholder { color: var(--text-muted); }
+
+    .setting-group .setting-hint { font-size: 11px; color: var(--text-muted); margin: 4px 0 6px; }
+    .setting-group .setting-sublabel { margin-top: 10px; font-size: var(--text-sm); }
+
     .setting-group input[type="text"]:hover,
     .setting-group input[type="number"]:hover,
     .setting-group input[type="password"]:hover { border-color: var(--text-muted); }

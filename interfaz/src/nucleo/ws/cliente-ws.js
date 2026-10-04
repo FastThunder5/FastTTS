@@ -10,7 +10,7 @@ import { showToast } from '../../componentes/toast.js';
 import { logStorage } from '../log-storage.js';
 import { appSettings, saveSettings } from '../estado/ajustes-app.js';
 import { options } from '../estado/opciones-lectura.js';
-import { applyA11yConfig, applyReadNonFollowers, applyFiltroIdiomaConfig, applyAnnounceTemplates, announceTemplates } from '../estado/config-runtime.js';
+import { applyA11yConfig, applyReadNonFollowers, applyFiltroIdiomaConfig, applyAnnounceTemplates, announceTemplates, applyPronunciacionConfig, nombreTts } from '../estado/config-runtime.js';
 import { resolverAnuncio } from '../i18n/plantilla-anuncio.js';
 import {
   ttsPaused, setTtsGlobalEnabled, togglePauseTts, skipCurrentTTS,
@@ -122,38 +122,43 @@ function handleMessage(data) {
       break;
     }
 
+    // Cada aviso se arma dos veces: con el nick tal cual para el chat y con
+    // nombreTts() (apodo / nick limpio) para lo que se lee en voz alta.
     case 'gift':
       if (options.readGifts) {
         const giftId = nuevoMsgId();
-        const giftVars = { user: data.user, count: data.repeatCount, gift: data.giftName, amount: data.usdValue };
-        const tplVars = { usuario: data.user, cantidad: data.repeatCount, regalo: data.giftName, monto: data.usdValue };
-        const giftBase = resolverAnuncio(announceTemplates, 'gift', { ...tplVars, monto: undefined }, () => t('announce.gift', giftVars));
-        const giftText = (options.readGiftAmount && data.usdValue)
-          ? resolverAnuncio(announceTemplates, 'giftUsd', tplVars, () => t('announce.giftUsd', giftVars))
-          : giftBase;
-        addSystemMsg(giftBase, 'gift', giftId, {
+        const giftTextos = (user) => {
+          const giftVars = { user, count: data.repeatCount, gift: data.giftName, amount: data.usdValue };
+          const tplVars = { usuario: user, cantidad: data.repeatCount, regalo: data.giftName, monto: data.usdValue };
+          const base = resolverAnuncio(announceTemplates, 'gift', { ...tplVars, monto: undefined }, () => t('announce.gift', giftVars));
+          const conMonto = (options.readGiftAmount && data.usdValue)
+            ? resolverAnuncio(announceTemplates, 'giftUsd', tplVars, () => t('announce.giftUsd', giftVars))
+            : base;
+          return { base, conMonto };
+        };
+        addSystemMsg(giftTextos(data.user).base, 'gift', giftId, {
           iconSrc: 'icons/card_giftcard.svg',
           accentText: data.usdValue ? `≈ $${data.usdValue} USD` : '',
         });
-        speak(giftText, giftId, data.timestamp);
+        speak(giftTextos(nombreTts(data.user)).conMonto, giftId, data.timestamp);
       }
       break;
 
     case 'join':
       if (options.readJoins) {
         const joinId = nuevoMsgId();
-        const joinText = resolverAnuncio(announceTemplates, 'join', { usuario: data.user }, () => t('announce.join', { user: data.user }));
-        addSystemMsg(joinText, 'join', joinId, { iconSrc: 'icons/emoji_people.svg' });
-        speak(joinText, joinId, data.timestamp);
+        const joinText = (user) => resolverAnuncio(announceTemplates, 'join', { usuario: user }, () => t('announce.join', { user }));
+        addSystemMsg(joinText(data.user), 'join', joinId, { iconSrc: 'icons/emoji_people.svg' });
+        speak(joinText(nombreTts(data.user)), joinId, data.timestamp);
       }
       break;
 
     case 'follow': {
       if (options.readFollows) {
         const followId = nuevoMsgId();
-        const followText = resolverAnuncio(announceTemplates, 'follow', { usuario: data.user }, () => t('announce.follow', { user: data.user }));
-        addSystemMsg(followText, 'join', followId, { iconSrc: 'icons/person_add.svg' });
-        speak(followText, followId, data.timestamp);
+        const followText = (user) => resolverAnuncio(announceTemplates, 'follow', { usuario: user }, () => t('announce.follow', { user }));
+        addSystemMsg(followText(data.user), 'join', followId, { iconSrc: 'icons/person_add.svg' });
+        speak(followText(nombreTts(data.user)), followId, data.timestamp);
       }
       break;
     }
@@ -165,9 +170,9 @@ function handleMessage(data) {
         if (now - last >= LIKE_COOLDOWN_MS) {
           likeCooldownMap.set(data.user, now);
           const likeId = nuevoMsgId();
-          const likeText = resolverAnuncio(announceTemplates, 'like', { usuario: data.user, cantidad: data.likeCount }, () => tLike(data.user, data.likeCount));
-          addSystemMsg(likeText, 'join', likeId, { iconSrc: 'icons/thumb_up.svg' });
-          speak(likeText, likeId, data.timestamp);
+          const likeText = (user) => resolverAnuncio(announceTemplates, 'like', { usuario: user, cantidad: data.likeCount }, () => tLike(user, data.likeCount));
+          addSystemMsg(likeText(data.user), 'join', likeId, { iconSrc: 'icons/thumb_up.svg' });
+          speak(likeText(nombreTts(data.user)), likeId, data.timestamp);
         }
       }
       break;
@@ -175,9 +180,9 @@ function handleMessage(data) {
     case 'share':
       if (options.readShares) {
         const shareId = nuevoMsgId();
-        const shareText = resolverAnuncio(announceTemplates, 'share', { usuario: data.user }, () => t('announce.share', { user: data.user }));
-        addSystemMsg(shareText, 'join', shareId, { iconSrc: 'icons/public.svg' });
-        speak(shareText, shareId, data.timestamp);
+        const shareText = (user) => resolverAnuncio(announceTemplates, 'share', { usuario: user }, () => t('announce.share', { user }));
+        addSystemMsg(shareText(data.user), 'join', shareId, { iconSrc: 'icons/public.svg' });
+        speak(shareText(nombreTts(data.user)), shareId, data.timestamp);
       }
       break;
 
@@ -350,6 +355,7 @@ function handleMessage(data) {
       applyReadNonFollowers(data.config || {});
       applyFiltroIdiomaConfig(data.config || {});
       applyAnnounceTemplates(data.config || {});
+      applyPronunciacionConfig(data.config || {});
       // (sistema de cuentas eliminado en este fork)
       // vs real) -> re-hidratar en vez de quedarse con el badge/vista viejos.
       if (data.config && 'subscriptionsEnabled' in data.config)      break;
