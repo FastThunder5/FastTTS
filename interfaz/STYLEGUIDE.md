@@ -4,7 +4,7 @@ Referencia rápida para mantener consistente la UI ESM/Vite de TikLiveTTS. Reuti
 
 ## Colores
 
-No hardcodear `#F0213A`: usar `--accent` para el acento contextual o `--brand` para el rojo fijo de marca. En `#view-chat`, `--accent` se redefine a verde.
+No hardcodear `#2F8CFF`: usar `--accent` para el acento contextual o `--brand` para el azul fijo de marca. En `#view-chat`, `--accent` se redefine a verde.
 
 | Variable | Valor | Uso |
 | --- | --- | --- |
@@ -38,20 +38,20 @@ No hardcodear `#F0213A`: usar `--accent` para el acento contextual o `--brand` p
 | `--hover-3` | `rgba(255, 255, 255, 0.10)` | Hover de mayor énfasis. |
 | `--hover-15` | `rgba(255, 255, 255, 0.15)` | Fondo/borde de badge TikTok. |
 | `--hover-20` | `rgba(255, 255, 255, 0.20)` | Borde claro de cards secundarias. |
-| `--accent` | `#F0213A` | CTA, activo y foco; en `#view-chat`: `#3ecf8e`. |
-| `--accent-link` | `#F0213A` | Links de acento; en `#view-chat`: `#00c573`. |
-| `--accent-border` | `rgba(240, 33, 58, 0.3)` | Borde asociado al acento; verde en `#view-chat`. |
-| `--brand` | `#F0213A` | Rojo fijo de marca, incluso si cambia el acento de la vista. |
-| `--brand-hover` | `#d81830` | Hover de CTA de marca. |
-| `--brand-a05` | `rgba(240, 33, 58, 0.05)` | Fondo o pulso de marca muy sutil. |
-| `--brand-a10` | `rgba(240, 33, 58, 0.10)` | Fondo de opción activa/hover de marca. |
-| `--brand-a12` | `rgba(240, 33, 58, 0.12)` | Fondo de marca y anillo de foco. |
-| `--brand-a15` | `rgba(240, 33, 58, 0.15)` | Fondo de estado activo. |
-| `--brand-a20` | `rgba(240, 33, 58, 0.20)` | Anillo de estado online. |
-| `--brand-a30` | `rgba(240, 33, 58, 0.30)` | Borde de marca. |
-| `--brand-a40` | `rgba(240, 33, 58, 0.40)` | Borde de foco/activo fuerte. |
+| `--accent` | `#2F8CFF` | CTA, activo y foco; en `#view-chat`: `#3ecf8e`. |
+| `--accent-link` | `#2F8CFF` | Links de acento; en `#view-chat`: `#00c573`. |
+| `--accent-border` | `rgba(47, 140, 255, 0.3)` | Borde asociado al acento; verde en `#view-chat`. |
+| `--brand` | `#2F8CFF` | Azul fijo de marca, incluso si cambia el acento de la vista. |
+| `--brand-hover` | `#1C74E6` | Hover de CTA de marca. |
+| `--brand-a05` | `rgba(47, 140, 255, 0.05)` | Fondo o pulso de marca muy sutil. |
+| `--brand-a10` | `rgba(47, 140, 255, 0.10)` | Fondo de opción activa/hover de marca. |
+| `--brand-a12` | `rgba(47, 140, 255, 0.12)` | Fondo de marca y anillo de foco. |
+| `--brand-a15` | `rgba(47, 140, 255, 0.15)` | Fondo de estado activo. |
+| `--brand-a20` | `rgba(47, 140, 255, 0.20)` | Anillo de estado online. |
+| `--brand-a30` | `rgba(47, 140, 255, 0.30)` | Borde de marca. |
+| `--brand-a40` | `rgba(47, 140, 255, 0.40)` | Borde de foco/activo fuerte. |
 | `--brand-green` | `#3ecf8e` | Verde de marca legado. |
-| `--green` | `#F0213A` | Alias legado; se vuelve `#3ecf8e` en chat. Preferir `--accent` o un token semántico. |
+| `--green` | `#2F8CFF` | Alias legado; se vuelve `#3ecf8e` en chat. Preferir `--accent` o un token semántico. |
 | `--ok` | `#3ecf8e` | Éxito/conectado. |
 | `--ok-link` | `#00c573` | Link de éxito. |
 | `--danger` | `#ef4444` | Acción/error peligroso. |
@@ -68,9 +68,9 @@ No hardcodear `#F0213A`: usar `--accent` para el acento contextual o `--brand` p
 | `--kick` | `#53fc18` | Badge/plataforma Kick. |
 | `--chat-bg` | `#0f0f0f` | Fondo especializado de chat. |
 | `--tiktok-red` | `#2e2e2e` | Alias legado; no usar para nuevo color de marca. |
-| `--tiktok-cyan` | `#F0213A` | Alias legado; verde en chat. |
-| `--cyan-light` | `rgba(240, 33, 58, 0.05)` | Fondo de acento legado; verde en chat. |
-| `--cyan-border` | `rgba(240, 33, 58, 0.2)` | Borde de acento legado; verde en chat. |
+| `--tiktok-cyan` | `#2F8CFF` | Alias legado; verde en chat. |
+| `--cyan-light` | `rgba(47, 140, 255, 0.05)` | Fondo de acento legado; verde en chat. |
+| `--cyan-border` | `rgba(47, 140, 255, 0.2)` | Borde de acento legado; verde en chat. |
 
 `body.high-contrast` y `prefers-contrast: more` reemplazan `--border`, `--border-strong`, `--text-secondary` y `--text-muted`; no fijar esos colores fuera de tokens.
 
@@ -140,7 +140,7 @@ Nunca usar `transition: all`: declarar solo las propiedades que cambian. Respeta
 
 - No añadir emoji nuevo a la UI. Usar SVG de `interfaz/publico/icons/`; el catálogo fuente es `asset/icons/` (Material Icons, ~1300 iconos).
 - Para un icono normal, conservar `currentColor` y colorearlo desde CSS cuando proceda.
-- Si una variante necesita un color concreto, copiar el SVG a `interfaz/publico/icons/` con otro nombre y cambiar `fill`/`stroke` directamente en su XML. Ejemplo existente: `interfaz/publico/icons/flash_on-accent.svg` contiene `fill="#F0213A"`.
+- Si una variante necesita un color concreto, copiar el SVG a `interfaz/publico/icons/` con otro nombre y cambiar `fill`/`stroke` directamente en su XML. Ejemplo existente: `interfaz/publico/icons/flash_on-accent.svg` contiene `fill="#2F8CFF"`.
 - Usar `.icon-inline` para iconos alineados con texto (`1em × 1em`).
 
 ## Componentes y patrones existentes
@@ -150,7 +150,7 @@ Todas estas clases están definidas en `interfaz/src/estilos/index-legacy.css`.
 | Clase | Reusar para |
 | --- | --- |
 | `.cuenta-card` | Tarjeta de cuenta: superficie, borde, radio grande, padding y entrada. |
-| `.cuenta-btn-primary` | CTA primario de cuenta, ancho completo y rojo de marca. |
+| `.cuenta-btn-primary` | CTA primario de cuenta, ancho completo y azul de marca. |
 | `.cuenta-btn-ghost` | Acción secundaria pill; combinar con `.cuenta-btn-danger` para peligro. |
 | `.modal-overlay` + `.modal-content` | Modal estándar. Añadir `.show` al overlay para `display: flex` y `fadeIn`. |
 | `.sidebar-item` | Navegación principal de sidebar; usar `.active` para selección. |
@@ -166,7 +166,7 @@ Todas estas clases están definidas en `interfaz/src/estilos/index-legacy.css`.
 
 | Variante | Propósito/forma | Nota |
 | --- | --- | --- |
-| `.btn` + `.btn-connect` | Acción primaria pill de conexión. | En Bot/Soundpad se sobreescribe a gris y hover rojo. |
+| `.btn` + `.btn-connect` | Acción primaria pill de conexión. | En Bot/Soundpad se sobreescribe a gris y hover azul. |
 | `.btn` + `.btn-disconnect` | Acción secundaria pill de desconexión. | |
 | `.btn-clear` | Acción pill de limpiar; `.channels-connected` cambia a estado conectado/peligro. | |
 | `.cfg-btn` | Botón secundario compacto; `.small`, `.icon-only`, `.danger`, `.warn`. | |
@@ -178,8 +178,8 @@ Todas estas clases están definidas en `interfaz/src/estilos/index-legacy.css`.
 | `.btn-supabase-primary` | CTA primario compacto de marca. | Visualmente se solapa con `.cuenta-btn-primary`. |
 | `.cuenta-btn-primary` | CTA primario de cuenta. | Visualmente se solapa con `.btn-supabase-primary`, pero es ancho completo. |
 | `.cuenta-btn-ghost` | Secundario de cuenta pill. | `.cuenta-btn-danger` es su modificador. |
-| `#btn-toggle-add-channel`, `#btn-add-channel` | Botones de añadir canal; gris en reposo, rojo al hover. | Son estilos por ID. |
-| `#btnStartStream`, `#btnConnectOBS` | Iniciar stream/conectar OBS; gris en reposo, rojo al hover. | Repiten el tratamiento de añadir canal. |
+| `#btn-toggle-add-channel`, `#btn-add-channel` | Botones de añadir canal; gris en reposo, azul al hover. | Son estilos por ID. |
+| `#btnStartStream`, `#btnConnectOBS` | Iniciar stream/conectar OBS; gris en reposo, azul al hover. | Repiten el tratamiento de añadir canal. |
 | `#update-btn-install`, `#update-btn-later` | Acciones del banner de actualización. | Estilo violeta propio del banner. |
 | `.ctx-menu button` | Opción de menú contextual. | Patrón local de menú. |
 | `.channel-chip button`, `.queue-item-remove`, `.clip-delete`, `.modal-close` | Acciones icon-only locales. | Deben recibir foco visible si se crean nuevas. |

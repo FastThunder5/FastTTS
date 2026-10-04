@@ -86,11 +86,11 @@ function fireConfetti() {
   const duration = 1800;
   const end = Date.now() + duration;
   (function frame() {
-    window.confetti({ particleCount: 4, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#F0213A', '#00c573', '#F2F2F2'] });
-    window.confetti({ particleCount: 4, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#F0213A', '#00c573', '#F2F2F2'] });
+    window.confetti({ particleCount: 4, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#2F8CFF', '#00c573', '#F2F2F2'] });
+    window.confetti({ particleCount: 4, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#2F8CFF', '#00c573', '#F2F2F2'] });
     if (Date.now() < end) requestAnimationFrame(frame);
   })();
-  window.confetti({ particleCount: 90, spread: 100, origin: { y: 0.4 }, colors: ['#F0213A', '#00c573', '#F2F2F2'] });
+  window.confetti({ particleCount: 90, spread: 100, origin: { y: 0.4 }, colors: ['#2F8CFF', '#00c573', '#F2F2F2'] });
 }
 
 function showOnboardingComplete() {
