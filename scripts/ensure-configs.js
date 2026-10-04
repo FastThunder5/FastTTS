@@ -13,7 +13,7 @@ const CONFIGS = [
     file: 'aptabase-config.generated.json',
     data: () => ({
       appKey: (process.env.APTABASE_APP_KEY || '').trim() || null,
-      host: (process.env.APTABASE_HOST || '').trim() || 'https://aptabase.tiklivetts.es',
+      host: (process.env.APTABASE_HOST || '').trim() || null,
     }),
   },
 ];

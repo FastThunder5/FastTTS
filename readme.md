@@ -1,8 +1,8 @@
 # TikLiveTTS
 
-[![Release](https://img.shields.io/github/v/release/iKhunsa/tiktok-tts?display_name=tag&sort=semver)](https://github.com/iKhunsa/tiktok-tts/releases/latest)
-[![Build & Release](https://github.com/iKhunsa/tiktok-tts/actions/workflows/release.yml/badge.svg)](https://github.com/iKhunsa/tiktok-tts/actions/workflows/release.yml)
-[![License](https://img.shields.io/github/license/iKhunsa/tiktok-tts)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/FastThunder5/FastTTS?display_name=tag&sort=semver)](https://github.com/FastThunder5/FastTTS/releases/latest)
+[![Build & Release](https://github.com/FastThunder5/FastTTS/actions/workflows/release.yml/badge.svg)](https://github.com/FastThunder5/FastTTS/actions/workflows/release.yml)
+[![License](https://img.shields.io/github/license/FastThunder5/FastTTS)](LICENSE)
 [![Electron](https://img.shields.io/badge/Electron-41-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
 
 **TikLiveTTS** is a Windows desktop app that reads live chat aloud while you stream. Connect TikTok Live, Twitch, YouTube, or Kick, manage everything from one native app, and add browser-source overlays to OBS.
@@ -18,7 +18,7 @@
 
 ## Download
 
-Get the latest Windows installer from [GitHub Releases](https://github.com/iKhunsa/tiktok-tts/releases/latest). Node.js is not required to use the app.
+Get the latest Windows installer from [GitHub Releases](https://github.com/FastThunder5/FastTTS/releases/latest). Node.js is not required to use the app.
 
 The installer is currently unsigned, so Windows may show a first-run SmartScreen warning. Select **More info** and then **Run anyway** if you trust the release.
 
@@ -76,7 +76,7 @@ test/             Node test suite
 - Windows is required to create the NSIS installer
 
 ```bash
-git clone https://github.com/iKhunsa/tiktok-tts.git
+git clone https://github.com/FastThunder5/FastTTS.git
 cd tiktok-tts
 npm ci
 ```
