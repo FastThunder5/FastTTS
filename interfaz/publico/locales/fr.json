@@ -81,6 +81,8 @@
     "langFilterHint": "Ignore les messages du chat contenant des caractères ne correspondant pas à la langue de la voix active (ex : bloque le chinois/japonais si votre voix est en espagnol, et inversement).",
     "dictFilter": "Filtrer par langue (mots)",
     "dictFilterHint": "Ne lit que les messages écrits dans la langue de la voix active ou dans les langues supplémentaires autorisées. Les mots inconnus (noms, fautes de frappe) ne bloquent pas.",
+    "linkFilter": "Ignorer les messages avec des liens",
+    "linkFilterHint": "Ne lit ni n'affiche les messages contenant un lien (http, www ou quelquechose.com). Bloque les bots qui vendent des abonnés ou des viewers.",
     "readNonFollowers": "Lire les non-abonnés"
   },
   "tts": {

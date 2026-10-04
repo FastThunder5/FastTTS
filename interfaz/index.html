@@ -831,6 +831,13 @@
             </button>
             <div style="font-size:11px;color:var(--text-muted);margin-top:4px;" data-i18n="toggle.dictFilterHint">Solo lee mensajes escritos en el idioma de la voz activa o en los idiomas extra que permitas. Las palabras desconocidas (nombres, typos) no bloquean.</div>
           </div>
+          <div class="setting-group" id="voiceLinkFilterGroup">
+            <label class="toggle-chip" style="width:max-content;">
+              <input type="checkbox" id="linkFilterToggle" onchange="toggleLinkFilter(this)" />
+              <span data-i18n="toggle.linkFilter">Ignorar mensajes con enlaces</span>
+            </label>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;" data-i18n="toggle.linkFilterHint">No lee ni muestra mensajes que traen un enlace (http, www o algo.com). Frena a los bots que promocionan seguidores o viewers.</div>
+          </div>
           <div class="setting-group" id="voiceAnnounceGroup">
             <label><img class="icon-inline" src="icons/chat.svg" alt=""> <span data-i18n="settings.announceTplTitle">Personaliza el final de los anuncios</span></label>
             <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;" data-i18n="settings.announceTplDesc">Opcional: escribe lo que va después del nombre. Los datos se añaden solos; si lo dejas vacío, se usa el texto estándar.</div>

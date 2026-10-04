@@ -10,6 +10,27 @@ const { invalidateBlockedMatchers } = require('./blocked-matchers');
 const DEFAULT_BLOCKED_WORDS_FILE = path.join(RESOURCE_BASE, 'blocked-words.md');
 function blockedWordsFile() { return accountDataPath('blocked-words.md'); }
 
+// Palabras que se suman una sola vez a listas ya existentes (la copia del
+// default solo ocurre cuando la cuenta no tiene archivo). La marca evita
+// re-agregarlas si el usuario despues las borra a mano.
+const SEED_VERSION = 1;
+const SEED_WORDS = ['viewers', 'followers', 'promo', 'cheap', 'ai'];
+function seedMarkerFile() { return accountDataPath('blocked-words-seed.json'); }
+
+function applySeedWords(state, logger) {
+  const marker = seedMarkerFile();
+  let version = 0;
+  try { version = JSON.parse(fs.readFileSync(marker, 'utf-8')).version || 0; } catch { /* sin marca: nunca se sembro */ }
+  if (version >= SEED_VERSION) return;
+  const before = state.blockedWords.size;
+  for (const word of SEED_WORDS) state.blockedWords.add(word);
+  if (state.blockedWords.size !== before) {
+    invalidateBlockedMatchers(state);
+    saveBlockedWordsToFile(state, logger);
+  }
+  atomicWriteFileSync(marker, JSON.stringify({ version: SEED_VERSION }));
+}
+
 function loadBlockedWordsFromFile(state, logger) {
   try {
     const file = blockedWordsFile();
@@ -26,6 +47,7 @@ function loadBlockedWordsFromFile(state, logger) {
       }
     }
     invalidateBlockedMatchers(state);
+    applySeedWords(state, logger);
     logger.log(
       'info', 'moderacion', 'moderacion/filters/blocked-words-file.js#loadBlockedWordsFromFile', 'moderacion.palabras.cargado',
       `blocked-words.md cargado con ${state.blockedWords.size} palabra(s)`, { count: state.blockedWords.size }
@@ -42,7 +64,7 @@ function saveBlockedWordsToFile(state, logger) {
   try {
     const sorted = [...state.blockedWords].sort((a, b) => a.localeCompare(b));
     const lines = [
-      '# Palabras Prohibidas — TikLiveTTS',
+      '# Palabras Prohibidas — FastTTS',
       '',
       'Edita este archivo directamente o usa la web en `/advanced.html`.',
       'Las palabras se comparan en minusculas, sin importar acentos.',

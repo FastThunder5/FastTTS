@@ -20,6 +20,7 @@ function preview(deps) {
       voiceId: config && config.ttsVoiceLang,
       langFilterEnabled: !!(config && config.langFilterEnabled),
       dictFilterEnabled: !!(config && config.dictFilterEnabled),
+      linkFilterEnabled: !(config && config.linkFilterEnabled === false),
       allowedExtraLangs: (config && config.allowedExtraLangs) || [],
     };
 

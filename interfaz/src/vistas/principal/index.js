@@ -45,7 +45,7 @@ import {
 import { setReadNonFollowers } from '../../nucleo/estado/config-runtime.js';
 import {
   toggleVoiceDropdown, patchConfigSetting, syncTtsVoiceLang, toggleLangFilter,
-  toggleDictFilter, toggleSayUsernameConnector, updateConnectorChipState, selectVoice,
+  toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector, updateConnectorChipState, selectVoice,
   loadVoices, testVoice, iniciarCierreDropdownVoces,
 } from './voces.js';
 import { escapeHtml, initChatScrollFollow, initSpeakingGoto, clearChatAndQueue } from './chat-ui.js';
@@ -109,7 +109,7 @@ Object.assign(window, {
   // config runtime
   setReadNonFollowers,
   // voces
-  toggleVoiceDropdown, toggleLangFilter, toggleDictFilter, toggleSayUsernameConnector,
+  toggleVoiceDropdown, toggleLangFilter, toggleDictFilter, toggleLinkFilter, toggleSayUsernameConnector,
   selectVoice, testVoice,
   // chat / tts
   clearChatAndQueue, skipCurrentTTS, togglePauseTts, toggleGlobalTTS,
