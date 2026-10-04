@@ -29,7 +29,7 @@ export async function uploadBg(type, file) {
     } else {
       showToast(tErr(data, 'toast.bgUploadError'));
     }
-  } catch (e) {
+  } catch {
     showToast(t('toast.bgUploadError'));
   }
 }
@@ -44,7 +44,7 @@ export async function removeBg(type) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filename }),
       });
-    } catch (e) { /* ignore cleanup errors */ }
+    } catch { /* ignore cleanup errors */ }
   }
   appSettings.overlays[type].bgimg = '';
   const input = document.getElementById('cfg-' + type + '-bgimg');

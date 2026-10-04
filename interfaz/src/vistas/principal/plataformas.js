@@ -13,7 +13,7 @@ function loadPlatformChannels() {
     const normalized = normalizeSavedChannels(raw);
     if (JSON.stringify(raw) !== JSON.stringify(normalized)) savePlatformChannels(normalized);
     return normalized;
-  } catch (e) {
+  } catch {
     return normalizeSavedChannels({});
   }
 }
@@ -79,7 +79,7 @@ function normalizeYoutubeEntry(raw) {
       if (parts[0]?.startsWith('@')) return savedEntry(parts[0]);
       if (parts[0] === 'c' || parts[0] === 'user') return savedEntry(parts[1] ? '@' + parts[1].replace(/^@+/, '') : '');
     }
-  } catch (e) { /* no es URL valida, cae a los patrones de abajo */ }
+  } catch { /* no es URL valida, cae a los patrones de abajo */ }
 
   if (/^UC[\w-]{20,}$/i.test(raw)) return savedEntry(raw);
   if (/^@[\w.-]+$/i.test(raw)) return savedEntry(raw);
@@ -172,7 +172,7 @@ async function removeChannel(platform, channel) {
     removeSavedChannel(platform, channel);
     renderSettingsChannels();
     showToast(t('toast.platformDisconnected').replace('{platform}', PLATFORM_LABELS[platform]));
-  } catch (e) {
+  } catch {
     showToast(t('toast.channelDisconnectError').replace('{platform}', platform));
   }
 }
@@ -244,7 +244,7 @@ export async function toggleConnectAllChat() {
     try {
       const res = await fetch('/api/channels');
       if (res.ok) channels = await res.json();
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
     const active = [];
     PLATFORMS.forEach((platform) => {
       (channels[platform] || []).forEach((ch) => {
@@ -257,7 +257,7 @@ export async function toggleConnectAllChat() {
         await fetch('/api/platforms/disconnect', {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ platform, channel }),
         });
-      } catch (e) { /* noop */ }
+      } catch { /* noop */ }
     }
     chatBtn.disabled = false;
     chatBtn.textContent = prevText;
@@ -277,7 +277,7 @@ async function updateChatConnectAllState(preloadedChannels) {
     try {
       const res = await fetch('/api/channels');
       if (res.ok) channels = await res.json();
-    } catch (e) { /* noop */ }
+    } catch { /* noop */ }
   }
   const activeCount = PLATFORMS.reduce((sum, platform) => sum + (channels[platform] || []).length, 0);
   if (activeCount > 0) {
@@ -298,7 +298,7 @@ export async function renderSettingsChannels() {
   try {
     const res = await fetch('/api/channels');
     if (res.ok) channels = await res.json();
-  } catch (e) { /* noop */ }
+  } catch { /* noop */ }
   if (renderSeq !== settingsChannelsRenderSeq) return;
   updateChatConnectAllState(channels);
 

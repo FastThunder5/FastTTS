@@ -4,7 +4,6 @@ import { escaparHtml as escHtml } from '../../../compartido/escapar-html.js';
 
 let musicAudio = null;
 let musicVol = 0.5;
-let musicCurrentTrack = null;
 let musicProgressInterval = null;
 export let musicQueue = [];
 // Peticiones !p que el server ya acepto pero todavia esta resolviendo
@@ -91,7 +90,6 @@ function musicDisposeAudio() {
 function musicPlayTrack(track) {
   musicDisposeAudio();
   clearInterval(musicProgressInterval);
-  musicCurrentTrack = track;
   const audio = new Audio(`/api/music/stream?videoId=${track.videoId}`);
   musicAudio = audio;
   audio.volume = musicVol;
@@ -143,7 +141,6 @@ function formatSecs(secs) {
 export function musicStop() {
   musicDisposeAudio();
   clearInterval(musicProgressInterval);
-  musicCurrentTrack = null;
   musicRenderNowPlaying(null);
   updateMusicPauseBtn();
 }

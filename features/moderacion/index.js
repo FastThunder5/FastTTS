@@ -3,7 +3,7 @@
 const { createModerationStore } = require('./store/create-store');
 const { createBlockedMatchersState } = require('./filters/blocked-matchers');
 const { loadBlockedWordsFromFile } = require('./filters/blocked-words-file');
-const { createDuplicateTrackerState, sweepDuplicateTracker, DUP_WINDOW_MS } = require('./filters/is-duplicate-recent');
+const { createDuplicateTrackerState, sweepDuplicateTracker } = require('./filters/is-duplicate-recent');
 const { createPolicy } = require('./policy');
 const moderacionPolicyContract = require('../../core/contracts/moderacion-policy');
 const mcpRegistry = require('../../core/contracts/mcp-registry');

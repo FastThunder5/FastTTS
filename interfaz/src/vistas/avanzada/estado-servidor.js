@@ -25,7 +25,7 @@ export async function refreshStatus() {
     document.getElementById('statusRateWindow').textContent = (data.config.TTS_RATE_WINDOW_MS / 1000) + 's';
     document.getElementById('statusMaxChars').textContent = data.config.TTS_MAX_CHARS;
     document.getElementById('statusDebounce').textContent = data.config.LIKE_DEBOUNCE_MS + 'ms';
-  } catch (e) {
+  } catch {
     showToast(t('adv.errorServerUnavailable'));
   }
 }

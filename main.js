@@ -28,7 +28,6 @@ const { getActiveAccount } = require('./core/account-data-path');
 let mainWindow = null;
 let tray = null;
 let isQuitting = false;
-let pendingUpdateVersion = null;
 let quitTasksDone = false;
 let cierresListos = false;
 let ipcHandles = null;
@@ -121,7 +120,7 @@ app.whenReady().then(() => {
         getMainWindow,
         getTray,
         buildTrayMenu: (version) => buildTrayMenu(trayCallbacks(), version),
-        onPendingVersion: (version) => { pendingUpdateVersion = version; },
+        onPendingVersion: () => {},
       });
     }
 

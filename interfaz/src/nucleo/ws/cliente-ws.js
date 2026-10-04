@@ -17,7 +17,7 @@ import {
   enableEmergencyTTSMode, sendStateSync, speak,
 } from '../tts/cola-tts.js';
 import { incrementarMsgCount, handleChatData, addSystemMsg } from '../../vistas/principal/chat-ui.js';
-import { setStatus, getSayUsernameConnector } from '../../vistas/principal/modales-avisos.js';
+import { setStatus } from '../../vistas/principal/modales-avisos.js';
 import { updateFollowerDisplay } from '../../vistas/principal/configurador-overlays.js';
 import { renderSettingsChannels } from '../../vistas/principal/plataformas.js';
 import { updateOBSStatus, getClipsData, getLocalDateStr, deleteClip, startStreamManual, markClip, obtenerStreamStartTime } from '../../vistas/principal/clips.js';
@@ -58,7 +58,7 @@ export function connectWS() {
     let d;
     try {
       d = JSON.parse(e.data);
-    } catch (err) {
+    } catch {
       logStorage.addLog('warn', 'ws', 'mensaje WS no parseable');
       return;
     }

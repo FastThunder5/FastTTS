@@ -1,4 +1,5 @@
 'use strict';
+/* exported renderPluginStore, refreshPluginStoreTexts */
 
 // ── Orquestación de arranque de la Tienda de plugins ─────────────────────
 const MORE_TOOLS_NOTICE_KEY = 'tikliveTTS_noticeMoreTools_v1';

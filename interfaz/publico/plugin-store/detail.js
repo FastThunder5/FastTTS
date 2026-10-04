@@ -1,4 +1,5 @@
 'use strict';
+/* exported showPluginDetail, toggleSidebarTool, moveSidebarTool */
 
 // ── Detalle de una tool (visibilidad + reordenar) ────────────────────────
 let _pluginStoreDetailId = null;

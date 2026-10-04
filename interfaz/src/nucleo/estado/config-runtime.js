@@ -116,7 +116,7 @@ function migrarLangFilterLegacy() {
     if (typeof parsed.dictFilterEnabled === 'boolean') { legacy.dictFilterEnabled = parsed.dictFilterEnabled; tieneAlgo = true; }
     if (Array.isArray(parsed.allowedExtraLangs) && parsed.allowedExtraLangs.length) { legacy.allowedExtraLangs = parsed.allowedExtraLangs; tieneAlgo = true; }
     return tieneAlgo ? legacy : null;
-  } catch (e) { return null; }
+  } catch { return null; }
 }
 
 export async function loadRuntimeConfig() {
@@ -142,7 +142,7 @@ export async function loadRuntimeConfig() {
     applyFiltroIdiomaConfig(cfg);
     applyAnnounceTemplates(cfg);
     applyPronunciacionConfig(cfg);
-  } catch (e) { /* config no disponible aun; se reintenta en el proximo ciclo */ }
+  } catch { /* config no disponible aun; se reintenta en el proximo ciclo */ }
 }
 
 /** Hidrata el estado en memoria + los 2 checkboxes de esta pantalla desde

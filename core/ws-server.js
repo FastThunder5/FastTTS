@@ -104,7 +104,7 @@ function createWsServer(server, bus, logger) {
       let parsed;
       try {
         parsed = JSON.parse(rawStr);
-      } catch (error) {
+      } catch {
         logger.log(
           'debug',
           'core',

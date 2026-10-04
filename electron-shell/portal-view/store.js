@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
 const { accountDataPath } = require('../../core/account-data-path');
 const { atomicWriteFileSync } = require('../../core/atomic-write');
 
