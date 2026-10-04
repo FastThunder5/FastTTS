@@ -9,6 +9,7 @@ function createMusicState() {
     // estan resolviendose en yt-dlp y no deben reaparecer despues del clear.
     queueGeneration: 0,
     currentTrack: null,
+    paused: false, // pausa del audio en overlay-musica (modo musicOverlayAudio)
     userLastRequest: {}, // { userId: timestamp }
     recentCommands: new Map(), // `${userId}::${query}` -> timestamp, dedup fijo
     playlistResolved: [],

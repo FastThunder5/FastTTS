@@ -96,6 +96,10 @@ function alManejarMensaje(d) {
     if (typeof d.overlayAudio === 'boolean') applyOverlayEnabled(d.overlayAudio);
     if (d.current) { currentTrack = d.current; renderWidget(currentTrack); }
   }
+  if (d.type === 'music-pause' && audio) {
+    if (d.paused) audio.pause();
+    else audio.play().catch(() => {});
+  }
   if (d.type === 'music-volume' && typeof d.volume === 'number') {
     volume = d.volume;
     if (audio) audio.volume = volume;
@@ -111,7 +115,11 @@ function cargarEstadoInicial() {
     overlayAudioEnabled = !!cfg.musicOverlayAudio;
     currentTrack = q.current || null;
     renderWidget(currentTrack);
-    if (overlayAudioEnabled && currentTrack) playTrack(currentTrack);
+    if (overlayAudioEnabled && currentTrack) {
+      playTrack(currentTrack);
+      // Overlay recargado (OBS) con la musica en pausa: no arrancar sonando.
+      if (q.paused && audio) audio.pause();
+    }
   }).catch(() => {});
 }
 

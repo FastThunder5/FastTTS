@@ -25,6 +25,7 @@ const { engineStatus } = require('./musica/routes/engine-status');
 const { queue } = require('./musica/routes/queue');
 const { removeQueueItem, clearQueue } = require('./musica/routes/queue-delete');
 const { skip } = require('./musica/routes/skip');
+const { pause } = require('./musica/routes/pause');
 const { next } = require('./musica/routes/next');
 const { configGet } = require('./musica/routes/config-get');
 const { configPatch } = require('./musica/routes/config-patch');
@@ -137,6 +138,7 @@ module.exports = {
     app.delete('/api/music/queue/:index', gateMusica, removeQueueItem(deps));
     app.delete('/api/music/queue', gateMusica, clearQueue(deps));
     app.post('/api/music/skip', gateMusica, skip(deps));
+    app.post('/api/music/pause', gateMusica, pause(deps));
     app.post('/api/music/next', gateMusica, next(deps));
     app.get('/api/music/config', configGet(bus));
     app.patch('/api/music/config', gateMusica, configPatch(deps));
