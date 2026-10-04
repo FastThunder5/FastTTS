@@ -1,6 +1,7 @@
 'use strict';
 
 const { resolveFullTrack } = require('./resolve-full-track');
+const { isYoutubePlaylistUrl } = require('./is-youtube-playlist-url');
 const { advanceMusicQueue } = require('./advance-queue');
 const { musicBroadcastState } = require('./broadcast-state');
 const { getConfigSnapshot } = require('../config-bridge');
@@ -124,6 +125,43 @@ function handleMusicRequest(deps) {
     if (musicState.queueGeneration !== queueGeneration) {
       cancelRequest();
       return;
+    }
+
+    // Playlist o Mix de YouTube (list=RD...) pegado como pedido: se expande y
+    // se encolan todos los temas (hasta llenar la cola), no solo el primero.
+    if (isYoutubePlaylistUrl(query)) {
+      let items = [];
+      try {
+        items = await engine.expandPlaylist(query);
+      } catch (error) {
+        logger.log(
+          'warn', 'sonido', 'sonido/musica/handle-request.js#handleMusicRequest', 'sonido.musica.playlist_expand_fallo',
+          `No se pudo expandir la playlist ${query}: ${error.message}`, { url: query, error: error.message }
+        );
+      }
+      if (musicState.queueGeneration !== queueGeneration) {
+        cancelRequest();
+        return;
+      }
+      if (items.length) {
+        const libres = Math.max(0, config.musicMaxQueue - musicState.queue.length);
+        const tracks = items.slice(0, libres).map((item) => ({ ...item, requestedBy: user, platform }));
+        if (!tracks.length) {
+          failRequest('full');
+          return;
+        }
+        logger.log(
+          'info', 'sonido', 'sonido/musica/handle-request.js#handleMusicRequest', 'sonido.musica.playlist_encolada',
+          `Playlist de YouTube encolada: ${tracks.length} de ${items.length} temas`, { url: query, count: tracks.length, total: items.length }
+        );
+        const wasEmpty = musicState.queue.length === 0 && !musicState.currentTrack;
+        musicState.queue.push(...tracks);
+        bus.emit('ws:broadcast', { type: 'music-queued', requestId, track: tracks[0], queue: [...musicState.queue], queueLength: musicState.queue.length });
+        if (wasEmpty && !musicState.currentTrack) advanceMusicQueue(deps);
+        musicBroadcastState(deps);
+        return;
+      }
+      // Expansion fallida o vacia -> sigue como video suelto (el v= del Mix).
     }
 
     let track;
