@@ -4,6 +4,17 @@ Todas las novedades relevantes de este proyecto se documentan aquí.
 
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y el proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.11.1] — 2026-10-06
+
+### Corregido
+- **TikTok no leía el chat**: los mensajes llegaban sin texto y se descartaban.
+  La librería de TikTok cambió el formato de los eventos y la app usaba un
+  conversor viejo que ya no lo entendía.
+- **Likes de TikTok contados de menos**: cada paquete de likes contaba como 1
+  (ej. 16 en el overlay con más de 400 en el live). Ahora suma la cantidad real.
+- **Regalos, follows y shares de TikTok**: el nombre y valor del regalo, y las
+  alertas de seguidor y compartir, vuelven a llegar a los overlays.
+
 ## [1.11.0] — 2026-10-04
 
 ### Nuevo

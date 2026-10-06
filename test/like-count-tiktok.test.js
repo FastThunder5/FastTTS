@@ -6,10 +6,11 @@ const fs = require('fs');
 const path = require('path');
 
 test('el overlay suma likeCount numerico aunque el cliente lo entregue como string', () => {
-  const src = fs.readFileSync(path.join(__dirname, '../features/canales/tiktok/connect-tiktok-channel.js'), 'utf8');
-  assert.match(src, /likeCount: Number\(data\.likeCount\) \|\| 1/);
+  const { normalizeLike } = require('../features/canales/tiktok/normalize-event');
   // 0 + "5" seria "05": la coercion en el productor lo evita
-  assert.equal(0 + (Number('5') || 1), 5);
+  assert.equal(normalizeLike({ count: '5' }).likeCount, 5);
+  assert.equal(normalizeLike({ likeCount: '7' }).likeCount, 7);
+  assert.equal(normalizeLike({}).likeCount, 1);
 });
 
 test('los 10 locales tienen announce.like, likeOne y likeFew', () => {
