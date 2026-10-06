@@ -1,12 +1,12 @@
 'use strict';
 
-// tiktok-live-connector >=2.2 ya no exporta WebcastPushConnection desde la
-// raiz (quedo en el subpath /legacy) y el lockfile instala 2.5.0: sin este
-// fallback era undefined y TikTok fallaba siempre con "is not a constructor".
-const { WebcastPushConnection } = (() => {
-  const root = require('tiktok-live-connector');
-  return root.WebcastPushConnection ? root : require('tiktok-live-connector/legacy');
-})();
+// Clase actual de tiktok-live-connector 2.x. NO usar WebcastPushConnection
+// (/legacy): su conversor a formato plano no entiende el proto v3 y perdia el
+// texto del chat (`content`), la cantidad de likes (`count`), los regalos y
+// los follows/shares. La traduccion al formato que usa la app vive en
+// normalize-event.js.
+const { TikTokLiveConnection } = require('tiktok-live-connector');
+const { normalizeChat, normalizeLike, normalizeGift, normalizeUserEvent } = require('./normalize-event');
 const { MAX_RECONNECT_ATTEMPTS } = require('../state/channel-maps');
 const { cleanTiktokUsername } = require('./clean-username');
 const { cleanupAfterLastTikTokChannel } = require('./cleanup-after-last-channel');
@@ -24,47 +24,51 @@ function setupTikTokConnection(deps, cleanUsername) {
   const existing = state.tiktokChannels.get(cleanUsername);
   if (existing && existing.conn) existing.conn.removeAllListeners();
 
-  const conn = new WebcastPushConnection(cleanUsername, {
+  const conn = new TikTokLiveConnection(cleanUsername, {
     processInitialData: false,
     enableExtendedGiftInfo: false,
-    enableWebsocketUpgrade: true,
-    requestPollingIntervalMs: 2000,
   });
   state.tiktokChannels.set(cleanUsername, { conn, attempts: existing ? existing.attempts : 0, timer: null });
 
-  conn.on('chat', (data) => {
-    if (!data.comment || !data.comment.trim()) return;
+  conn.on('chat', (msg) => {
+    const data = normalizeChat(msg);
+    if (!data.comment.trim()) return;
     bus.emit('canal:mensaje-crudo', { platform: 'tiktok', channel: cleanUsername, raw: data });
   });
 
-  conn.on('gift', (data) => {
+  conn.on('gift', (msg) => {
+    const data = normalizeGift(msg);
     // giftType 1 = combo en curso; solo interesa el ultimo golpe (repeatEnd).
     if (data.giftType === 1 && !data.repeatEnd) return;
     bus.emit('canal:gift', { platform: 'tiktok', channel: cleanUsername, raw: data });
   });
 
-  conn.on('like', (data) => {
+  conn.on('like', (msg) => {
+    const data = normalizeLike(msg);
     bus.emit('canal:like', {
       platform: 'tiktok', channel: cleanUsername,
-      userId: data.uniqueId || null, nick: data.nickname || null, likeCount: Number(data.likeCount) || 1,
+      userId: data.uniqueId || null, nick: data.nickname || null, likeCount: data.likeCount,
     });
   });
 
-  conn.on('member', (data) => {
+  conn.on('member', (msg) => {
+    const data = normalizeUserEvent(msg);
     bus.emit('canal:evento-especial', {
       platform: 'tiktok', channel: cleanUsername, kind: 'join',
       userId: data.uniqueId || null, nick: data.nickname || null,
     });
   });
 
-  conn.on('follow', (data) => {
+  conn.on('follow', (msg) => {
+    const data = normalizeUserEvent(msg);
     bus.emit('canal:follow', {
       platform: 'tiktok', channel: cleanUsername,
       userId: data.uniqueId || null, nick: data.nickname || null,
     });
   });
 
-  conn.on('share', (data) => {
+  conn.on('share', (msg) => {
+    const data = normalizeUserEvent(msg);
     bus.emit('canal:evento-especial', {
       platform: 'tiktok', channel: cleanUsername, kind: 'share',
       userId: data.uniqueId || null, nick: data.nickname || null,
@@ -99,12 +103,15 @@ function setupTikTokConnection(deps, cleanUsername) {
     }
   });
 
-  conn.on('error', (err) => {
+  conn.on('error', (evt) => {
+    // La 2.x emite { info, exception } en vez de un Error.
+    const exc = evt && evt.exception;
+    const message = (exc && exc.message) || (evt && evt.message) || (evt && evt.info) || 'error desconocido';
     logger.log(
       'warn', 'canales', 'canales/tiktok/connect-tiktok-channel.js#setupTikTokConnection', 'canales.tiktok.error',
-      `Error de conexion TikTok ${cleanUsername}: ${err.message}`, { channel: cleanUsername, error: err.message, stack: err.stack }
+      `Error de conexion TikTok ${cleanUsername}: ${message}`, { channel: cleanUsername, error: message, info: evt && evt.info, stack: exc && exc.stack }
     );
-    bus.emit('canal:estado', { platform: 'tiktok', channel: cleanUsername, state: 'error', error: err.message });
+    bus.emit('canal:estado', { platform: 'tiktok', channel: cleanUsername, state: 'error', error: message });
   });
 
   return conn;
