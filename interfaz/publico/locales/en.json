@@ -70,6 +70,9 @@
     "favRemove": "Remove from favorites"
   },
   "toggle": {
+    "closeToTray": "Minimize to tray on close",
+    "closeToTrayHint": "The X keeps the app running in the system tray. To quit completely: right-click the tray icon → Exit.",
+    "openAtLogin": "Open when Windows starts",
     "readChat": "Read comments",
     "readGifts": "Announce gifts",
     "readGiftAmount": "Read gift amount",
@@ -180,6 +183,7 @@
     }
   },
   "settings": {
+    "window": "Window & startup",
     "voice": "Voice & audio",
     "shortcuts": "Keyboard shortcuts",
     "channels": "Linked channels",

@@ -68,6 +68,9 @@
     "favRemove": "Remover dos favoritos"
   },
   "toggle": {
+    "closeToTray": "Minimizar para a bandeja ao fechar",
+    "closeToTrayHint": "Com o X o app continua funcionando na bandeja do sistema. Para fechar de vez: clique direito no ícone da bandeja → Sair.",
+    "openAtLogin": "Abrir ao iniciar o Windows",
     "readChat": "Ler comentários",
     "readGifts": "Anunciar presentes",
     "readGiftAmount": "Anunciar valor do presente",
@@ -178,6 +181,7 @@
     }
   },
   "settings": {
+    "window": "Janela e inicialização",
     "voice": "Voz e áudio",
     "shortcuts": "Atalhos de teclado",
     "channels": "Canais vinculados",

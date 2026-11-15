@@ -8,7 +8,7 @@ const { DEFAULT_CONFIG } = require('./default-config');
 const { applyConfigPatch } = require('./apply-patch');
 
 function configFile() { return accountDataPath('config.json'); }
-const INSTALLATION_KEYS = ['mcpEnabled', 'mcpDestructiveToolsEnabled', 'mcpDevToolsEnabled'];
+const INSTALLATION_KEYS = ['mcpEnabled', 'mcpDestructiveToolsEnabled', 'mcpDevToolsEnabled', 'closeToTray'];
 const INSTALLATION_FILE = path.join(DATA_BASE, 'installation-config.json');
 const LEGACY_CONFIG_FILE = path.join(DATA_BASE, 'config.json');
 const MIGRATION_FILE = path.join(DATA_BASE, 'account-data-migrated-v1.json');

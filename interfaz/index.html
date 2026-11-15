@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="plugin-store/grid.css" />
   <link rel="stylesheet" href="plugin-store/detail.css" />
   <link rel="stylesheet" href="./src/estilos/index-legacy.css">
+  <link rel="stylesheet" href="./src/estilos/ajustes-ventana.css">
   <link rel="stylesheet" href="./src/estilos/portal-view.css">
 </head>
 <body>
@@ -1042,6 +1043,32 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- interfaz/src/vistas/principal/ajustes-ventana.js la cablea -->
+      <div class="settings-section ajustes-ventana" id="settingsSectionWindow">
+        <div class="settings-section-title" data-i18n="settings.window">Ventana e inicio</div>
+        <label class="ajustes-ventana-fila">
+          <img class="ajustes-ventana-icono" src="icons/inbox.svg" alt="">
+          <span class="ajustes-ventana-texto">
+            <span class="ajustes-ventana-titulo" data-i18n="toggle.closeToTray">Minimizar a la bandeja al cerrar</span>
+            <span class="ajustes-ventana-desc" data-i18n="toggle.closeToTrayHint">Con la X la app sigue funcionando en la bandeja del sistema. Para cerrarla del todo: clic derecho en el ícono de la bandeja → Salir.</span>
+          </span>
+          <span class="switch">
+            <input type="checkbox" id="closeToTrayToggle" />
+            <span class="switch-track"></span>
+          </span>
+        </label>
+        <label class="ajustes-ventana-fila" id="openAtLoginGroup">
+          <img class="ajustes-ventana-icono" src="icons/windows-start.svg" alt="">
+          <span class="ajustes-ventana-texto">
+            <span class="ajustes-ventana-titulo" data-i18n="toggle.openAtLogin">Abrir al iniciar Windows</span>
+          </span>
+          <span class="switch">
+            <input type="checkbox" id="openAtLoginToggle" />
+            <span class="switch-track"></span>
+          </span>
+        </label>
       </div>
 
       <div class="settings-section">

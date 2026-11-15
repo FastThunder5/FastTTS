@@ -68,6 +68,9 @@
     "favRemove": "Retirer des favoris"
   },
   "toggle": {
+    "closeToTray": "Réduire dans la zone de notification à la fermeture",
+    "closeToTrayHint": "Avec le X, l'app continue de tourner dans la zone de notification. Pour la quitter : clic droit sur l'icône → Quitter.",
+    "openAtLogin": "Ouvrir au démarrage de Windows",
     "readChat": "Lire les commentaires",
     "readGifts": "Annoncer cadeaux",
     "readGiftAmount": "Annoncer le montant du cadeau",
@@ -178,6 +181,7 @@
     }
   },
   "settings": {
+    "window": "Fenêtre et démarrage",
     "voice": "Voix et audio",
     "shortcuts": "Raccourcis clavier",
     "channels": "Chaînes liées",
