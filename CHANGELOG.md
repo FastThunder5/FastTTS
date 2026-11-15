@@ -4,6 +4,33 @@ Todas las novedades relevantes de este proyecto se documentan aquí.
 
 El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y el proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.12.0] — 2026-11-15
+
+### Nuevo
+- **Overlay de teclado y mouse** (`overlay-teclado.html`): muestra en vivo las
+  teclas y los botones del mouse que vas presionando. Tema oscuro o claro,
+  color y opacidad.
+- **Overlay de espectadores de TikTok** (`overlay-viewers.html`): cuánta gente
+  está viendo tu live, con botón de prueba.
+- **Tono de la voz**: nuevo control para hacer la voz más grave o más aguda
+  sin cambiar la velocidad.
+- **Minimizar a la bandeja al cerrar** y **abrir al iniciar Windows**, en
+  Ajustes → Ventana e inicio.
+
+### Corregido
+- **Chat de Kick**: Kick cambió su sistema de chat y dejó de llegar; ahora se
+  conecta por el nuevo.
+- **`!p` con links de YouTube**: yt-dlp se actualiza desde el canal nightly,
+  que recibe los arreglos contra cambios de YouTube al día siguiente.
+- **YouTube** ya no se reconecta solo porque el chat esté callado, y no deja
+  de reconectar después de 5 intentos en un stream largo.
+- **TTS trabado**: el audio que no arranca a tiempo se corta y la cola sigue.
+- **Velocidad de la voz** ya no cambia el tono.
+
+### Cambiado
+- El largo máximo de texto del TTS por defecto baja de 500 a 200 caracteres
+  (se puede subir en Avanzado; si ya lo habías cambiado, se respeta).
+
 ## [1.11.1] — 2026-10-06
 
 ### Corregido
