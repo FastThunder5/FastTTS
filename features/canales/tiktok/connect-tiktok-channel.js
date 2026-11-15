@@ -6,7 +6,7 @@
 // los follows/shares. La traduccion al formato que usa la app vive en
 // normalize-event.js.
 const { TikTokLiveConnection } = require('tiktok-live-connector');
-const { normalizeChat, normalizeLike, normalizeGift, normalizeUserEvent } = require('./normalize-event');
+const { normalizeChat, normalizeLike, normalizeGift, normalizeUserEvent, normalizeRoomUser } = require('./normalize-event');
 const { MAX_RECONNECT_ATTEMPTS } = require('../state/channel-maps');
 const { cleanTiktokUsername } = require('./clean-username');
 const { cleanupAfterLastTikTokChannel } = require('./cleanup-after-last-channel');
@@ -73,6 +73,12 @@ function setupTikTokConnection(deps, cleanUsername) {
       platform: 'tiktok', channel: cleanUsername, kind: 'share',
       userId: data.uniqueId || null, nick: data.nickname || null,
     });
+  });
+
+  conn.on('roomUser', (msg) => {
+    const viewerCount = normalizeRoomUser(msg);
+    if (viewerCount === null) return;
+    bus.emit('canal:viewers', { platform: 'tiktok', channel: cleanUsername, viewerCount });
   });
 
   conn.on('disconnected', () => {

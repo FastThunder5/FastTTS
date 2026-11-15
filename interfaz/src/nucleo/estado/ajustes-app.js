@@ -56,6 +56,7 @@ export const DEFAULT_SETTINGS = {
     creditos: { speed: 40, color: '#FFBB00', bg: 0.85, bgimg: '' },
     social: { layout: 'cols', color: '#FFBB00', bg: 0.80, bgimg: '' },
     'alertas-social': { color: '#FFBB00', bg: 0.90, bgimg: '' },
+    viewers: { color: '#2F8CFF', bg: 0.80 },
     musica: { bgimg: '' },
     teclado: { tema: 'oscuro', color: '#2F8CFF', bg: 0.84 },
     chat: {
@@ -203,6 +204,14 @@ export function applySettings() {
     if (sbValEl) sbValEl.textContent = Math.round(social.bg * 100);
   }
 
+  const viewers = appSettings.overlays.viewers;
+  if (viewers) {
+    setFieldVal('cfg-viewers-color', viewers.color);
+    setFieldVal('cfg-viewers-bg', viewers.bg);
+    const vbValEl = document.getElementById('cfg-viewers-bg-val');
+    if (vbValEl) vbValEl.textContent = Math.round(viewers.bg * 100);
+  }
+
   const alertasSocial = appSettings.overlays['alertas-social'];
   if (alertasSocial) {
     setFieldVal('cfg-alertas-social-color', alertasSocial.color);
@@ -234,6 +243,7 @@ export function applySettings() {
   updateOverlayUrl('alertas');
   updateOverlayUrl('creditos');
   updateOverlayUrl('social');
+  updateOverlayUrl('viewers');
   updateOverlayUrl('musica');
   updateOverlayUrl('teclado');
   updateSocialOverlayUrl();

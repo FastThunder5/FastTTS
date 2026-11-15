@@ -581,6 +581,8 @@
     "logsTitle": "Logs"
   },
   "overlayStr": {
+    "viewers": "Espectadores",
+    "liveViewerCount": "Personas viendo tu TikTok en vivo",
     "knownBugs": "Fallos conocidos",
     "knownBugsMsg": "Algunas secciones tienen errores conocidos. Se arreglarán próximamente.",
     "newFollowers": "Nuevos seguidores",
@@ -691,6 +693,7 @@
     "share": "{user} está compartiendo el live"
   },
   "toast": {
+    "testViewersSent": "Test enviado: {count} espectadores",
     "pronunciationSaved": "Pronunciación guardada",
     "unknownVoices": "No encontré estas voces: {voices}. Usa el nombre que aparece en el selector.",
     "userVoicesSaved": "Voces por usuario guardadas",

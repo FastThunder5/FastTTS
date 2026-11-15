@@ -29,6 +29,9 @@ export function buildOverlayUrl(type) {
     if (cfg.layout && cfg.layout !== 'cols') p.set('layout', cfg.layout);
     if (cfg.color && cfg.color !== '#FFBB00') p.set('color', cfg.color.replace('#', ''));
     if (cfg.bg !== 0.80) p.set('bg', cfg.bg);
+  } else if (type === 'viewers') {
+    if (cfg.color && cfg.color.toUpperCase() !== '#2F8CFF') p.set('color', cfg.color.replace('#', ''));
+    if (cfg.bg !== 0.80) p.set('bg', cfg.bg);
   } else if (type === 'chat') {
     if (cfg.color && cfg.color !== '#FFBB00') p.set('color', cfg.color.replace('#', ''));
     if (cfg.bg !== 0.82) p.set('bg', cfg.bg);
@@ -97,6 +100,17 @@ export async function testGiftAlert() {
     const res = await fetch('/api/test/gift', { method: 'POST' });
     const data = await res.json();
     if (data.success) showToast(t('toast.testAlertSent').replace('{name}', data.giftName));
+    else showToast(t('toast.testError'));
+  } catch {
+    showToast(t('toast.testError'));
+  }
+}
+
+export async function testViewers() {
+  try {
+    const res = await fetch('/api/test/viewers', { method: 'POST' });
+    const data = await res.json();
+    if (data.success) showToast(t('toast.testViewersSent', { count: data.count }));
     else showToast(t('toast.testError'));
   } catch {
     showToast(t('toast.testError'));

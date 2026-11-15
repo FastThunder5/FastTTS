@@ -30,7 +30,7 @@ import { copyToClipboard, showKnownIssuesNotice } from './utils-app.js';
 import { uploadBg, removeBg } from './subida-fondo.js';
 import {
   onCfgChange, onChatPlatformChange, copyCfgUrl,
-  updateFollowerDisplay, testGiftAlert, testSocialAlert,
+  updateFollowerDisplay, testGiftAlert, testSocialAlert, testViewers,
   updateSocialOverlayUrl, copySocialAlertUrl, testTopLikers,
 } from './configurador-overlays.js';
 import {
@@ -102,7 +102,7 @@ Object.assign(window, {
   // fondo de overlays
   uploadBg, removeBg,
   // configurador de overlays
-  onCfgChange, onChatPlatformChange, copyCfgUrl, testGiftAlert, testSocialAlert,
+  onCfgChange, onChatPlatformChange, copyCfgUrl, testGiftAlert, testSocialAlert, testViewers,
   copySocialAlertUrl, testTopLikers, updateSocialOverlayUrl,
   // toggles de chat
   toggleChatToggles, toggleOption, setSoloChatMode,

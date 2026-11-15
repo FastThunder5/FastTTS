@@ -21,6 +21,8 @@ const REQUIRED = [
   'overlay-creditos.html',
   'overlay-likes.html',
   'overlay-seguidores.html',
+  'overlay-teclado.html',
+  'overlay-viewers.html',
   'overlay-social.html',
   'assets',
   path.join('locales', 'es.json'),
