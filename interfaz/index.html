@@ -433,6 +433,36 @@
         </div>
       </div>
 
+      <!-- Espectadores de TikTok -->
+      <div class="cfg-card">
+        <div class="cfg-header">
+          <div class="cfg-icon"><img class="icon-inline" src="icons/visibility.svg" alt=""></div>
+          <div class="cfg-meta">
+            <div class="cfg-title" data-i18n="overlayStr.viewers">Espectadores</div>
+            <div class="cfg-subtitle" data-i18n="overlayStr.liveViewerCount">Personas viendo tu TikTok en vivo</div>
+          </div>
+          <span class="obs-hint">460 × 112 px</span>
+        </div>
+        <div class="cfg-fields">
+          <div class="cfg-field">
+            <label data-i18n="label.accentColor">Color acento</label>
+            <input type="color" id="cfg-viewers-color" value="#2F8CFF"
+                   oninput="onCfgChange('viewers','color', this.value)" />
+          </div>
+          <div class="cfg-field">
+            <label><span data-i18n="label.bgOpacity">Opacidad fondo</span> — <span id="cfg-viewers-bg-val">80</span>%</label>
+            <input type="range" id="cfg-viewers-bg" min="0.30" max="1.00" step="0.05" value="0.80"
+                   oninput="onCfgChange('viewers','bg', parseFloat(this.value)); document.getElementById('cfg-viewers-bg-val').textContent = Math.round(this.value*100)" />
+          </div>
+        </div>
+        <div class="cfg-url-row">
+          <span class="cfg-url-text" id="cfg-url-viewers">http://localhost:3000/overlay-viewers.html</span>
+          <button class="cfg-btn" onclick="testViewers()"><img class="icon-inline" src="icons/play_arrow.svg" alt=""> Test</button>
+          <button class="cfg-btn" onclick="copyCfgUrl('viewers')" data-i18n="btn.copy">Copiar</button>
+          <a class="cfg-btn" id="cfg-open-viewers" href="http://localhost:3000/overlay-viewers.html" target="_blank" data-i18n="btn.open">Abrir</a>
+        </div>
+      </div>
+
       <!-- Alertas Seguidor / Compartir -->
       <div class="cfg-card">
         <div class="cfg-header">

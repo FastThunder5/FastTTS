@@ -527,6 +527,8 @@
     "configRejected": "配置被拒绝"
   },
   "overlayStr": {
+    "viewers": "观众",
+    "liveViewerCount": "正在观看你的 TikTok 直播的人",
     "knownBugs": "已知问题",
     "knownBugsMsg": "部分板块存在已知问题，即将修复。",
     "newFollowers": "新粉丝",
@@ -637,6 +639,7 @@
     "share": "{user} 正在分享直播"
   },
   "toast": {
+    "testViewersSent": "测试已发送：{count} 位观众",
     "pronunciationSaved": "发音已保存",
     "unknownVoices": "未找到这些语音：{voices}。请使用选择器中显示的名称。",
     "userVoicesSaved": "已保存按用户分配的语音",

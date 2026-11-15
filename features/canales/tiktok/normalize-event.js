@@ -57,9 +57,16 @@ function normalizeGift(data) {
   };
 }
 
+/** Espectadores en vivo (WebcastRoomUserSeqMessage). En el proto v3 es
+ * `total` (string); `totalUser` es el acumulado del directo, no sirve aca. */
+function normalizeRoomUser(data) {
+  const n = Number((data && (data.total ?? data.viewerCount)) ?? NaN);
+  return Number.isFinite(n) ? n : null;
+}
+
 /** Datos de usuario para member/follow/share. */
 function normalizeUserEvent(data) {
   return userFields(data || {});
 }
 
-module.exports = { normalizeChat, normalizeLike, normalizeGift, normalizeUserEvent };
+module.exports = { normalizeChat, normalizeLike, normalizeGift, normalizeUserEvent, normalizeRoomUser };

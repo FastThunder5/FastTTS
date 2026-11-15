@@ -527,6 +527,8 @@
     "configRejected": "Конфигурация отклонена"
   },
   "overlayStr": {
+    "viewers": "Зрители",
+    "liveViewerCount": "Люди, смотрящие ваш эфир TikTok",
     "knownBugs": "Известные проблемы",
     "knownBugsMsg": "В некоторых разделах есть известные ошибки. Скоро будут исправлены.",
     "newFollowers": "Новые подписчики",
@@ -637,6 +639,7 @@
     "share": "{user} делится стримом"
   },
   "toast": {
+    "testViewersSent": "Тест отправлен: {count} зрителей",
     "pronunciationSaved": "Произношение сохранено",
     "unknownVoices": "Не найдены голоса: {voices}. Используйте имя из списка.",
     "userVoicesSaved": "Голоса зрителей сохранены",

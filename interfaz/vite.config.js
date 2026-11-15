@@ -26,6 +26,7 @@ export default defineConfig({
         'overlay-musica': entry('overlay-musica.html'),
         'overlay-seguidores': entry('overlay-seguidores.html'),
         'overlay-social': entry('overlay-social.html'),
+        'overlay-viewers': entry('overlay-viewers.html'),
       },
     },
   },

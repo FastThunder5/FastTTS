@@ -527,6 +527,8 @@
     "configRejected": "Config rifiutata"
   },
   "overlayStr": {
+    "viewers": "Spettatori",
+    "liveViewerCount": "Persone che guardano il tuo TikTok in diretta",
     "knownBugs": "Problemi noti",
     "knownBugsMsg": "Alcune sezioni hanno bug noti. Verranno risolti a breve.",
     "newFollowers": "Nuovi follower",
@@ -637,6 +639,7 @@
     "share": "{user} sta condividendo la diretta"
   },
   "toast": {
+    "testViewersSent": "Test inviato: {count} spettatori",
     "pronunciationSaved": "Pronuncia salvata",
     "unknownVoices": "Voci non trovate: {voices}. Usa il nome mostrato nel selettore.",
     "userVoicesSaved": "Voci per utente salvate",

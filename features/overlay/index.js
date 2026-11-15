@@ -13,6 +13,9 @@ const { startFollowerRefresh, stopFollowerRefresh } = require('./state/follower-
 const { computeGiftUsd } = require('./compute-gift-usd');
 const { purgeTopLikersIfNeeded } = require('./state/bounded-push');
 const { cleanNick } = require('./clean-nick');
+const { setViewerCount } = require('./state/set-viewer-count');
+const { removeViewerCount } = require('./state/remove-viewer-count');
+const { totalViewerCount } = require('./state/total-viewer-count');
 const mcpRegistry = require('../../core/contracts/mcp-registry');
 const { getConfigSnapshot } = require('../../core/config-snapshot');
 const entitlements = require('../../core/contracts/entitlements');
@@ -25,6 +28,7 @@ const { testGift } = require('./routes/test-gift');
 const { testFollow } = require('./routes/test-follow');
 const { testShare } = require('./routes/test-share');
 const { testLikes } = require('./routes/test-likes');
+const { testViewers } = require('./routes/test-viewers');
 
 const LIKE_DEBOUNCE_FALLBACK_MS = 1500;
 
@@ -104,12 +108,19 @@ module.exports = {
       }
     }, 'overlay');
 
+    // Espectadores en vivo de TikTok (suma de todos los canales conectados).
+    bus.on('canal:viewers', (payload) => {
+      const total = setViewerCount(state, payload);
+      if (total !== null) bus.emit('ws:broadcast', { type: 'viewers', total });
+    }, 'overlay');
+
     // ── Base de followers (multi-canal TikTok) ───────────────────────────────
     bus.on('canal:estado', (payload) => {
       if (payload.platform !== 'tiktok') return;
 
       if (payload.state === 'conectando' && state.activeTiktokChannels.size === 0) {
         resetOverlayState(state);
+        bus.emit('ws:broadcast', { type: 'viewers', total: 0 });
       }
 
       if (payload.state === 'conectado' || payload.state === 'followers-refrescado') {
@@ -120,6 +131,7 @@ module.exports = {
       }
 
       if (payload.state === 'desconectado' || payload.state === 'sin-canales') {
+        bus.emit('ws:broadcast', { type: 'viewers', total: removeViewerCount(state, payload) });
         if (payload.channel) state.activeTiktokChannels.delete(payload.channel);
         recomputeFollowerBase(deps);
         if (state.activeTiktokChannels.size === 0) {
@@ -145,6 +157,7 @@ module.exports = {
     app.post('/api/test/follow', testFollow(deps));
     app.post('/api/test/share', testShare(deps));
     app.post('/api/test/likes', testLikes(deps));
+    app.post('/api/test/viewers', testViewers(deps));
 
     // ── MCP ──────────────────────────────────────────────────────────────
     const slice = () => {
@@ -153,6 +166,7 @@ module.exports = {
         overlay: {
           followCount: state.followCount,
           baseFollowerCount: state.baseFollowerCount,
+          viewerCount: totalViewerCount(state.viewerCountByChannel),
           topLikers,
           recentSharers: [...state.credits.sharers.values()].slice(-10).map((s) => s.user),
           recentDonors: [...state.credits.donors.values()].slice(-10),
@@ -171,6 +185,6 @@ module.exports = {
       handler: () => slice().overlay,
     });
 
-    return { rutas: 9, listeners: 6 };
+    return { rutas: 10, listeners: 7 };
   },
 };

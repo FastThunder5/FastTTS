@@ -527,6 +527,8 @@
     "configRejected": "設定が拒否されました"
   },
   "overlayStr": {
+    "viewers": "視聴者",
+    "liveViewerCount": "TikTokライブを視聴中の人",
     "knownBugs": "既知の不具合",
     "knownBugsMsg": "一部のセクションに既知の不具合があります。近日中に修正されます。",
     "newFollowers": "新しいフォロワー",
@@ -637,6 +639,7 @@
     "share": "{user}さんが配信をシェアしています"
   },
   "toast": {
+    "testViewersSent": "テスト送信：視聴者 {count} 人",
     "pronunciationSaved": "読み方を保存しました",
     "unknownVoices": "次の音声が見つかりません：{voices}。選択肢に表示される名前を使ってください。",
     "userVoicesSaved": "ユーザーごとの音声を保存しました",
