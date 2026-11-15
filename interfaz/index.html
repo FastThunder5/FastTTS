@@ -603,6 +603,41 @@
           <a class="cfg-btn" id="cfg-open-social" href="http://localhost:3000/overlay-social.html" target="_blank" data-i18n="btn.open">Abrir</a>
         </div>
       </div>
+      <!-- Teclado / Mouse -->
+      <div class="cfg-card">
+        <div class="cfg-header">
+          <div class="cfg-icon"><img class="icon-inline" src="icons/keyboard.svg" alt=""></div>
+          <div class="cfg-meta">
+            <div class="cfg-title" data-i18n="overlay2.keyboardTitle">Teclado y mouse</div>
+            <div class="cfg-subtitle" data-i18n="overlay2.keyboardSubtitle">Muestra en vivo las teclas y botones de mouse que vas presionando</div>
+          </div>
+          <span class="obs-hint">560 × 210 px</span>
+        </div>
+        <div class="cfg-fields">
+          <div class="cfg-field">
+            <label data-i18n="overlay2.keyboardTheme">Tema</label>
+            <select id="cfg-teclado-tema" onchange="onCfgChange('teclado','tema', this.value)">
+              <option value="oscuro" data-i18n="overlay2.keyboardThemeDark">Oscuro</option>
+              <option value="claro" data-i18n="overlay2.keyboardThemeLight">Claro</option>
+            </select>
+          </div>
+          <div class="cfg-field">
+            <label data-i18n="label.accentColor">Color acento</label>
+            <input type="color" id="cfg-teclado-color" value="#2F8CFF"
+                   oninput="onCfgChange('teclado','color', this.value)" />
+          </div>
+          <div class="cfg-field">
+            <label><span data-i18n="label.bgOpacity">Opacidad fondo</span> — <span id="cfg-teclado-bg-val">84</span>%</label>
+            <input type="range" id="cfg-teclado-bg" min="0.30" max="1.00" step="0.02" value="0.84"
+                   oninput="onCfgChange('teclado','bg', parseFloat(this.value)); document.getElementById('cfg-teclado-bg-val').textContent = Math.round(this.value*100)" />
+          </div>
+        </div>
+        <div class="cfg-url-row">
+          <span class="cfg-url-text" id="cfg-url-teclado">http://localhost:3000/overlay-teclado.html</span>
+          <button class="cfg-btn" onclick="copyCfgUrl('teclado')" data-i18n="btn.copy">Copiar</button>
+          <a class="cfg-btn" id="cfg-open-teclado" href="http://localhost:3000/overlay-teclado.html" target="_blank" data-i18n="btn.open">Abrir</a>
+        </div>
+      </div>
     </div>
 
     <!-- ── VIEW: Bot ───────────────────────────────────── -->

@@ -12,6 +12,7 @@ export const DEFAULTS_OVERLAYS = {
   social: { layout: 'cols', color: '#FFBB00', bg: 0.80, bgimg: '' },
   'alertas-social': { color: '#FFBB00', bg: 0.90, bgimg: '' },
   viewers: { color: '#2F8CFF', bg: 0.80 },
+  teclado: { tema: 'oscuro', color: '#2F8CFF', bg: 0.84 },
   chat: {
     color: '#FFBB00',
     bg: 0.82,

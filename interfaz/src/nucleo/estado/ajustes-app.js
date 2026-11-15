@@ -58,6 +58,7 @@ export const DEFAULT_SETTINGS = {
     'alertas-social': { color: '#FFBB00', bg: 0.90, bgimg: '' },
     viewers: { color: '#2F8CFF', bg: 0.80 },
     musica: { bgimg: '' },
+    teclado: { tema: 'oscuro', color: '#2F8CFF', bg: 0.84 },
     chat: {
       color: '#FFBB00',
       bg: 0.82,
@@ -219,6 +220,15 @@ export function applySettings() {
     if (asbValEl) asbValEl.textContent = Math.round(alertasSocial.bg * 100);
   }
 
+  const teclado = appSettings.overlays.teclado;
+  if (teclado) {
+    setFieldVal('cfg-teclado-tema', teclado.tema);
+    setFieldVal('cfg-teclado-color', teclado.color);
+    setFieldVal('cfg-teclado-bg', teclado.bg);
+    const tbValEl = document.getElementById('cfg-teclado-bg-val');
+    if (tbValEl) tbValEl.textContent = Math.round(teclado.bg * 100);
+  }
+
   updateBgPreview('seguidores', seguidores.bgimg);
   updateBgPreview('likes', likes.bgimg);
   updateBgPreview('alertas', alertas.bgimg);
@@ -235,5 +245,6 @@ export function applySettings() {
   updateOverlayUrl('social');
   updateOverlayUrl('viewers');
   updateOverlayUrl('musica');
+  updateOverlayUrl('teclado');
   updateSocialOverlayUrl();
 }
