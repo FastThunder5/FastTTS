@@ -4,7 +4,7 @@ const https = require('https');
 
 /**
  * Resuelve el slug de un canal de Kick a los ids que necesita el WebSocket de
- * chat (Pusher): chatroom.id y chatroom.channel_id.
+ * chat: chatroom.id y chatroom.channel_id.
  *
  * Usa el endpoint publico https://kick.com/api/v2/channels/{slug} — al 2026-08
  * responde 200 a peticiones de Node sin headers especiales (el bloqueo de

@@ -13,8 +13,8 @@ function clearKickWatchdog(map, slug) {
   map.delete(slug);
 }
 
-/** (Re)arma el timeout de inactividad para `slug`. Llamar tras abrir la
- * ventana y en cada `canal:mensaje-crudo` de ese slug. */
+/** (Re)arma el timeout de inactividad para `slug`. Llamar en cada frame
+ * recibido del socket (Centrifugo manda un ping cada ~25s), no solo chat. */
 function armKickWatchdog(deps, slug, onStale) {
   const { state } = deps;
   clearKickWatchdog(state.kickWatchdogTimers, slug);
