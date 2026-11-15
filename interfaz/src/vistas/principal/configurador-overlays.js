@@ -38,6 +38,10 @@ export function buildOverlayUrl(type) {
     const platforms = cfg.platforms || {};
     const visible = ['tiktok', 'twitch', 'youtube', 'kick'].filter((name) => platforms[name] !== false);
     if (visible.length > 0 && visible.length < PLATFORMS.length) p.set('platforms', visible.join(','));
+  } else if (type === 'teclado') {
+    if (cfg.tema && cfg.tema !== 'oscuro') p.set('tema', cfg.tema);
+    if (cfg.color && cfg.color.toUpperCase() !== '#2F8CFF') p.set('color', cfg.color.replace('#', ''));
+    if (cfg.bg !== 0.84) p.set('bg', cfg.bg);
   } else if (type === 'alertas-social') {
     if (cfg.color && cfg.color !== '#FFBB00') p.set('color', cfg.color.replace('#', ''));
     if (cfg.bg !== 0.90) p.set('bg', cfg.bg);

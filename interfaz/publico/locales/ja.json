@@ -359,6 +359,11 @@
     }
   },
   "overlay2": {
+    "keyboardTitle": "キーボードとマウス",
+    "keyboardSubtitle": "押しているキーとマウスボタンをリアルタイムで表示します",
+    "keyboardTheme": "テーマ",
+    "keyboardThemeDark": "ダーク",
+    "keyboardThemeLight": "ライト",
     "giftsTitle": "ギフトアラート",
     "giftsSubtitle": "誰かがギフトを送るとOBSに数秒間表示されます",
     "alertDuration": "アラート表示時間（ms）",

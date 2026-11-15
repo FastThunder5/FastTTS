@@ -359,6 +359,11 @@
     }
   },
   "overlay2": {
+    "keyboardTitle": "Клавиатура и мышь",
+    "keyboardSubtitle": "Показывает в реальном времени, какие клавиши и кнопки мыши вы нажимаете",
+    "keyboardTheme": "Тема",
+    "keyboardThemeDark": "Тёмная",
+    "keyboardThemeLight": "Светлая",
     "giftsTitle": "Уведомление о подарке",
     "giftsSubtitle": "Появляется в OBS на несколько секунд когда кто-то отправляет подарок",
     "alertDuration": "Длительность уведомления (мс)",

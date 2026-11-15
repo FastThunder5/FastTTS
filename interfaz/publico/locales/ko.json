@@ -359,6 +359,11 @@
     }
   },
   "overlay2": {
+    "keyboardTitle": "키보드와 마우스",
+    "keyboardSubtitle": "지금 누르고 있는 키와 마우스 버튼을 실시간으로 보여줍니다",
+    "keyboardTheme": "테마",
+    "keyboardThemeDark": "다크",
+    "keyboardThemeLight": "라이트",
     "giftsTitle": "선물 알림",
     "giftsSubtitle": "누군가 선물을 보내면 OBS에 몇 초간 표시됩니다",
     "alertDuration": "알림 표시 시간 (ms)",

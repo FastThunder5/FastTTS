@@ -124,7 +124,7 @@ app.whenReady().then(() => {
       });
     }
 
-    startUiohook(logger);
+    startUiohook(logger, bus);
 
     ipcHandles = attachIpcBridge({ app, bus, logger, getMainWindow, globalShortcut });
 

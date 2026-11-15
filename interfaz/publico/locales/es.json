@@ -404,6 +404,11 @@
     }
   },
   "overlay2": {
+    "keyboardTitle": "Teclado y mouse",
+    "keyboardSubtitle": "Muestra en vivo las teclas y botones de mouse que vas presionando",
+    "keyboardTheme": "Tema",
+    "keyboardThemeDark": "Oscuro",
+    "keyboardThemeLight": "Claro",
     "giftsTitle": "Alerta de Regalo",
     "giftsSubtitle": "Aparece en OBS unos segundos cuando alguien envía un regalo",
     "alertDuration": "Duración por alerta (ms)",
