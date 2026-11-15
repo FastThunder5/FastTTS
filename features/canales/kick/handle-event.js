@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Parsea el `data` (string JSON) de un App\Events\ChatMessageEvent de Pusher a
+ * Parsea el `data` (string JSON u objeto) de un App\Events\ChatMessageEvent a
  * la forma cruda que espera chat/emit-chat-message.js#extractKickMessage:
  *   { id, userId, username, content }
  *
