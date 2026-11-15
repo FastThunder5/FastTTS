@@ -216,6 +216,9 @@
     "announceTplExShare": "hat es weitererzählt"
   },
   "label": {
+    "pitch": "Tonhöhe",
+    "pitchLow": "Tief",
+    "pitchHigh": "Hoch",
     "voice": "Stimme",
     "testVoice": "Stimme testen",
     "speed": "Geschwindigkeit",

@@ -216,6 +216,9 @@
     "announceTplExShare": "espalhou a novidade"
   },
   "label": {
+    "pitch": "Tom",
+    "pitchLow": "Grave",
+    "pitchHigh": "Agudo",
     "voice": "Voz",
     "testVoice": "Testar voz",
     "speed": "Velocidade",

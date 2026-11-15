@@ -261,6 +261,9 @@
     "announceTplExShare": "se corrió la voz"
   },
   "label": {
+    "pitch": "Tono",
+    "pitchLow": "Grave",
+    "pitchHigh": "Agudo",
     "voice": "Voz",
     "testVoice": "Probar voz",
     "speed": "Velocidad",

@@ -218,6 +218,9 @@
     "announceTplExShare": "spread the word"
   },
   "label": {
+    "pitch": "Pitch",
+    "pitchLow": "Low",
+    "pitchHigh": "High",
     "voice": "Voice",
     "testVoice": "Test voice",
     "speed": "Speed",

@@ -216,6 +216,9 @@
     "announceTplExShare": "разнёс весть"
   },
   "label": {
+    "pitch": "Тон",
+    "pitchLow": "Низкий",
+    "pitchHigh": "Высокий",
     "voice": "Голос",
     "testVoice": "Тест голоса",
     "speed": "Скорость",

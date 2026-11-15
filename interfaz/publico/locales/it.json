@@ -216,6 +216,9 @@
     "announceTplExShare": "ha fatto girare la voce"
   },
   "label": {
+    "pitch": "Tono",
+    "pitchLow": "Grave",
+    "pitchHigh": "Acuto",
     "voice": "Voce",
     "testVoice": "Testa voce",
     "speed": "Velocità",
