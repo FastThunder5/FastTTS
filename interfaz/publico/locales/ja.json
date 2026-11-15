@@ -68,6 +68,9 @@
     "favRemove": "お気に入りから削除"
   },
   "toggle": {
+    "closeToTray": "閉じるときにトレイへ最小化",
+    "closeToTrayHint": "X を押してもアプリはシステムトレイで動作し続けます。完全に終了するには、トレイアイコンを右クリック → 終了。",
+    "openAtLogin": "Windows の起動時に開く",
     "readChat": "コメントを読む",
     "readGifts": "ギフトを通知",
     "readGiftAmount": "ギフト金額を読み上げ",
@@ -178,6 +181,7 @@
     }
   },
   "settings": {
+    "window": "ウィンドウと起動",
     "voice": "音声・オーディオ",
     "shortcuts": "キーボードショートカット",
     "channels": "連携チャンネル",

@@ -68,6 +68,9 @@
     "favRemove": "Aus Favoriten entfernen"
   },
   "toggle": {
+    "closeToTray": "Beim Schließen in den Infobereich minimieren",
+    "closeToTrayHint": "Mit dem X läuft die App im Infobereich weiter. Zum vollständigen Beenden: Rechtsklick auf das Symbol → Beenden.",
+    "openAtLogin": "Beim Windows-Start öffnen",
     "readChat": "Kommentare lesen",
     "readGifts": "Geschenke ansagen",
     "readGiftAmount": "Geschenkbetrag ansagen",
@@ -178,6 +181,7 @@
     }
   },
   "settings": {
+    "window": "Fenster & Start",
     "voice": "Stimme & Audio",
     "shortcuts": "Tastenkürzel",
     "channels": "Verknüpfte Kanäle",

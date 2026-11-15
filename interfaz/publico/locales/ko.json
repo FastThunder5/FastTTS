@@ -68,6 +68,9 @@
     "favRemove": "즐겨찾기에서 제거"
   },
   "toggle": {
+    "closeToTray": "닫을 때 트레이로 최소화",
+    "closeToTrayHint": "X를 눌러도 앱이 시스템 트레이에서 계속 실행됩니다. 완전히 종료하려면 트레이 아이콘을 우클릭 → 종료.",
+    "openAtLogin": "Windows 시작 시 열기",
     "readChat": "댓글 읽기",
     "readGifts": "선물 알림",
     "readGiftAmount": "선물 금액 읽기",
@@ -178,6 +181,7 @@
     }
   },
   "settings": {
+    "window": "창 및 시작",
     "voice": "음성 및 오디오",
     "shortcuts": "키보드 단축키",
     "channels": "연결된 채널",

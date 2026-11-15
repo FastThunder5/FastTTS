@@ -113,6 +113,9 @@
     "step6Desc": "Antes de tocar acá: iniciá tu transmisión en la plataforma (TikTok/Twitch/YouTube) y esperá a estar en vivo. Recién ahí volvé y tocá \"Conectar todo\". No antes de estar en vivo."
   },
   "toggle": {
+    "closeToTray": "Minimizar a la bandeja al cerrar",
+    "closeToTrayHint": "Con la X la app sigue funcionando en la bandeja del sistema. Para cerrarla del todo: clic derecho en el ícono de la bandeja → Salir.",
+    "openAtLogin": "Abrir al iniciar Windows",
     "readChat": "Leer comentarios",
     "readGifts": "Anunciar regalos",
     "readGiftAmount": "Leer monto del regalo",
@@ -223,6 +226,7 @@
     }
   },
   "settings": {
+    "window": "Ventana e inicio",
     "voice": "Voz y audio",
     "shortcuts": "Atajos de teclado",
     "channels": "Canales vinculados",

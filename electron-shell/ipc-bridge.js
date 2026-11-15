@@ -45,6 +45,21 @@ function isValidShortcut(shortcut) {
 function attachIpcBridge({ app, bus, logger, getMainWindow, globalShortcut }) {
   ipcMain.handle('get-app-version', () => app.getVersion());
 
+  // Arranque con Windows (valor Run del registro). En dev hay que pasar la
+  // carpeta del proyecto como argumento (si no, arranca electron.exe vacio) y
+  // otro nombre, para no pisar la entrada de la app instalada.
+  const loginItem = () => (app.isPackaged
+    ? { name: 'FastTTS' }
+    : { name: 'FastTTS-dev', path: process.execPath, args: [app.getAppPath()] });
+  ipcMain.handle('login-item:get', () => {
+    const { path, args } = loginItem();
+    return { available: true, enabled: app.getLoginItemSettings({ path, args }).executableWillLaunchAtLogin };
+  });
+  ipcMain.handle('login-item:set', (_event, enabled) => {
+    app.setLoginItemSettings({ openAtLogin: enabled === true, ...loginItem() });
+    return { ok: true };
+  });
+
   ipcMain.on('install-update', () => {
     require('./updater').installUpdate();
   });

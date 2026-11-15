@@ -70,6 +70,7 @@ import {
   renderSettingsChannels,
 } from './plataformas.js';
 import { doInstallUpdate, iniciarEventosElectron } from './eventos-electron.js';
+import { iniciarAjustesVentana } from './ajustes-ventana.js';
 import {
   musicRemoveFromQueue, musicSkip, musicTogglePause, musicSetEnabled, musicSetVolume,
   musicSaveCooldown, musicSaveMaxQueue, musicSaveSkipVotes, musicClearQueue, musicBanUser, musicUnbanUser,
@@ -198,6 +199,7 @@ function iniciarArranque() {
     .catch(() => {});
 
   iniciarEventosElectron();
+  iniciarAjustesVentana();
   musicInit();
   iniciarPortalView();
 }

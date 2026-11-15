@@ -102,7 +102,8 @@ function createWindow({ iconPath, onClose, bus }) {
   win.once('ready-to-show', () => win.show());
 
   // Close (X) -> apaga todo, no minimiza a tray.
-  win.on('close', () => onClose());
+  // onClose decide: apagar todo o esconder en la bandeja (closeToTray).
+  win.on('close', (event) => onClose(event));
 
   return win;
 }

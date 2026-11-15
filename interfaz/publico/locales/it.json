@@ -68,6 +68,9 @@
     "favRemove": "Rimuovi dai preferiti"
   },
   "toggle": {
+    "closeToTray": "Riduci nell'area di notifica alla chiusura",
+    "closeToTrayHint": "Con la X l'app continua a funzionare nell'area di notifica. Per chiuderla del tutto: clic destro sull'icona → Esci.",
+    "openAtLogin": "Apri all'avvio di Windows",
     "readChat": "Leggi commenti",
     "readGifts": "Annuncia regali",
     "readGiftAmount": "Annuncia importo del regalo",
@@ -178,6 +181,7 @@
     }
   },
   "settings": {
+    "window": "Finestra e avvio",
     "voice": "Voce e audio",
     "shortcuts": "Scorciatoie da tastiera",
     "channels": "Canali collegati",

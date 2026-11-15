@@ -57,6 +57,8 @@ const DEFAULT_CONFIG = {
   // Tools MCP de desarrollo (dev_*): inyectar chat/eventos, ver logs crudos,
   // status completo, bus emit. Solo para debug — default off.
   mcpDevToolsEnabled: false,
+  // X de la ventana: false = cierra la app, true = la esconde en la bandeja.
+  closeToTray: false,
   // Cuentas con inmunidad a bans/mutes y que se saltan los filtros del chat.
   // Vacio por defecto: agrega aqui tus propias cuentas si lo necesitas.
   // (Sistema de suscripciones de pago del upstream eliminado en este fork:

@@ -68,6 +68,9 @@
     "favRemove": "从收藏夹中移除"
   },
   "toggle": {
+    "closeToTray": "关闭时最小化到托盘",
+    "closeToTrayHint": "点击 X 后应用会继续在系统托盘中运行。要完全退出：右键单击托盘图标 → 退出。",
+    "openAtLogin": "Windows 启动时打开",
     "readChat": "朗读评论",
     "readGifts": "播报礼物",
     "readGiftAmount": "播报礼物金额",
@@ -178,6 +181,7 @@
     }
   },
   "settings": {
+    "window": "窗口与启动",
     "voice": "语音与音频",
     "shortcuts": "键盘快捷键",
     "channels": "已关联频道",

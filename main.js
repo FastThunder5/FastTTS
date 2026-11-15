@@ -24,6 +24,7 @@ const { attachPortalViewIpc } = require('./electron-shell/portal-view/ipc');
 const { startUiohook, stopUiohook, isUiohookActive, registerUiohookShortcut } = require('./electron-shell/uiohook');
 const { GLOBAL_SHORTCUT } = require('./features/clips/global-shortcut');
 const { getActiveAccount } = require('./core/account-data-path');
+const { getConfigSnapshot } = require('./core/config-snapshot');
 
 let mainWindow = null;
 let tray = null;
@@ -90,8 +91,13 @@ app.whenReady().then(() => {
     mainWindow = createWindow({
       iconPath: ICON_PATH,
       bus,
-      onClose: () => {
+      onClose: (event) => {
         if (isQuitting) return;
+        if (tray && getConfigSnapshot(bus).closeToTray) {
+          event.preventDefault();
+          mainWindow.hide();
+          return;
+        }
         isQuitting = true;
         app.quit();
       },
