@@ -220,6 +220,9 @@
     "announceTplExShare": "みんなに広めました"
   },
   "label": {
+    "pitch": "音程",
+    "pitchLow": "低い",
+    "pitchHigh": "高い",
     "voice": "音声",
     "testVoice": "音声テスト",
     "speed": "速度",

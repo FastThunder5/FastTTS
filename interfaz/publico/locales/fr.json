@@ -220,6 +220,9 @@
     "announceTplExShare": "a fait passer le mot"
   },
   "label": {
+    "pitch": "Tonalité",
+    "pitchLow": "Grave",
+    "pitchHigh": "Aiguë",
     "voice": "Voix",
     "testVoice": "Tester la voix",
     "speed": "Vitesse",

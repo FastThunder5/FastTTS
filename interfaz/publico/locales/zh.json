@@ -220,6 +220,9 @@
     "announceTplExShare": "帮忙传开了"
   },
   "label": {
+    "pitch": "音调",
+    "pitchLow": "低",
+    "pitchHigh": "高",
     "voice": "语音",
     "testVoice": "测试语音",
     "speed": "速度",

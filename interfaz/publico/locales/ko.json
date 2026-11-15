@@ -220,6 +220,9 @@
     "announceTplExShare": "소문을 퍼뜨렸어요"
   },
   "label": {
+    "pitch": "음높이",
+    "pitchLow": "낮음",
+    "pitchHigh": "높음",
     "voice": "음성",
     "testVoice": "음성 테스트",
     "speed": "속도",

@@ -20,7 +20,7 @@ import { loadRuntimeConfig } from '../../nucleo/estado/config-runtime.js';
 import { connectWS } from '../../nucleo/ws/cliente-ws.js';
 import {
   updateQueueBadge, skipCurrentTTS, togglePauseTts, toggleGlobalTTS,
-  enableEmergencyTTSMode, updateRate, updateVol,
+  enableEmergencyTTSMode, updateRate, updateVol, updatePitch,
 } from '../../nucleo/tts/cola-tts.js';
 
 import { t, tErr } from '../../nucleo/i18n/i18n.js';
@@ -117,7 +117,7 @@ Object.assign(window, {
   selectVoice, testVoice,
   // chat / tts
   clearChatAndQueue, skipCurrentTTS, togglePauseTts, toggleGlobalTTS,
-  enableEmergencyTTSMode, updateRate, updateVol,
+  enableEmergencyTTSMode, updateRate, updateVol, updatePitch,
   // modales y avisos
   openDictLangModal, closeDictLangModal,
   closeOnboardingWelcome, closeOnboardingComplete, startOnboardingTour,
@@ -171,7 +171,7 @@ function iniciarArranque() {
   document.addEventListener('DOMContentLoaded', () => {
     initChatScrollFollow();
     initSpeakingGoto();
-    document.querySelectorAll('.cfg-field input[type="range"], #rateRange, #volRange').forEach(paintRangeFill);
+    document.querySelectorAll('.cfg-field input[type="range"], #rateRange, #volRange, #pitchRange').forEach(paintRangeFill);
   });
 
   // ─── INIT (mismo orden que el original) ──────────────────────
