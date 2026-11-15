@@ -145,6 +145,8 @@ async function connectKick(deps, channelOrSlug, attempt = 0) {
       if (settled) return;
       settled = true;
       clearTimeout(subscribeTimeout);
+      // Conexion lograda: los reintentos vuelven a contar desde 0.
+      entry.attempt = 0;
       state.kickChannels.set(slug, entry);
       armKickWatchdog(deps, slug, onStale);
       logger.log(
