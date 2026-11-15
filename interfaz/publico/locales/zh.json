@@ -363,6 +363,11 @@
     }
   },
   "overlay2": {
+    "keyboardTitle": "键盘和鼠标",
+    "keyboardSubtitle": "实时显示你正在按下的键盘和鼠标按键",
+    "keyboardTheme": "主题",
+    "keyboardThemeDark": "深色",
+    "keyboardThemeLight": "浅色",
     "giftsTitle": "礼物提醒",
     "giftsSubtitle": "有人送礼物时在OBS中显示几秒钟",
     "alertDuration": "每次提醒时长 (ms)",

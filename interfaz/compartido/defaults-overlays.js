@@ -11,6 +11,7 @@ export const DEFAULTS_OVERLAYS = {
   creditos: { speed: 40, color: '#FFBB00', bg: 0.85, bgimg: '' },
   social: { layout: 'cols', color: '#FFBB00', bg: 0.80, bgimg: '' },
   'alertas-social': { color: '#FFBB00', bg: 0.90, bgimg: '' },
+  teclado: { tema: 'oscuro', color: '#2F8CFF', bg: 0.84 },
   chat: {
     color: '#FFBB00',
     bg: 0.82,

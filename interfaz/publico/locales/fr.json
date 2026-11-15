@@ -363,6 +363,11 @@
     }
   },
   "overlay2": {
+    "keyboardTitle": "Clavier et souris",
+    "keyboardSubtitle": "Affiche en direct les touches et boutons de souris que vous appuyez",
+    "keyboardTheme": "Thème",
+    "keyboardThemeDark": "Sombre",
+    "keyboardThemeLight": "Clair",
     "giftsTitle": "Alerte Cadeau",
     "giftsSubtitle": "Apparaît dans OBS quelques secondes quand quelqu'un envoie un cadeau",
     "alertDuration": "Durée par alerte (ms)",
