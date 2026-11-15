@@ -3,7 +3,23 @@
 const { MAX_RECONNECT_ATTEMPTS } = require('../state/channel-maps');
 const { parseYoutubeTarget } = require('./parse-target');
 const { stopYoutubeChat } = require('./stop-chat');
-const { WATCHDOG_TIMEOUT_MS, clearWatchdogTimer, armWatchdog } = require('./chat-watchdog');
+const { WATCHDOG_TIMEOUT_MS, clearWatchdogTimer, armWatchdog, nextConfirmBackoffMs } = require('./chat-watchdog');
+
+// `fetchLivePage` es la MISMA llamada que `LiveChat#start()` hace por dentro
+// para obtener apiKey/clientVersion/continuation. Re-pedirla sin tocar la
+// conexion existente confirma, barato, si el directo sigue en pie. No esta
+// re-exportada por 'youtube-chat', asi que hace falta el require profundo al
+// archivo interno del paquete (fragil ante un cambio de version mayor).
+async function confirmYoutubeStillLive(target) {
+  const { fetchLivePage } = require('youtube-chat/dist/requests');
+  try {
+    await fetchLivePage(target.opts);
+    return { alive: true };
+  } catch (err) {
+    const error = err instanceof Error ? err : new Error(String(err));
+    return { alive: false, reason: error.message };
+  }
+}
 
 function clearReconnectTimer(map, channel) {
   const timer = map.get(channel);
@@ -66,19 +82,52 @@ async function connectYoutube(deps, channelOrId, attempt = 0) {
 
   // Watchdog: YouTube puede seguir devolviendo 200 OK con actions:[] para
   // clientes anonimos cuando el token de continuacion caduca — 'chat' deja de
-  // disparar para siempre y la libreria nunca emite 'error'. Si no llega
-  // ningun mensaje real en WATCHDOG_TIMEOUT_MS, forzamos reconexion.
-  function onStale() {
+  // disparar para siempre y la libreria nunca emite 'error'. Pero un live sano
+  // con chat lento tambien deja de emitir 'chat' mucho rato, asi que el
+  // silencio solo es sospecha: onStale primero confirma con
+  // confirmYoutubeStillLive y solo reconecta si eso tambien falla. Si el
+  // stream sigue sano, re-arma el watchdog con backoff acotado.
+  let lastActivityAt = Date.now();
+  let confirmBackoffMs = WATCHDOG_TIMEOUT_MS;
+  let watchdogGeneration = 0;
+
+  function scheduleWatchdog(timeoutMs) {
+    watchdogGeneration += 1;
+    armWatchdog(deps, target, onStale, timeoutMs);
+  }
+
+  async function onStale() {
+    if (state.youtubeChannels.get(target.key) !== liveChat) return;
+    const generation = watchdogGeneration;
+    const msSinceLastMessage = Date.now() - lastActivityAt;
+    const { alive, reason } = await confirmYoutubeStillLive(target);
+    // Mientras se confirmaba pudo llegar un 'chat' real o cerrarse la conexion.
+    if (generation !== watchdogGeneration) return;
+    if (state.youtubeChannels.get(target.key) !== liveChat) return;
+
+    if (alive) {
+      confirmBackoffMs = nextConfirmBackoffMs(confirmBackoffMs);
+      logger.log(
+        'info', 'canales', 'canales/youtube/connect-youtube.js#connectYoutube', 'canales.youtube.chat_silencio_confirmado_sano',
+        `YouTube ${target.key} sin mensajes de chat en ${msSinceLastMessage}ms pero el directo sigue en pie; no se reconecta`,
+        { channel: target.key, msSinceLastMessage }
+      );
+      scheduleWatchdog(confirmBackoffMs);
+      return;
+    }
+
     logger.log(
       'warn', 'canales', 'canales/youtube/connect-youtube.js#connectYoutube', 'canales.youtube.chat_estancado',
-      `YouTube ${target.key} sin mensajes de chat en ${WATCHDOG_TIMEOUT_MS}ms; posible token de continuacion caducado, forzando reconexion`,
-      { channel: target.key, timeoutMs: WATCHDOG_TIMEOUT_MS }
+      `YouTube ${target.key} sin mensajes de chat en ${msSinceLastMessage}ms y la confirmacion fallo (${reason}); forzando reconexion`,
+      { channel: target.key, msSinceLastMessage, motivo: reason }
     );
-    forceReconnect(deps, target, liveChat, attempt, 'stale');
+    forceReconnect(deps, target, liveChat, 0, 'stale-confirmado');
   }
 
   liveChat.on('chat', (item) => {
-    armWatchdog(deps, target, onStale);
+    lastActivityAt = Date.now();
+    confirmBackoffMs = WATCHDOG_TIMEOUT_MS;
+    scheduleWatchdog(WATCHDOG_TIMEOUT_MS);
 
     // Dedup por ID de mensaje de YouTube — evita replays en reconexion. Es
     // una garantia de la fiabilidad del stream crudo, no logica de negocio.
@@ -110,7 +159,11 @@ async function connectYoutube(deps, channelOrId, attempt = 0) {
   const ok = await liveChat.start();
   if (!ok) throw new Error('No se pudo iniciar el chat de YouTube (¿el canal está en vivo?)');
   state.youtubeChannels.set(target.key, liveChat);
-  armWatchdog(deps, target, onStale);
+  // Conexion lograda: los reintentos vuelven a contar desde 0. Sin esto, tras
+  // 5 reconexiones a lo largo de un stream largo YouTube dejaba de reconectar.
+  attempt = 0;
+  lastActivityAt = Date.now();
+  scheduleWatchdog(WATCHDOG_TIMEOUT_MS);
 
   logger.log(
     'info', 'canales', 'canales/youtube/connect-youtube.js#connectYoutube', 'canales.youtube.conectado',
@@ -121,4 +174,4 @@ async function connectYoutube(deps, channelOrId, attempt = 0) {
   return target.key;
 }
 
-module.exports = { connectYoutube, clearReconnectTimer, clearWatchdogTimer };
+module.exports = { connectYoutube, clearReconnectTimer, clearWatchdogTimer, confirmYoutubeStillLive };
